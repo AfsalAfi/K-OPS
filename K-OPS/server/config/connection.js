@@ -18,7 +18,7 @@ async function connect() {
       await client.connect();
       console.log('Connected to MongoDB');
       cachedClient = client;
-      cachedDb = client.db('GatePass');
+      cachedDb = client.db('K-OPS');
     } catch (error) {
       console.error(error);
     }
