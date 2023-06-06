@@ -1,9 +1,45 @@
-var { getCollection } = require("../config/connection");
-const { HOSPITALS, KSEB, RATION_SHOPS } = require("../config/db-config");
+const Promise = require('promise');
+const { getCollection, } = require('.././config/connection')
+const { KSEB_NOTIFICATIONS, } = require('.././config/db-config')
 
+
+
+
+
+//for kseb
 
 module.exports = {
 
+    //ADMIN
+    updateNotifications: (message, varifiedBy, date, time) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const collection = await getCollection(KSEB_NOTIFICATIONS);
+                collection.insertOne(
+                    {
+                        message: message,
+                        date: date,
+                        time: time,
+                        varifiedBy: varifiedBy,
+
+                    }).then(response => {
+                        console.log(response);
+                        resolve()
+                    }).catch(err => {
+                        console.log(err);
+                        reject({ message: "error while update notification" })
+                    })
+
+            } catch (err) {
+
+                reject({ message: "error while update notification" })
+            }
+        })
+
+    },
+
+
+    //HOSPITAL
     verifyPasswordHospital: (regId, password) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -25,6 +61,7 @@ module.exports = {
         })
     },
 
+    //RATION-SHOP
     verifyPasswordRationShop: (regId, password) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -46,6 +83,8 @@ module.exports = {
         })
     },
 
+
+    //KSEB
     verifyPasswordKseb: (regId, password) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -66,12 +105,6 @@ module.exports = {
             }
         })
     },
-
-
-
-
-
-
 
 
 

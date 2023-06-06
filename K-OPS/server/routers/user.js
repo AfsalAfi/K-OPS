@@ -1,5 +1,5 @@
 const express = require("express");
-const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries } = require("../helpers/user-helpers");
+const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB } = require("../helpers/user-helpers");
 const router = express.Router();
 
 
@@ -13,8 +13,6 @@ const router = express.Router();
 //       res.status(500).send(err);
 //     });
 // });
-
-
 
 
 
@@ -49,6 +47,15 @@ router.post("/kseb-report-failures", (req, res) => {
         res.send(err);
     })
 });
+
+router.post('/show-kseb-notifications', (req, res) => {
+    showNotifications_KSEB().then(response => {
+        return res.status(200).send(response);
+    }).catch(err => {
+        return res.status(404).send(err.message);
+
+    })
+})
 
 
 
@@ -85,5 +92,9 @@ router.post("/available-doctors", (req, res) => {
         res.send(err);
     })
 });
+
+
+
+
 
 module.exports = router;

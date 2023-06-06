@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const { getCollection } = require("../config/connection");
 
 
 
@@ -83,6 +84,23 @@ module.exports = {
         return resolve({ status: "ok" });
       } catch (error) {
         return reject({ message: "Process failed try again after some time..." });
+      }
+    })
+  },
+
+  showNotifications_KSEB: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collection = await getCollection(KSEB_NOTIFICATIONS);
+        collection.find().toArray().then(response => {
+
+          resolve(response)
+        }).catch(err => {
+          reject({ message: "error while finding Notifications" })
+        })
+      } catch (err) {
+        reject({ message: "error while finding Notifications" })
+
       }
     })
   },
