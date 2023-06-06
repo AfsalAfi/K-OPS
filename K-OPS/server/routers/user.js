@@ -60,7 +60,9 @@ router.post("/kseb-report-failures", (req, res) => {
 });
 
 router.post('/show-kseb-notifications', (req, res) => {
-    showNotifications_KSEB().then(response => {
+    const regId = req.body.regId;
+    console.log(regId);
+    showNotifications_KSEB(regId).then(response => {
         return res.status(200).send(response);
     }).catch(err => {
         return res.status(404).send(err.message);
@@ -71,6 +73,17 @@ router.post('/show-kseb-notifications', (req, res) => {
 
 
 //HOSPITAL
+
+router.post("/list-hospitals", (req, res) => {
+    const district = req.body.district;
+    console.log(district);
+    get_Hospitals(district).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
 
 router.post("/hospital-enquries", (req, res) => {
     const divisionMail = req.body.divisionMail;

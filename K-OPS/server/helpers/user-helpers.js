@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 const { getCollection } = require("../config/connection");
-const { DOCTORS_DB, KSEB } = require("../config/db-config");
+const { DOCTORS_DB, KSEB, KSEB_NOTIFICATIONS, HOSPITALS } = require("../config/db-config");
 
 
 // Function to check if a doctor is currently available
@@ -83,9 +83,10 @@ module.exports = {
           }, {
             $project: {
               _id: 0,
-              password: 0,
-              regId: 0
+              password: 0
             }
+          }, {
+            $sort: { division: 1 }
           }
         ]).toArray().then(response => {
           if (response) {
@@ -141,13 +142,16 @@ module.exports = {
     })
   },
 
-  showNotifications_KSEB: () => {
+  showNotifications_KSEB: (regId) => {
     return new Promise(async (resolve, reject) => {
       try {
         const collection = await getCollection(KSEB_NOTIFICATIONS);
-        collection.find().toArray().then(response => {
-
-          resolve(response)
+        collection.find({ regId: regId }).sort('_id', -1).limit(15).toArray().then(response => {
+          if (response.length > 0) {
+            resolve({ status: "ok", result: response })
+          } else {
+            reject({ message: "0 Notifications" })
+          }
         }).catch(err => {
           reject({ message: "error while finding Notifications" })
         })
@@ -163,6 +167,34 @@ module.exports = {
 
 
   //HOSPITAL
+
+  get_Hospitals: (district) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collection = await getCollection(HOSPITALS);
+        collection.aggregate([
+          {
+            $match: { district: district }
+          }, {
+            $project: {
+              _id: 0,
+              password: 0
+            }
+          }, {
+            $sort: { name: 1 }
+          }
+        ]).toArray().then(response => {
+          if (response) {
+            resolve({ status: "ok", result: response });
+          } else {
+            reject({ message: "not found" });
+          }
+        })
+      } catch (error) {
+        reject({ message: "Try after some time" });
+      }
+    })
+  },
 
   HOSPITAL_enquries: (name, ContactNumber, type, description, divisionMail) => {
     return new Promise(async (resolve, reject) => {

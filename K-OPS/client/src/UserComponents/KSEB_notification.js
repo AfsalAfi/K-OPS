@@ -9,23 +9,30 @@ import { serverURL } from "../serverConfig";
 
 function KSEB_notification() {
   const navigate = useNavigate();
+  const [notification, setNotification] = useState([])
 
   const backToHome = () => {
     navigate("/");
   };
 
-
-  let divisionMail
   const location = useLocation();
-  const regId = location.state;
-  divisionMail = regId;
+  console.log(location);
+  const regId = location.state
+  console.log(regId.regId);
+
 
 
   useEffect(() => {
     axios
-      .post(`http://${serverURL}:3001/show-kseb-notifications`, {}, {})
+      .post(`http://${serverURL}:3001/show-kseb-notifications`, {
+        regId: regId.regId
+      })
       .then(function (response) {
-        if (response.status === "ok") {
+        if (response.data.status === "ok") {
+          console.log(response.data.result);
+          setNotification(response.data.result);
+        } else {
+          navigate("/");
         }
       })
 
@@ -76,9 +83,9 @@ function KSEB_notification() {
         <div className="form_report">
           <ChakraProvider>
             <SimpleGrid columns={1} spacing={5}>
-              {dummyData.map((item, index) => (
+              {notification.map((item, index) => (
                 <Box
-                  key={item.id}
+                  key={index}
                   bg={index % 2 === 0 ? "#172a3a" : "#7a9e9f"}
                   height="60px"
                   style={{
@@ -87,7 +94,7 @@ function KSEB_notification() {
                     alignItems: "center",
                   }}
                 >
-                  <p style={{ color: "var(--textColor)" }}>{item.content}</p>
+                  <p style={{ color: "var(--textColor)" }}>{item.message}</p>
                 </Box>
               ))}
             </SimpleGrid>

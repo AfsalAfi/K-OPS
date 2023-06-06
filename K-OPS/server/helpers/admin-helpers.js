@@ -10,12 +10,13 @@ const { KSEB_NOTIFICATIONS, } = require('.././config/db-config')
 module.exports = {
 
     //ADMIN
-    updateNotifications: (message, varifiedBy, date, time) => {
+    updateNotifications: (regId, message, varifiedBy, date, time) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const collection = await getCollection(KSEB_NOTIFICATIONS);
                 collection.insertOne(
                     {
+                        regId: regId,
                         message: message,
                         date: date,
                         time: time,
