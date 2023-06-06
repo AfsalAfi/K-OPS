@@ -1,14 +1,15 @@
 const express = require('express');
+const { verifyPasswordHospital } = require('../../../helpers/hospital33');
 const Hospital = express.Router();
 
-// Hospital.post("/", protect, async (req, res) => {
-//     const regNo = req.user[0].regNo;
-//     const hostel = req.user[0].hostel;
-//     get_my_Hostel_Details(regNo, hostel).then(response => {
-//         res.send(response);
-//     }).catch(err => {
-//         res.send(err);
-//     })
-// })
+Hospital.post("/auth", (req, res) => {
+    const regId = req.body.regId;
+    const password = req.body.password;
+    verifyPasswordHospital(regId, password).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
 
 module.exports = Hospital;

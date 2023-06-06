@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const RationCard = require("./subRoutes/RationShopAdmin");
-router.use("/ration-shop", RationCard);
+const RationShop = require("./subRoutes/RationShopAdmin");
+router.use("/ration-shop", RationShop);
 
 const Hospital = require("./subRoutes/hospitalAdmin");
 router.use("/hospital", Hospital);

@@ -6,34 +6,34 @@ let cachedClient = null;
 let cachedDb = null;
 
 async function connect() {
-    try {
-      const client = new MongoClient(uri, {
-        serverApi: {
-          version: ServerApiVersion.v1,
-          strict: true,
-          deprecationErrors: true,
-        },
-      });
-  
-      await client.connect();
-      console.log('Connected to MongoDB');
-      cachedClient = client;
-      cachedDb = client.db('GatePass');
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    const client = new MongoClient(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+    });
+
+    await client.connect();
+    console.log('Connected to MongoDB');
+    cachedClient = client;
+    cachedDb = client.db('K-OPS');
+  } catch (error) {
+    console.error(error);
   }
-  
-  async function getCollection(collectionName) {
-    if (!cachedClient || !cachedDb) {
-      await connect();
-    }
-  
-    return cachedDb.collection(collectionName);
+}
+
+async function getCollection(collectionName) {
+  if (!cachedClient || !cachedDb) {
+    await connect();
   }
-  
-  module.exports = { connect, getCollection };
-  
+
+  return cachedDb.collection(collectionName);
+}
+
+module.exports = { connect, getCollection };
+
 
 
 
