@@ -1,4 +1,3 @@
-const Promise = require('promise');
 const { getCollection, } = require('.././config/connection')
 const { KSEB_NOTIFICATIONS, } = require('.././config/db-config')
 

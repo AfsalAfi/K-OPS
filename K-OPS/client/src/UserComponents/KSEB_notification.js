@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../Styles/KSEB_form.css";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
+import { serverURL } from "../serverConfig";
 
 function KSEB_notification() {
   const navigate = useNavigate();
@@ -13,9 +14,16 @@ function KSEB_notification() {
     navigate("/");
   };
 
+
+  let divisionMail
+  const location = useLocation();
+  const regId = location.state;
+  divisionMail = regId;
+
+
   useEffect(() => {
     axios
-      .post(``, {}, {})
+      .post(`http://${serverURL}:3001/show-kseb-notifications`, {}, {})
       .then(function (response) {
         if (response.status === "ok") {
         }

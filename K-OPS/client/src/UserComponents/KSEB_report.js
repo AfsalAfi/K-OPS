@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../Styles/KSEB_form.css";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -14,9 +14,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
+import { serverURL } from "../serverConfig";
 
 function KSEB_report() {
   const navigate = useNavigate();
+  let divisionMail
   const [formValues, setFormValues] = useState({
     place: "",
     landmark: "",
@@ -26,6 +28,9 @@ function KSEB_report() {
     contactNumber: "",
   });
 
+  const location = useLocation();
+  const email = location.state;
+  divisionMail = email;
   const backToHome = () => {
     navigate("/");
   };
@@ -40,19 +45,28 @@ function KSEB_report() {
     console.log("Time:", time);
     axios
       .post(
-        ``,
+        `http://${serverURL}:3001/kseb-report-failures`,
         {
           place: formValues.place,
-          landmark: formValues.landmark,
-          postNumber: formValues.postNumber,
-          complaints: formValues.complaints,
-          time: time,
+          landMark: formValues.landmark,
+          nearByPostNumber: formValues.postNumber,
+          Complaint: formValues.complaints,
+          timeOfHappen: time,
           date: date,
-          contactNumber: formValues.contactNumber,
+          // add cheyynm name
+          name: "add cheyyy",
+          ContactNumber: formValues.contactNumber,
+          divisionMail: divisionMail.email
         },
         {}
       )
-      .then(function (response) {})
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          navigate("/");
+        } else {
+          alert(`${response.data.message}`)
+        }
+      })
 
       .catch(function (error) {
         // handle error

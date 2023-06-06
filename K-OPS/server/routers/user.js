@@ -1,5 +1,5 @@
 const express = require("express");
-const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB } = require("../helpers/user-helpers");
+const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB, list_Available_Doctors, get_Divisions } = require("../helpers/user-helpers");
 const router = express.Router();
 
 
@@ -18,6 +18,17 @@ const router = express.Router();
 
 
 //KSEB
+
+router.post("/list-kseb-divisions", (req, res) => {
+    const district = req.body.district;
+    console.log(district);
+    get_Divisions(district).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
 
 router.post("/kseb-enquries", (req, res) => {
     const divisionMail = req.body.divisionMail;
@@ -76,23 +87,12 @@ router.post("/hospital-enquries", (req, res) => {
 
 router.post("/available-doctors", (req, res) => {
     const hospital = req.body.hospital;
-    list_Available_Doctors(hospital);
-})
-
-
-router.post("/available-doctors", (req, res) => {
-    const divisionMail = req.body.divisionMail;
-    const name = req.body.name;
-    const ContactNumber = req.body.ContactNumber;
-    const type = req.body.type;
-    const description = req.body.description;
-    HOSPITAL_enquries(name, ContactNumber, type, description, divisionMail).then(response => {
+    list_Available_Doctors(hospital).then(response => {
         res.status(200).send(response);
     }).catch((err) => {
         res.send(err);
     })
-});
-
+})
 
 
 

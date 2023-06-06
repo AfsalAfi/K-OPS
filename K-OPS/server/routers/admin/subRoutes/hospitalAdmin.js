@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifyPasswordHospital } = require('../../../helpers/hospital33');
+const { verifyPasswordHospital } = require('../../../helpers/admin-helpers');
 const Hospital = express.Router();
 
 Hospital.post("/auth", (req, res) => {

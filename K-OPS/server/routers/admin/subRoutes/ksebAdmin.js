@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifyPasswordKseb } = require('../../../helpers/hospital33');
+const { verifyPasswordKseb } = require('../../../helpers/admin-helpers');
 const Kseb = express.Router();
 const { updateNotifications,
 } = require('../../../helpers/admin-helpers')

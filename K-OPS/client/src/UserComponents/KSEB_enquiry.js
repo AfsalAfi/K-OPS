@@ -1,7 +1,7 @@
 import React from "react";
 import "../Styles/KSEB_form.css";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -15,6 +15,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
+import { serverURL } from "../serverConfig";
 
 function KSEB_enquiry() {
   const navigate = useNavigate();
@@ -22,6 +23,12 @@ function KSEB_enquiry() {
   const backToHome = () => {
     navigate("/");
   };
+
+  let divisionMail
+  const location = useLocation();
+  const email = location.state;
+  divisionMail = email;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission logic here
@@ -37,16 +44,23 @@ function KSEB_enquiry() {
 
     axios
       .post(
-        ``,
+        `http://${serverURL}:3001/kseb-enquries`,
         {
           name: name,
-          briefDescription: briefDescription,
-          enquiryType: enquiryType,
-          contactNumber: contactNumber,
+          description: briefDescription,
+          type: enquiryType,
+          ContactNumber: contactNumber,
+          divisionMail: divisionMail.email
         },
         {}
       )
-      .then(function (response) {})
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          navigate("/");
+        } else {
+          alert(`${response.data.message}`)
+        }
+      })
 
       .catch(function (error) {
         // handle error

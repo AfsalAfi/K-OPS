@@ -4,6 +4,7 @@ import { Select, Button } from "@chakra-ui/react";
 import "../../Styles/KSEBdetails.css";
 import axios from "axios";
 import { ChakraProvider } from "@chakra-ui/react";
+import { serverURL } from "../../serverConfig";
 
 const districts = [
   { id: 1, name: "Alappuzha" },
@@ -22,55 +23,91 @@ const districts = [
   { id: 14, name: "Wayanad" },
 ];
 
-const divisions = [
-  { id: 1, name: "Division 1" },
-  { id: 2, name: "Division 2" },
-  { id: 3, name: "Division 3" },
-  // Add more divisions here
-];
+// const divisions = [
+//   { id: 1, name: "Division 1" },
+//   { id: 2, name: "Division 2" },
+//   { id: 3, name: "Division 3" },
+//   // Add more divisions here
+// ];
 
 function KSEBdetails() {
   const [isDivision, setIsDivision] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDivisionCollection, setSelectedDivisionCollection] = useState("");
+  const [divisions, setDivisions] = useState([]);
   const navigate = useNavigate();
 
   const goToReport = () => {
-    navigate("/KSEB/report");
+    navigate("/KSEB/report", { state: { email: selectedDivisionCollection.email } });
   };
 
   const goToEnquiry = () => {
-    navigate("/KSEB/enquiry");
+    navigate("/KSEB/enquiry", { state: { email: selectedDivisionCollection.email } });
   };
 
   const goToNotification = () => {
-    navigate("/KSEB/notification");
+    navigate("/KSEB/notification", { state: { regId: selectedDivisionCollection.regId } });
   };
 
-  useEffect(() => {
+  const setDivisionForKseb = (event) => {
+    const selectedDivision = JSON.parse(event.target.value);
+    console.log(selectedDivision);
+    console.log(event);
+    setSelectedDivision(selectedDivision)
+    setSelectedDivisionCollection(selectedDivision)
+    setIsDivision(true)
+  }
+
+  const setDistrict = (event) => {
+    console.log(event);
+    setSelectedDistrict(event)
     setIsDivision(!!selectedDivision);
-    console.log("Selected District:", selectedDistrict);
-    console.log("Selected Division:", selectedDivision);
-    axios
-      .post(
-        ``,
-        {
-          district: selectedDistrict,
-        },
-        {}
-      )
+    axios.post(`http://${serverURL}:3001/list-kseb-divisions`,
+      {
+        district: event,
+      }, {}
+    )
       .then(function (response) {
-        if (response.status === "ok") {
+        if (response.data.status === "ok") {
+          console.log("response");
+          console.log(response.data.result);
+          setDivisions(response.data.result)
         }
       })
 
       .catch(function (error) {
-        // handle error
+        console.log(error);
       })
       .finally(function () {
-        // always executed
+        console.log("ethi");
       });
-  }, [selectedDistrict, selectedDivision]);
+  }
+
+  // useEffect(() => {
+  //   setIsDivision(!!selectedDivision);
+  //   console.log("Selected District:", selectedDistrict);
+  //   console.log("Selected Division:", selectedDivision);
+  //   axios
+  //     .post(
+  //       `http://${serverURL}:3001/list-kseb-divisions`,
+  //       {
+  //         district: selectedDistrict,
+  //       },
+  //     )
+  //     .then(function (response) {
+  //       if (response.status === "ok") {
+  //         console.log(response);
+  //       }
+  //     })
+
+  //     .catch(function (error) {
+  //       // handle error
+  //     })
+  //     .finally(function () {
+  //       // always executed
+  //     });
+  // }, [selectedDistrict, selectedDivision]);
 
   return (
     <div className="container_KSEB">
@@ -89,7 +126,7 @@ function KSEBdetails() {
           <Select
             placeholder="Select District"
             value={selectedDistrict}
-            onChange={(e) => setSelectedDistrict(e.target.value)}
+            onChange={(e) => setDistrict(e.target.value)}
             mb={4}
             color="white"
             my="20px"
@@ -106,13 +143,14 @@ function KSEBdetails() {
             <Select
               placeholder="Select Division"
               value={selectedDivision}
-              onChange={(e) => setSelectedDivision(e.target.value)}
+              onChange={(e) => setDivisionForKseb(e)}
               mb={4}
               color="white"
             >
               {divisions.map((division) => (
-                <option key={division.id} value={division.name}>
-                  {division.name}
+
+                <option key={division.id} value={JSON.stringify(division)}>
+                  {division.division}
                 </option>
               ))}
             </Select>
@@ -132,8 +170,9 @@ function KSEBdetails() {
               <span>-</span>Notifications
             </h2>
 
-            <p style={{ marginTop: "15px" }}>Name: andi</p>
-            <p>Contact Number : 1231231231</p>
+            <p style={{ marginTop: "15px" }}>Name: {selectedDivisionCollection.officer}</p>
+            <p>Contact Number : {selectedDivisionCollection.contact}</p>
+            <p>Email : {selectedDivisionCollection.email}</p>
           </div>
         )}
       </div>

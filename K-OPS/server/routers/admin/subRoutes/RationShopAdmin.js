@@ -1,5 +1,6 @@
 const express = require('express');
-const { verifyPasswordRationShop } = require('../../../helpers/hospital33');
+const { verifyPasswordRationShop } = require('../../../helpers/admin-helpers');
+
 const RationShop = express.Router();
 
 RationShop.post("/auth", (req, res) => {
