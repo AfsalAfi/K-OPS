@@ -1,13 +1,14 @@
-const bcrypt = require("bcrypt");
+//const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 const { getCollection } = require("../config/connection");
-const { DOCTORS_DB, KSEB, KSEB_NOTIFICATIONS, HOSPITALS } = require("../config/db-config");
+const { DOCTORS_DB, KSEB, KSEB_NOTIFICATIONS, HOSPITALS, RATION_NOTIFICATIONS } = require("../config/db-config");
+
 
 
 // Function to check if a doctor is currently available
-function isDoctorAvailable(doctors) {
+function isDoctorAvailableInDataBase(doctors) {
   return new Promise((resolve, reject) => {
     try {
       var ActiveDoctor = [];
@@ -217,7 +218,24 @@ module.exports = {
 
 
 
+
+
   //HOSPITAL
+  list_Medical_Facilities: (hospital) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collection = await getCollection(HOSPITALS);
+        collection.find({ regId: hospital }).toArray().then(response => {
+          resolve({ facilities: response[0].facilities[0], equipments: response[0].equipments[0] })
+        })
+      }
+      catch (err) {
+        reject({ message: "error while listing services" });
+      }
+    })
+  },
+
+
 
   get_Hospitals: (district) => {
     return new Promise(async (resolve, reject) => {
@@ -285,12 +303,58 @@ module.exports = {
     });
   },
 
+
+  isDoctorAvailable: (doctors) => {
+    return new Promise((resolve, reject) => {
+      try {
+        var ActiveDoctor = [];
+        for (i = 0; i < doctors.length; i++) {
+          const currentDate = moment().format("YYYY-MM-DD");
+          const currentTime = moment().format("HH:mm:ss.SSS");
+          const availableTimeFrom = `${currentDate}T${doctors[i].availableTimeFrom}`;
+          const availableTimeTo = `${currentDate}T${doctors[i].availableTimeTo}`;
+          const formattedDatefrom = moment(availableTimeFrom, "YYYY-MM-DDTh:mm A").toISOString();
+          const formattedDateTo = moment(availableTimeTo, "YYYY-MM-DDTh:mm A").toISOString();
+          const current = moment(`${currentDate}T${currentTime}`).utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+          if (current >= formattedDatefrom && current <= formattedDateTo) {
+            ActiveDoctor.push(doctors[i])
+          }
+        }
+        resolve(ActiveDoctor);
+      } catch (error) {
+        reject()
+      }
+    })
+  },
+
+
+
+  //RATION SHOP
+
+
+  showRationNotifications: (regId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collection = await getCollection(RATION_NOTIFICATIONS);
+        collection.find({ regId: regId }).sort('_id', -1).limit(15).toArray().then(response => {
+          resolve(response)
+        })
+          .catch(err => {
+            reject({ message: "error while fetching notifications" })
+          })
+      } catch {
+        reject({ message: "error while fetching notifications" })
+      }
+
+    })
+  },
+
   list_Available_Doctors: (hospital) => {
     return new Promise(async (resolve, reject) => {
       try {
         const collection = await getCollection(DOCTORS_DB);
         collection.find({ hospital: hospital }).toArray().then(async (response) => {
-          await isDoctorAvailable(response).then(ActiveDoctors => {
+          await isDoctorAvailableInDataBase(response).then(ActiveDoctors => {
             console.log("response");
             console.log(response);
             if (ActiveDoctors.length > 0) {
@@ -304,10 +368,11 @@ module.exports = {
         })
       } catch (err) {
         reject({ message: "error while finding Doctors" })
+
       }
     })
 
-  }
+  },
 
 
 
