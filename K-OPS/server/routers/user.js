@@ -1,5 +1,5 @@
 const express = require("express");
-const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB, list_Available_Doctors, get_Divisions } = require("../helpers/user-helpers");
+const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB, list_Available_Doctors, get_Divisions, get_Hospitals } = require("../helpers/user-helpers");
 const router = express.Router();
 
 
@@ -100,7 +100,11 @@ router.post("/hospital-enquries", (req, res) => {
 
 router.post("/available-doctors", (req, res) => {
     const hospital = req.body.hospital;
+    console.log("hospital");
+    console.log(hospital);
     list_Available_Doctors(hospital).then(response => {
+        console.log("123response");
+        console.log(response);
         res.status(200).send(response);
     }).catch((err) => {
         res.send(err);

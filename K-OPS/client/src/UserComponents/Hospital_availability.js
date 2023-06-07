@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/KSEB_form.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,73 +17,58 @@ import { serverURL } from "../serverConfig";
 
 function Hospital_availability() {
   const navigate = useNavigate();
+  const [doctorsList, setDoctorsList] = useState([]);
 
   const backToHome = () => {
     navigate("/");
   };
 
-  const doctors = [
-    {
-      name: "Dr. John Doe",
-      specializedIn: "Cardiology",
-      from: "9:00 AM",
-      to: "5:00 PM",
-    },
-    {
-      name: "Dr. Jane Smith",
-      specializedIn: "Dermatology",
-      from: "10:00 AM",
-      to: "6:00 PM",
-    },
-    // Add more dummy data here if needed
-  ];
-  let divisionMail;
+  // const doctors = [
+  //   {
+  //     name: "Dr. John Doe",
+  //     specializedIn: "Cardiology",
+  //     from: "9:00 AM",
+  //     to: "5:00 PM",
+  //   },
+  //   {
+  //     name: "Dr. Jane Smith",
+  //     specializedIn: "Dermatology",
+  //     from: "10:00 AM",
+  //     to: "6:00 PM",
+  //   },
+  //   // Add more dummy data here if needed
+  // ];
   const location = useLocation();
-  const email = location.state;
-  divisionMail = email;
+  const hospital = location.state.hospital;
+  console.log(hospital);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle form submission logic here
-    const name = event.target.name.value;
-    const contactNumber = event.target.contactNumber.value;
-    const email = event.target.email.value;
-    const briefDescription = event.target.briefDescription.value;
-    const enquiryType = event.target.enquiryType.value;
-
-    console.log("Name:", name);
-    console.log("Contact Number:", contactNumber);
-    console.log("Email:", email);
-    console.log("Brief Description:", briefDescription);
-    console.log("Enquiry Type:", enquiryType);
-
+  useEffect(() => {
     axios
       .post(
-        `http://${serverURL}:3001/kseb-enquries`,
+        `http://${serverURL}:3001/available-doctors`,
         {
-          name: name,
-          description: briefDescription,
-          type: enquiryType,
-          ContactNumber: contactNumber,
-          divisionMail: divisionMail.email,
+          hospital: hospital
         },
-        {}
       )
-      .then(function (response) {
+      .then((response) => {
+        console.log("response nokke");
+        console.log(response);
         if (response.data.status === "ok") {
-          navigate("/");
+          console.log(response.data.availableDoctors);
+          setDoctorsList(response.data.availableDoctors)
         } else {
           alert(`${response.data.message}`);
         }
       })
 
       .catch(function (error) {
-        // handle error
+        console.log(error);
       })
       .finally(function () {
         // always executed
       });
-  };
+  }, []);
+
   return (
     <div className="container_KESB_report">
       <div className="inside_container_KESB_report">
@@ -121,12 +106,12 @@ function Hospital_availability() {
                 </Tr>
               </Thead>
               <Tbody>
-                {doctors.map((doctor, index) => (
+                {doctorsList.map((doctor, index) => (
                   <Tr key={index}>
                     <Td>{doctor.name}</Td>
-                    <Td>{doctor.specializedIn}</Td>
-                    <Td>{doctor.from}</Td>
-                    <Td>{doctor.to}</Td>
+                    <Td>{doctor.specialization}</Td>
+                    <Td>{doctor.availableTimeFrom}</Td>
+                    <Td>{doctor.availableTimeTo}</Td>
                   </Tr>
                 ))}
               </Tbody>

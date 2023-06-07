@@ -31,29 +31,28 @@ const districts = [
 // ];
 
 function Hospital() {
-  const [isDivision, setIsDivision] = useState(false);
+  const [isHospital, setIsHospital] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedDivisionCollection, setSelectedDivisionCollection] =
-    useState("");
-  const [divisions, setDivisions] = useState([]);
+  const [selectedHostel, setSelectedHostel] = useState("Select Hospital");
+  const [selectedHostelCollection, setSelectedHostelCollection] = useState("Select Hospital");
+  const [hopitalsList, setHopitalsList] = useState([]);
   const navigate = useNavigate();
 
   const goToHospitalEnquiry = () => {
     navigate("/hospital/enquiry", {
-      state: { email: selectedDivisionCollection.email },
+      state: { email: selectedHostelCollection.email },
     });
   };
 
   const goToAvailability = () => {
     navigate("/hospital/availability", {
-      // state: { email: selectedDivisionCollection.email },
+      state: { hospital: selectedHostelCollection.regId },
     });
   };
 
   const goToMedical = () => {
     navigate("/hospital/medical-facility", {
-      // state: { regId: selectedDivisionCollection.regId },
+      state: { regId: selectedHostelCollection.regId },
     });
   };
 
@@ -63,19 +62,19 @@ function Hospital() {
     });
   };
 
-  const setDivisionForhospital = (event) => {
-    const selectedDivision = JSON.parse(event.target.value);
-    console.log(selectedDivision);
-    console.log(event);
-    setSelectedDivision(selectedDivision);
-    setSelectedDivisionCollection(selectedDivision);
-    setIsDivision(true);
+  const setSelectedHospital = (e) => {
+    const selectedHospitalCollection = JSON.parse(e.target.value);
+    console.log(selectedHospitalCollection);
+    setSelectedHostel(selectedHospitalCollection.name)
+    setSelectedHostelCollection(selectedHospitalCollection)
+    setIsHospital(true);
   };
 
   const setDistrict = (event) => {
     console.log(event);
     setSelectedDistrict(event);
-    setIsDivision(!!selectedDivision);
+    setSelectedHostel("Select Hospital")
+    setIsHospital(!!isHospital);
     axios
       .post(
         `http://${serverURL}:3001/list-hospitals`,
@@ -89,7 +88,7 @@ function Hospital() {
         if (response.data.status === "ok") {
           console.log("response");
           console.log(response.data.result);
-          setDivisions(response.data.result);
+          setHopitalsList(response.data.result);
         }
       })
 
@@ -159,16 +158,16 @@ function Hospital() {
           {/* Division selection */}
           {selectedDistrict && (
             <Select
-              placeholder="Select Division"
-              value={selectedDivision}
-              onChange={(e) => setDivisionForhospital(e)}
+              placeholder={selectedHostel}
+              value={selectedHostel}
+              onChange={(e) => setSelectedHospital(e)}
               mb={4}
               color="var(--mainColor)"
               borderColor="var(--mainColor)"
             >
-              {divisions.map((division) => (
-                <option key={division.id} value={JSON.stringify(division)}>
-                  {division.division}
+              {hopitalsList.map((hospital, index) => (
+                <option key={index} value={JSON.stringify(hospital)}>
+                  {hospital.name}
                 </option>
               ))}
             </Select>
@@ -176,7 +175,7 @@ function Hospital() {
         </ChakraProvider>
 
         {/* Options */}
-        {!isDivision && (
+        {isHospital && (
           <div className="buttons_hospital">
             <h2 onClick={goToHospitalEnquiry}>
               <span>-</span>Hospital Enquiry

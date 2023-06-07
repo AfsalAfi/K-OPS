@@ -32,11 +32,10 @@ function Hospital_enquiry() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission logic here
-    const name = event.target.name.value;
-    const contactNumber = event.target.contactNumber.value;
-    const email = event.target.email.value;
-    const briefDescription = event.target.briefDescription.value;
-    const enquiryType = event.target.enquiryType.value;
+    const name = document.getElementById("name").value;
+    const contactNumber = document.getElementById("contactNumber").value;
+    const briefDescription = document.getElementById("briefDescription").value;
+    const enquiryType = document.getElementById("enquiryType").value;
 
     console.log("Name:", name);
     console.log("Contact Number:", contactNumber);
@@ -46,7 +45,7 @@ function Hospital_enquiry() {
 
     axios
       .post(
-        `http://${serverURL}:3001/kseb-enquries`,
+        `http://${serverURL}:3001/hospital-enquries`,
         {
           name: name,
           description: briefDescription,
@@ -128,7 +127,7 @@ function Hospital_enquiry() {
                       />
                     </FormControl>
                   </GridItem>
-                  <GridItem>
+                  {/* <GridItem>
                     <FormControl isRequired borderColor="#7a9e9f">
                       <FormLabel>Email</FormLabel>
                       <Input
@@ -139,7 +138,7 @@ function Hospital_enquiry() {
                         style={{ color: "#7a9e9f" }}
                       />
                     </FormControl>
-                  </GridItem>
+                  </GridItem> */}
                   <GridItem colSpan={2}>
                     <FormControl isRequired borderColor="#7a9e9f">
                       <FormLabel>Brief Description (Enquiry Details)</FormLabel>
