@@ -6,5 +6,7 @@ module.exports = {
     KSEB: "Kseb",
     KSEB_NOTIFICATIONS: "KsebNotifications",
     RATION_NOTIFICATIONS :"RationShopNotifications",
+    DOCTORS_DB: "Doctors"
+
 
 }

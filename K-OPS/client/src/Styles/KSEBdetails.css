@@ -1,0 +1,48 @@
+.container_KSEB {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 85vh;
+  max-height: 100vh;
+  background: var(--mainColor);
+}
+
+.contents_KSEB {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+  width: 45%;
+}
+.image_section_KSEB {
+  width: 45%;
+}
+
+.contents_KSEB h1 {
+  font-size: 45px;
+  color: var(--textColor);
+}
+.contents_KSEB p {
+  color: var(--textColor);
+}
+
+.buttons_KESB {
+  margin-top: 30px;
+}
+
+.contents_KSEB h2 {
+  font-size: 25px;
+  cursor: pointer;
+  color: var(--mainColorLight);
+}
+
+.contents_KSEB h2:hover {
+  color: var(--secondaryColor);
+}
+.contents_KSEB h2 span {
+  margin-right: 10px;
+}
+img {
+  width: 350px;
+}

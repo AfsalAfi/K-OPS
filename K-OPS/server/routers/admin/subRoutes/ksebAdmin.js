@@ -24,15 +24,15 @@ Kseb.post("/get-division-details", async (req, res) => {
 
 
 Kseb.post('/push-notifications', (req, res) => {
-
     const message = req.body.message;
+    const regId = req.body.regId;
     console.log(message);
     varifiedBy = "KERALA STATE ELECTRICITY BOARD";
     let dt = new Date()
     const date = dt.getDate() + "/" + dt.getMonth() + "/" + dt.getFullYear();
     const time = dt.getHours() + "-" + dt.getMinutes() + "-" + dt.getSeconds();
 
-    updateNotifications(message, varifiedBy, date, time).then(response => {
+    updateNotifications(regId, message, varifiedBy, date, time).then(response => {
         return res.status(200).send({ status: "ok" });
     }).catch(err => {
         console.log(err);
