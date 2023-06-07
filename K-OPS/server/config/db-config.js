@@ -5,5 +5,6 @@ module.exports = {
     RATION_SHOPS: "RationShops",
     KSEB: "Kseb",
     KSEB_NOTIFICATIONS: "KsebNotifications",
+    RATION_NOTIFICATIONS :"RationShopNotifications",
 
 }

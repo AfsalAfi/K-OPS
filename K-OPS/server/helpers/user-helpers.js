@@ -1,7 +1,8 @@
-const bcrypt = require("bcrypt");
+//const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { getCollection } = require("../config/connection");
+const {KSEB_NOTIFICATIONS , HOSPITALS,RATION_NOTIFICATIONS} = require('.././config/db-config')
 
 
 
@@ -105,6 +106,21 @@ module.exports = {
     })
   },
 
+  list_Medical_Facilities : (hospital)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const collection = await getCollection(HOSPITALS);
+        collection.find({regId : hospital}).toArray().then(response=>{
+         resolve({ facilities : response[0].facilities[0] , equipments : response[0].equipments[0]})
+        })
+      }
+      catch(err){
+        reject({message : "error while listing services"});
+      }
+    })
+
+  },
+
 
 
 
@@ -149,17 +165,29 @@ module.exports = {
     });
   },
 
-  list_Available_Doctors: (hospital) => {
-    return new Promise(async (resolve, reject) => {
-      try {
 
-      } catch (error) {
+
+
+  //RATION SHOP
+
+
+  showRationNotifications : (regId)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const collection = await getCollection(RATION_NOTIFICATIONS);
+        collection.find({regId : regId}).sort('_id',-1).limit(15).toArray().then(response=>{
+          resolve(response)
+        })
+        .catch(err=>{
+            reject({message:"error while fetching notifications"})
+        })
+
+      }catch{
+        reject({message:"error while fetching notifications"})
 
       }
     })
 
-  }
-
-
-
+  },
+  
 }
