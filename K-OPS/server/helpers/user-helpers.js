@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const moment = require("moment");
 const { getCollection } = require("../config/connection");
-const { DOCTORS_DB, KSEB, KSEB_NOTIFICATIONS, HOSPITALS, RATION_NOTIFICATIONS } = require("../config/db-config");
+const { DOCTORS_DB, KSEB, KSEB_NOTIFICATIONS, HOSPITALS, RATION_NOTIFICATIONS, OPERATORS_COLLECTION } = require("../config/db-config");
 
 
 
@@ -128,10 +128,10 @@ module.exports = {
   get_Divisions: (district) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const collection = await getCollection(KSEB);
+        const collection = await getCollection(OPERATORS_COLLECTION);
         collection.aggregate([
           {
-            $match: { district: district }
+            $match: { district: district, classify: "Kseb" }
           }, {
             $project: {
               _id: 0,
@@ -224,8 +224,8 @@ module.exports = {
   list_Medical_Facilities: (hospital) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const collection = await getCollection(HOSPITALS);
-        collection.find({ regId: hospital }).toArray().then(response => {
+        const collection = await getCollection(OPERATORS_COLLECTION);
+        collection.find({ regId: hospital, classify: "Hospital" }).toArray().then(response => {
           resolve({ facilities: response[0].facilities[0], equipments: response[0].equipments[0] })
         })
       }
@@ -240,10 +240,10 @@ module.exports = {
   get_Hospitals: (district) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const collection = await getCollection(HOSPITALS);
+        const collection = await getCollection(OPERATORS_COLLECTION);
         collection.aggregate([
           {
-            $match: { district: district }
+            $match: { district: district, classify: "Hospital" }
           }, {
             $project: {
               _id: 0,
@@ -368,7 +368,6 @@ module.exports = {
         })
       } catch (err) {
         reject({ message: "error while finding Doctors" })
-
       }
     })
 

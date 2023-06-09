@@ -4,19 +4,6 @@ const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotification
 const router = express.Router();
 
 
-// router.post("/", protect, async (req, res) => {
-//   const regNo = req.user[0].regNo;
-//   get_my_details(regNo)
-//     .then((response) => {
-//       res.status(200).send(response);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
-// });
-
-
-
 
 //KSEB
 
@@ -29,7 +16,6 @@ router.post("/list-kseb-divisions", (req, res) => {
         res.send(err);
     })
 })
-
 
 router.post("/kseb-enquries", (req, res) => {
     const divisionMail = req.body.divisionMail;
@@ -104,7 +90,6 @@ router.post("/available-doctors", (req, res) => {
     console.log("hospital");
     console.log(hospital);
     list_Available_Doctors(hospital).then(response => {
-        console.log("123response");
         console.log(response);
         res.status(200).send(response);
     }).catch((err) => {

@@ -1,6 +1,7 @@
 const { getCollection, } = require('.././config/connection')
 const { KSEB_NOTIFICATIONS,
-    RATION_NOTIFICATIONS } = require('.././config/db-config')
+    RATION_NOTIFICATIONS,
+    OPERATORS_COLLECTION } = require('.././config/db-config')
 
 
 
@@ -46,11 +47,11 @@ module.exports = {
     verifyPasswordHospital: (regId, password) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const collection = await getCollection(HOSPITALS);
+                const collection = await getCollection(OPERATORS_COLLECTION);
                 collection.findOne({ regId: regId }).then(response => {
                     if (response != null) {
                         if (response.password === password) {
-                            resolve({ status: "ok" })
+                            resolve({ status: "ok", operator: response.classify })
                         } else {
                             reject({ message: "Wrong password" })
                         }
@@ -68,11 +69,11 @@ module.exports = {
     verifyPasswordRationShop: (regId, password) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const collection = await getCollection(RATION_SHOPS);
+                const collection = await getCollection(OPERATORS_COLLECTION);
                 collection.findOne({ regId }).then(response => {
                     if (response != null) {
                         if (response.password === password) {
-                            resolve({ status: "ok" })
+                            resolve({ status: "ok", operator: response.classify })
                         } else {
                             reject({ message: "Wrong password" })
                         }
@@ -87,24 +88,24 @@ module.exports = {
     },
 
 
-    RationShopNotification : (message, varifiedBy, date, time,shopNumber)=>{
-        return new Promise(async(resolve,reject)=>{
-            try{
+    RationShopNotification: (message, varifiedBy, date, time, shopNumber) => {
+        return new Promise(async (resolve, reject) => {
+            try {
                 const collection = await getCollection(RATION_NOTIFICATIONS);
                 collection.insertOne({
-                    shopNumber:shopNumber,
-                    message:message,
-                    date :date,
-                    time :time,
-                    varifiedBy:varifiedBy,
-                }).then(response=>{
+                    shopNumber: shopNumber,
+                    message: message,
+                    date: date,
+                    time: time,
+                    varifiedBy: varifiedBy,
+                }).then(response => {
                     resolve()
-                }).catch(err=>{
-                    reject({message:"error while updating notification"})
+                }).catch(err => {
+                    reject({ message: "error while updating notification" })
                 })
 
-            }catch(err){
-                reject({message:"error while updating notification"})
+            } catch (err) {
+                reject({ message: "error while updating notification" })
 
             }
         })
@@ -117,11 +118,11 @@ module.exports = {
     verifyPasswordKseb: (regId, password) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const collection = await getCollection(KSEB);
+                const collection = await getCollection(OPERATORS_COLLECTION);
                 collection.findOne({ regId }).then(response => {
                     if (response != null) {
                         if (response.password === password) {
-                            resolve({ status: "ok" })
+                            resolve({ status: "ok", operator: response.classify })
                         } else {
                             reject({ message: "Wrong password" })
                         }
