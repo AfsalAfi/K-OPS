@@ -128,7 +128,7 @@ function KSEBdetails() {
             value={selectedDistrict}
             onChange={(e) => setDistrict(e.target.value)}
             mb={4}
-            color="white"
+            color="var(--tertiaryColor)"
             my="20px"
           >
             {districts.map((district) => (
@@ -145,10 +145,9 @@ function KSEBdetails() {
               value={selectedDivision}
               onChange={(e) => setDivisionForKseb(e)}
               mb={4}
-              color="white"
+              color="var(--tertiaryColor)"
             >
               {divisions.map((division) => (
-
                 <option key={division.id} value={JSON.stringify(division)}>
                   {division.division}
                 </option>

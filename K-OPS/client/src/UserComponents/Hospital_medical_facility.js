@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../Styles/KSEB_form.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -22,53 +22,51 @@ function Hospital_medical_facility() {
     navigate("/");
   };
 
-  let divisionMail;
   const location = useLocation();
-  const email = location.state;
-  divisionMail = email;
+  const equipments = location.state.equipments;
+  const facilities = location.state.facilities;
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle form submission logic here
-    const name = event.target.name.value;
-    const contactNumber = event.target.contactNumber.value;
-    const email = event.target.email.value;
-    const briefDescription = event.target.briefDescription.value;
-    const enquiryType = event.target.enquiryType.value;
 
-    console.log("Name:", name);
-    console.log("Contact Number:", contactNumber);
-    console.log("Email:", email);
-    console.log("Brief Description:", briefDescription);
-    console.log("Enquiry Type:", enquiryType);
+  // useEffect(() => {
+  //   axios
+  //     .post(
+  //       `http://${serverURL}:3001/medical-facilities`,
+  //       {
+  //         regId: regId
+  //       })
+  //     .then(function (response) {
+  //       if (response.data.status === "ok") {
+  //         console.log(response.data);
+  //       } else {
+  //         alert(`${response.data.message}`);
+  //       }
+  //     })
 
-    axios
-      .post(
-        `http://${serverURL}:3001/kseb-enquries`,
-        {
-          name: name,
-          description: briefDescription,
-          type: enquiryType,
-          ContactNumber: contactNumber,
-          divisionMail: divisionMail.email,
-        },
-        {}
-      )
-      .then(function (response) {
-        if (response.data.status === "ok") {
-          navigate("/");
-        } else {
-          alert(`${response.data.message}`);
-        }
-      })
+  //     .catch(function (error) {
+  //       // handle error
+  //     })
+  //     .finally(function () {
+  //       // always executed
+  //     });
+  // }, []);
 
-      .catch(function (error) {
-        // handle error
-      })
-      .finally(function () {
-        // always executed
-      });
-  };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   // Handle form submission logic here
+  //   // const name = event.target.name.value;
+  //   // const contactNumber = event.target.contactNumber.value;
+  //   // const email = event.target.email.value;
+  //   // const briefDescription = event.target.briefDescription.value;
+  //   // const enquiryType = event.target.enquiryType.value;
+
+  //   // console.log("Name:", name);
+  //   // console.log("Contact Number:", contactNumber);
+  //   // console.log("Email:", email);
+  //   // console.log("Brief Description:", briefDescription);
+  //   // console.log("Enquiry Type:", enquiryType);
+
+  // };
   return (
     <div className="container_KESB_report">
       <div className="inside_container_KESB_report">
@@ -102,26 +100,14 @@ function Hospital_medical_facility() {
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>General Wards</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>Rooms</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>Laboratory</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>Wound Dressing</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>Ambulance</Td>
-                  <Td>Available</Td>
-                </Tr>
+                {facilities.map((item, index) => {
+                  return Object.entries(item).map(([key, value]) => (
+                    <Tr key={`${key}-${index}`}>
+                      <Td>{key}</Td>
+                      <Td>{value}</Td>
+                    </Tr>
+                  ));
+                })}
               </Tbody>
             </Table>
 
@@ -134,28 +120,20 @@ function Hospital_medical_facility() {
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>Ventilators</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>X-ray</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>MRI</Td>
-                  <Td>Available</Td>
-                </Tr>
-                <Tr>
-                  <Td>CT-scan</Td>
-                  <Td>Available</Td>
-                </Tr>
+                {equipments.map((item, index) => {
+                  return Object.entries(item).map(([key, value]) => (
+                    <Tr key={`${key}-${index}`}>
+                      <Td>{key}</Td>
+                      <Td>{value}</Td>
+                    </Tr>
+                  ));
+                })}
               </Tbody>
             </Table>
           </ChakraProvider>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
