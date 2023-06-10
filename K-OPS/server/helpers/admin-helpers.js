@@ -1,7 +1,8 @@
 const { getCollection, } = require('.././config/connection')
 const { KSEB_NOTIFICATIONS,
     RATION_NOTIFICATIONS,
-    OPERATORS_COLLECTION } = require('.././config/db-config')
+    OPERATORS_COLLECTION, 
+    DOCTORS_DB} = require('.././config/db-config')
 
 
 
@@ -63,6 +64,60 @@ module.exports = {
                 reject({ message: "Login failed" })
             }
         })
+    },
+
+
+    decrement_OPSTATUS : (doctor_id)=>{
+        console.log(doctor_id);
+        return new Promise(async(resolve,reject)=>{
+            try{
+                const collection  = await getCollection(DOCTORS_DB);
+                collection.updateOne(
+                    {doctor_id : doctor_id},
+                    {
+                        $inc : {opTickets : -1 },
+                    }
+                    ).then(response=>{
+                        return collection.findOne({doctor_id :doctor_id});
+                    }).then(updatedDoc => {
+                        resolve(updatedDoc.opTickets);
+                      }).catch(err=>{
+                        reject({message:"error while decrementing op ticket"})
+                    })
+
+            }catch(err){
+                reject({message:"error while decrementing op ticket"})
+            }
+        })
+
+    },
+
+    increment_OPSTATUS : (doctor_id)=>{
+        console.log(doctor_id);
+        return new Promise(async(resolve,reject)=>{
+            try{
+                const increment_value = 1;
+                const collection  = await getCollection(DOCTORS_DB);
+      
+                // collection.find({doctor_id : doctor_id}).toArray()
+                collection.updateOne(
+                    {doctor_id : doctor_id},
+                    {
+                        $inc : {opTickets : 1 },
+                    }
+                    ).then(response=>{
+                        return collection.findOne({doctor_id :doctor_id});
+                    }).then(updatedDoc => {
+                        resolve(updatedDoc.opTickets);
+                      }).catch(err=>{
+                        reject({message:"error while incrementing op ticket"})
+                    })
+
+            }catch(err){
+                reject({message:"error while incrementing op ticket"})
+            }
+        })
+
     },
 
     //RATION-SHOP
