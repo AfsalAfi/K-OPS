@@ -34,7 +34,8 @@ function Hospital() {
   const [isHospital, setIsHospital] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedHostel, setSelectedHostel] = useState("Select Hospital");
-  const [selectedHostelCollection, setSelectedHostelCollection] = useState("Select Hospital");
+  const [selectedHostelCollection, setSelectedHostelCollection] =
+    useState("Select Hospital");
   const [hopitalsList, setHopitalsList] = useState([]);
   const navigate = useNavigate();
 
@@ -65,15 +66,15 @@ function Hospital() {
   const setSelectedHospital = (e) => {
     const selectedHospitalCollection = JSON.parse(e.target.value);
     console.log(selectedHospitalCollection);
-    setSelectedHostel(selectedHospitalCollection.name)
-    setSelectedHostelCollection(selectedHospitalCollection)
+    setSelectedHostel(selectedHospitalCollection.name);
+    setSelectedHostelCollection(selectedHospitalCollection);
     setIsHospital(true);
   };
 
   const setDistrict = (event) => {
     console.log(event);
     setSelectedDistrict(event);
-    setSelectedHostel("Select Hospital")
+    setSelectedHostel("Select Hospital");
     setIsHospital(!!isHospital);
     axios
       .post(
@@ -127,9 +128,6 @@ function Hospital() {
 
   return (
     <div className="container_hospital">
-      <div className="image_section_hospital">
-        <img src="../hospital.svg" alt="hospital Logo" />
-      </div>
       <div className="contents_hospital">
         <h1>Hospital</h1>
         <p>
@@ -197,6 +195,9 @@ function Hospital() {
             <p>Email : {selectedDivisionCollection.email}</p> */}
           </div>
         )}
+      </div>
+      <div className="image_section_hospital">
+        <img src="../hospital.svg" alt="hospital Logo" />
       </div>
     </div>
   );

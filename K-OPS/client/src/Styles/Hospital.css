@@ -6,7 +6,7 @@
   min-height: 90vh;
   max-height: 100vh;
   background-color: var(--mainColorLight);
-  border-radius: 100% 0% 100% 0% / 31% 100% 0% 69%;
+  border-radius: 100% 0% 100% 0% / 13% 90% 10% 87%;
   gap: 6rem;
 }
 
@@ -15,9 +15,11 @@
   flex-direction: column;
   text-align: left;
   gap: 0.5rem;
-  width: 30%;
+  width: 35%;
 }
 .image_section_hospital {
+  display: flex;
+  justify-content: center;
   width: 30%;
 }
 
