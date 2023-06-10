@@ -72,8 +72,13 @@ router.post("/create-hospital", async (req, res) => {
 router.post("/create-ration-shop", async (req, res) => {
     const regId = req.body.regId
     const password = req.body.password
+    const district = req.body.district
+    const place = req.body.place
+    const contact = req.body.contact
+    const email = req.body.email
+    const RationShopName = req.body.RationShopName
     const classify = "RationShop"
-    create_ration_shop(classify, password, regId).then((response) => {
+    create_ration_shop(regId, password, district, place, contact, email, RationShopName, classify).then((response) => {
         res.send(response);
     })
         .catch((err) => {

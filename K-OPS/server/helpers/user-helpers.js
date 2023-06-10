@@ -359,6 +359,34 @@ module.exports = {
     });
   },
 
+  get_Ration_Shops: (district) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collection = await getCollection(OPERATORS_COLLECTION);
+        collection.aggregate([
+          {
+            $match: { district: district, classify: "RationShop" }
+          }, {
+            $project: {
+              _id: 0,
+              password: 0
+            }
+          }, {
+            $sort: { RationShopName: 1 }
+          }
+        ]).toArray().then(response => {
+          if (response) {
+            resolve({ status: "ok", result: response });
+          } else {
+            reject({ message: "not found" });
+          }
+        })
+      } catch (error) {
+        reject({ message: "Try after some time" });
+      }
+    })
+  },
+
 
 
 
