@@ -53,7 +53,7 @@ function Hospital() {
 
   const goToMedical = () => {
     navigate("/hospital/medical-facility", {
-      state: { regId: selectedHostelCollection.regId },
+      state: { equipments: selectedHostelCollection.equipments, facilities: selectedHostelCollection.facilities },
     });
   };
 

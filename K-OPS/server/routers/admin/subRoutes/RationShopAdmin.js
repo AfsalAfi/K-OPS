@@ -1,35 +1,68 @@
 const express = require('express');
 
-const { verifyPasswordRationShop,
-        RationShopNotification, } = require('../../../helpers/admin-helpers');
+const { RationShopNotification, list_Enquiry_RationShop, update_available_stocks, list_available_stocks, reply_for_enquiry_and_report } = require('../../../helpers/admin-helpers');
 
 const RationShop = express.Router();
-const {RATION_NOTIFICATIONS} = require('../../../config/db-config')
 
-RationShop.post("/auth", (req, res) => {
+
+RationShop.post('/push-notifications', (req, res) => {
     const regId = req.body.regId;
-    const password = req.body.password;
-    verifyPasswordRationShop(regId, password).then((response) => {
-        res.send(response);
-    }).catch((err) => {
-        res.send(err);
-    })
-})
-
-RationShop.post('/push-notifications',(req,res)=>{
-    const shopNumber = req.body.shopNumber;
     const message = req.body.message;
-    varifiedBy = "SUPPLYCO OFFICE";
     let dt = new Date()
     const date = dt.getDate() + "/" + dt.getMonth() + "/" + dt.getFullYear();
     const time = dt.getHours() + "-" + dt.getMinutes() + "-" + dt.getSeconds();
-
-    RationShopNotification(message, varifiedBy, date, time,shopNumber).then(response => {
+    RationShopNotification(message, date, time, regId).then(response => {
         return res.status(200).send({ status: "ok" });
     }).catch(err => {
         console.log(err);
         return res.status(404).send(err.message);
     })
 })
+
+RationShop.post('/list-enquiry', (req, res) => {
+    const regId = req.body.regId;
+    list_Enquiry_RationShop(regId).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+RationShop.post('/list-available-stocks', (req, res) => {
+    const regId = req.body.regId;
+    list_available_stocks(regId).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+RationShop.post('/update-available-stocks', (req, res) => {
+    const regId = req.body.regId;
+    const white = req.body.white;
+    const blue = req.body.blue;
+    const red = req.body.red;
+    const yellow = req.body.yellow;
+    update_available_stocks(regId, white, blue, red, yellow).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+RationShop.post('/reply-for-enquiry', (req, res) => {
+    const email = req.body.email;
+    const message = req.body.message;
+    const subject = req.body.subject;
+    reply_for_enquiry_and_report(email, message, subject).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+
+
+
 
 module.exports = RationShop;

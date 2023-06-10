@@ -1,45 +1,63 @@
 const express = require('express');
-const { verifyPasswordKseb } = require('../../../helpers/admin-helpers');
+const { pushNotifications, list_Notifications, list_failures, list_Enquiry, list_Enquiry_KSEB, reply_for_enquiry_and_report } = require('../../../helpers/admin-helpers');
 const Kseb = express.Router();
-const { updateNotifications,
-} = require('../../../helpers/admin-helpers')
 
-Kseb.post("/auth", (req, res) => {
+
+Kseb.post('/push-notifications', (req, res) => {
+    const message = req.body.message;
     const regId = req.body.regId;
-    const password = req.body.password;
-    verifyPasswordKseb(regId, password).then((response) => {
+    let dt = new Date()
+    const date = dt.getDate() + "/" + dt.getMonth() + "/" + dt.getFullYear();
+    const time = dt.getHours() + "-" + dt.getMinutes() + "-" + dt.getSeconds();
+    pushNotifications(regId, message, date, time).then(response => {
+        return res.status(200).send({ status: "ok" });
+    }).catch(err => {
+        console.log(err);
+        return res.status(404).send(err.message);
+    })
+})
+
+Kseb.post('/list-notifications', (req, res) => {
+    const regId = req.body.regId;
+    list_Notifications(regId).then((response) => {
         res.send(response);
     }).catch((err) => {
         res.send(err);
     })
 })
 
-Kseb.post("/list-division-byDistrict", async (req, res) => {
-
-})
-
-Kseb.post("/get-division-details", async (req, res) => {
-
-})
-
-
-Kseb.post('/push-notifications', (req, res) => {
-    const message = req.body.message;
+Kseb.post('/list-failures', (req, res) => {
     const regId = req.body.regId;
-    console.log(message);
-    varifiedBy = "KERALA STATE ELECTRICITY BOARD";
-    let dt = new Date()
-    const date = dt.getDate() + "/" + dt.getMonth() + "/" + dt.getFullYear();
-    const time = dt.getHours() + "-" + dt.getMinutes() + "-" + dt.getSeconds();
-
-    updateNotifications(regId, message, varifiedBy, date, time).then(response => {
-        return res.status(200).send({ status: "ok" });
-    }).catch(err => {
-        console.log(err);
-        return res.status(404).send(err.message);
+    list_failures(regId).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
     })
-
 })
+
+Kseb.post('/list-enquiry', (req, res) => {
+    const regId = req.body.regId;
+    list_Enquiry_KSEB(regId).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+Kseb.post('/reply-for-enquiry-and-report', (req, res) => {
+    const email = req.body.email;
+    const message = req.body.message;
+    const subject = req.body.subject;
+    reply_for_enquiry_and_report(email, message, subject).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+
+
+
 
 
 

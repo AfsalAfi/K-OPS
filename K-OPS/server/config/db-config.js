@@ -1,12 +1,19 @@
 module.exports = {
     PORT: 3001,
     DB: "mongodb+srv://admin:admin123@cluster0.3wtu7xx.mongodb.net/K-OPS?retryWrites=true&w=majority",
-    HOSPITALS: "Hospitals",
-    RATION_SHOPS: "RationShops",
-    KSEB: "Kseb",
+
+    ADMIN: "Admin",
+    OPERATORS_COLLECTION: "OperatorsCollection",
+
     KSEB_NOTIFICATIONS: "KsebNotifications",
-    RATION_NOTIFICATIONS :"RationShopNotifications",
-    DOCTORS_DB: "Doctors"
+    KSEB_FAILURES_ENQUIRIES: "KsebFailures_Enquiries",
+
+    RATION_NOTIFICATIONS: "RationShopNotifications",
+    RATION_SHOP_FAILURES_ENQUIRIES: "RationShopFailures_Enquiries",
+    RATION_SHOP_STOCKS: "RationShop_Stocks",
+
+    HOSPITAL_ENQUIRIES: "Hospital_Enquiries",
+    DOCTORS_DB: "Doctors",
 
 
 }

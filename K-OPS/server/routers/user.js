@@ -1,20 +1,10 @@
 const express = require("express");
 const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB, list_Available_Doctors, get_Divisions, get_Hospitals, list_Medical_Facilities,
-    showRationNotifications, } = require("../helpers/user-helpers");
+    showRationNotifications,
+    RationShop_enquries,
+    get_Ration_Shops, } = require("../helpers/user-helpers");
+const { list_available_stocks } = require("../helpers/admin-helpers");
 const router = express.Router();
-
-
-// router.post("/", protect, async (req, res) => {
-//   const regNo = req.user[0].regNo;
-//   get_my_details(regNo)
-//     .then((response) => {
-//       res.status(200).send(response);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
-// });
-
 
 
 
@@ -30,14 +20,14 @@ router.post("/list-kseb-divisions", (req, res) => {
     })
 })
 
-
 router.post("/kseb-enquries", (req, res) => {
-    const divisionMail = req.body.divisionMail;
+    const regId = req.body.regId;
     const name = req.body.name;
     const ContactNumber = req.body.ContactNumber;
     const type = req.body.type;
     const description = req.body.description;
-    KSEB_enquries(name, ContactNumber, type, description, divisionMail).then(response => {
+    const emailAddress = req.body.email;
+    KSEB_enquries(regId, name, ContactNumber, type, description, emailAddress).then(response => {
         res.status(200).send(response);
     }).catch((err) => {
         res.send(err);
@@ -45,7 +35,7 @@ router.post("/kseb-enquries", (req, res) => {
 });
 
 router.post("/kseb-report-failures", (req, res) => {
-    const divisionMail = req.body.divisionMail;
+    const regId = req.body.regId;
     const place = req.body.place;
     const landMark = req.body.landMark;
     const nearByPostNumber = req.body.nearByPostNumber;
@@ -53,7 +43,8 @@ router.post("/kseb-report-failures", (req, res) => {
     const timeOfHappen = req.body.timeOfHappen;
     const name = req.body.name;
     const ContactNumber = req.body.ContactNumber;
-    KSEB_Report_Failures(divisionMail, place, landMark, nearByPostNumber, Complaint, timeOfHappen, name, ContactNumber).then(response => {
+    const emailAddress = req.body.email;
+    KSEB_Report_Failures(regId, place, landMark, nearByPostNumber, Complaint, timeOfHappen, name, ContactNumber, emailAddress).then(response => {
         res.status(200).send(response);
     }).catch((err) => {
         res.send(err);
@@ -73,6 +64,8 @@ router.post('/show-kseb-notifications', (req, res) => {
 
 
 
+
+
 //HOSPITAL
 
 router.post("/list-hospitals", (req, res) => {
@@ -85,14 +78,14 @@ router.post("/list-hospitals", (req, res) => {
     })
 })
 
-
 router.post("/hospital-enquries", (req, res) => {
-    const divisionMail = req.body.divisionMail;
+    const regId = req.body.regId;
+    const emailAddress = req.body.email;
     const name = req.body.name;
     const ContactNumber = req.body.ContactNumber;
     const type = req.body.type;
     const description = req.body.description;
-    HOSPITAL_enquries(name, ContactNumber, type, description, divisionMail).then(response => {
+    HOSPITAL_enquries(regId, name, ContactNumber, type, description, emailAddress).then(response => {
         res.status(200).send(response);
     }).catch((err) => {
         res.send(err);
@@ -104,7 +97,6 @@ router.post("/available-doctors", (req, res) => {
     console.log("hospital");
     console.log(hospital);
     list_Available_Doctors(hospital).then(response => {
-        console.log("123response");
         console.log(response);
         res.status(200).send(response);
     }).catch((err) => {
@@ -133,6 +125,39 @@ router.post('/show-RationShop-notifications', (req, res) => {
         res.status(500).send(err.message)
     })
 
+})
+
+router.post("/RationShop-enquries", (req, res) => {
+    const regId = req.body.regId;
+    const name = req.body.name;
+    const ContactNumber = req.body.ContactNumber;
+    const type = req.body.type;
+    const description = req.body.description;
+    const emailAddress = req.body.email;
+    RationShop_enquries(regId, name, ContactNumber, type, description, emailAddress).then(response => {
+        res.status(200).send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+});
+
+router.post('/list-available-stocks', (req, res) => {
+    const regId = req.body.regId;
+    list_available_stocks(regId).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
+
+router.post("/list-ration-shops", (req, res) => {
+    const district = req.body.district;
+    console.log(district);
+    get_Ration_Shops(district).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
 })
 
 
