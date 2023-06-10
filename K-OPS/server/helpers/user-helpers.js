@@ -5,10 +5,8 @@ const moment = require("moment");
 const { getCollection } = require("../config/connection");
 const { DOCTORS_DB, KSEB, KSEB_NOTIFICATIONS, HOSPITALS, RATION_NOTIFICATIONS, OPERATORS_COLLECTION, KSEB_REPORT_FAILURES, KSEB_FAILURES_ENQUIRIES, RATION_SHOP_FAILURES_ENQUIRIES, HOSPITAL_ENQUIRIES } = require("../config/db-config");
 
-
-
 // Function to check if a doctor is currently available
-function isDoctorAvailableInDataBase(doctors) {
+function isDoctorAvailableInDataBase (doctors){
   return new Promise((resolve, reject) => {
     try {
       var ActiveDoctor = [];
@@ -57,6 +55,7 @@ function isDoctorAvailableInDataBase(doctors) {
     }
   })
 }
+
 
 
 module.exports = {
@@ -174,6 +173,10 @@ module.exports = {
 
 
   //HOSPITAL
+
+  
+
+
   list_Medical_Facilities: (hospital) => {
     return new Promise(async (resolve, reject) => {
       try {

@@ -1,6 +1,8 @@
 const express = require('express');
-const { list_Enquiry_Hospital, reply_for_enquiry_and_report, create_Doctor } = require('../../../helpers/admin-helpers');
-const { list_Medical_Facilities, update_Medical_Facilities } = require('../../../helpers/user-helpers');
+
+const { list_Enquiry_Hospital, reply_for_enquiry_and_report, create_Doctor,verifyPasswordHospital,increment_OPSTATUS ,decrement_OPSTATUS, } = require('../../../helpers/admin-helpers');
+const { list_Medical_Facilities, update_Medical_Facilities,list_Available_Doctors } = require('../../../helpers/user-helpers');
+
 const Hospital = express.Router();
 
 
@@ -12,6 +14,43 @@ Hospital.post('/list-enquiry', (req, res) => {
     }).catch((err) => {
         res.send(err);
     })
+})
+
+
+Hospital.post('/op-ticket-status',(req,res)=>{
+    const hospital = req.body.hospital;
+    list_Available_Doctors(hospital).then(response=>{
+        res.status(200).send(response);
+        console.log(response);
+    }).catch(err=>{
+        res.status(404).send(err);
+    })
+
+})
+
+
+Hospital.post('/op-ticket-incrementing',(req,res)=>{
+    const doctor_id = req.body.doctor_id;
+    increment_OPSTATUS(doctor_id).then(response=>{
+        return res.status(200).send({response, status:"ok" })
+
+    }).catch(err=>{
+        return res.status(500).send(err.message)
+    })
+
+
+})
+
+Hospital.post('/op-ticket-decrementing',(req,res)=>{
+    const doctor_id = req.body.doctor_id;
+    decrement_OPSTATUS(doctor_id).then(response=>{
+        return res.status(200).send({response, status:"ok"})
+
+    }).catch(err=>{
+        return res.status(500).send(err.message)
+    })
+
+
 })
 
 Hospital.post('/reply-for-enquiry-and-report', (req, res) => {
@@ -59,6 +98,7 @@ Hospital.post('/update-medical-facilities', (req, res) => {
         res.status(500).send(err.message)
     })
 })
+
 
 
 

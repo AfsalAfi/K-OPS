@@ -355,7 +355,137 @@ module.exports = {
 
     },
 
+
+
+
+    //HOSPITAL
+    verifyPasswordHospital: (regId, password) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const collection = await getCollection(OPERATORS_COLLECTION);
+                collection.findOne({ regId: regId }).then(response => {
+                    if (response != null) {
+                        if (response.password === password) {
+                            resolve({ status: "ok", operator: response.classify })
+                        } else {
+                            reject({ message: "Wrong password" })
+                        }
+                    } else {
+                        reject({ message: "No Hospitals found" })
+                    }
+                })
+            } catch (error) {
+                reject({ message: "Login failed" })
+            }
+        })
+    },
+
+
+    decrement_OPSTATUS : (doctor_id)=>{
+        console.log(doctor_id);
+        return new Promise(async(resolve,reject)=>{
+            try{
+                const collection  = await getCollection(DOCTORS_DB);
+                collection.updateOne(
+                    {doctor_id : doctor_id},
+                    {
+                        $inc : {opTickets : -1 },
+                    }
+                    ).then(response=>{
+                        return collection.findOne({doctor_id :doctor_id});
+                    }).then(updatedDoc => {
+                        resolve(updatedDoc.opTickets);
+                      }).catch(err=>{
+                        reject({message:"error while decrementing op ticket"})
+                    })
+
+            }catch(err){
+                reject({message:"error while decrementing op ticket"})
+            }
+        })
+
+    },
+
+    increment_OPSTATUS : (doctor_id)=>{
+        console.log(doctor_id);
+        return new Promise(async(resolve,reject)=>{
+            try{
+                const increment_value = 1;
+                const collection  = await getCollection(DOCTORS_DB);
+      
+                // collection.find({doctor_id : doctor_id}).toArray()
+                collection.updateOne(
+                    {doctor_id : doctor_id},
+                    {
+                        $inc : {opTickets : 1 },
+                    }
+                    ).then(response=>{
+                        return collection.findOne({doctor_id :doctor_id});
+                    }).then(updatedDoc => {
+                        resolve(updatedDoc.opTickets);
+                      }).catch(err=>{
+                        reject({message:"error while incrementing op ticket"})
+                    })
+
+            }catch(err){
+                reject({message:"error while incrementing op ticket"})
+            }
+        })
+
+    },
+
+    //RATION-SHOP
+    verifyPasswordRationShop: (regId, password) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const collection = await getCollection(OPERATORS_COLLECTION);
+                collection.findOne({ regId }).then(response => {
+                    if (response != null) {
+                        if (response.password === password) {
+                            resolve({ status: "ok", operator: response.classify })
+                        } else {
+                            reject({ message: "Wrong password" })
+                        }
+                    } else {
+                        reject({ message: "No Rationshop found" })
+                    }
+                })
+            } catch (error) {
+                reject({ message: "Login failed" })
+            }
+        })
+    },
+
+
+  
+
+
+    //KSEB
+    verifyPasswordKseb: (regId, password) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const collection = await getCollection(OPERATORS_COLLECTION);
+                collection.findOne({ regId }).then(response => {
+                    if (response != null) {
+                        if (response.password === password) {
+                            resolve({ status: "ok", operator: response.classify })
+                        } else {
+                            reject({ message: "Wrong password" })
+                        }
+                    } else {
+                        reject({ message: "No kseb found" })
+                    }
+                })
+            } catch (error) {
+                reject({ message: "Login failed" })
+            }
+        })
+    },
+
+  
+
     list_Notifications: (regId) => {
+
         return new Promise(async (resolve, reject) => {
             try {
                 const collection = await getCollection(KSEB_NOTIFICATIONS);
