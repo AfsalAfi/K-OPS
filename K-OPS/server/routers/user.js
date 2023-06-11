@@ -1,7 +1,8 @@
 const express = require("express");
 const { KSEB_enquries, KSEB_Report_Failures, HOSPITAL_enquries, showNotifications_KSEB, list_Available_Doctors, get_Divisions, get_Hospitals, list_Medical_Facilities,
     showRationNotifications,
-    RationShop_enquries, } = require("../helpers/user-helpers");
+    RationShop_enquries,
+    get_Ration_Shops, } = require("../helpers/user-helpers");
 const { list_available_stocks } = require("../helpers/admin-helpers");
 const router = express.Router();
 
@@ -149,6 +150,15 @@ router.post('/list-available-stocks', (req, res) => {
     })
 })
 
+router.post("/list-ration-shops", (req, res) => {
+    const district = req.body.district;
+    console.log(district);
+    get_Ration_Shops(district).then((response) => {
+        res.send(response);
+    }).catch((err) => {
+        res.send(err);
+    })
+})
 
 
 

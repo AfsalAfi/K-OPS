@@ -1,0 +1,132 @@
+body {
+  background: var(--mainColor);
+}
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 350px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 0.5px solid #ffffff;
+  border-radius: 0.3em;
+}
+.flip-card-back {
+  color: #fff;
+  transform: rotateY(180deg);
+}
+
+.red {
+  background: #cd4e7c;
+}
+
+.blue {
+  background: #6ca6da;
+}
+.white {
+  background: #d6daeb;
+  color: var(--mainColor) !important;
+}
+
+.flip-card-front {
+  color: #fff;
+}
+.yellow {
+  background: #c0a13d;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.form-container label {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #fff; /* Change label text color to white */
+}
+
+.form-container input {
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: #fff; /* Change input text color to white */
+}
+
+.submit-button {
+  width: 100%;
+
+  background-color: #ffffff;
+  color: black;
+
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+
+  cursor: pointer;
+}
+
+.gray {
+  background-color: #333333 !important;
+  color: #fff !important;
+}
+
+.dark_gray {
+  background-color: #8796b0 !important;
+  color: #fff !important;
+}
+
+.flip-card-back {
+  padding: 20px;
+}
+
+.white-placeholder::placeholder {
+  color: #fff;
+}
+
+.black-placeholder::placeholder {
+  color: black !important;
+}
+
+.white_content label {
+  color: black !important;
+}
+
+.white_content input {
+  color: black !important;
+}

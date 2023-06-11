@@ -1,0 +1,9 @@
+.footer_container {
+  height: 30vh;
+  width: 100%;
+  padding: 0px 50px;
+}
+
+.inside_footer_container {
+  border-top: 1px solid var(--mainColorLight);
+}

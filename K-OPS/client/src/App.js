@@ -10,6 +10,10 @@ import Hospital_availability from "./UserComponents/Hospital_availability";
 import Hospital_enquiry from "./UserComponents/Hospital_enquiry";
 import Hospital_medical_facility from "./UserComponents/Hospital_medical_facility";
 import Hospital_OP_ticket from "./UserComponents/Hospital_OP_ticket";
+import Login from "./Components/Login/Login";
+import KSEB_User from "./Components/KSEB/KSEB_User";
+import Ration from "./Components/Ration/Ration";
+import Admin from "./Components/Admin/Admin";
 
 function App() {
   return (
@@ -32,6 +36,18 @@ function App() {
             element={<Hospital_medical_facility />}
           />
           <Route path="/hospital/OP-ticket" element={<Hospital_OP_ticket />} />
+
+          {/* Login */}
+          <Route path="/login" element={<Login />} />
+
+          {/* KSEB */}
+          <Route path="/KSEB" element={<KSEB_User />} />
+
+          {/* Ration */}
+          <Route path="/ration" element={<Ration />} />
+
+          {/* Admin */}
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </div>
     </Router>

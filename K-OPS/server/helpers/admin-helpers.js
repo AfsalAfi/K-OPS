@@ -69,13 +69,18 @@ module.exports = {
         })
     },
 
-    create_ration_shop: (classify, password, regId) => {
+    create_ration_shop: (regId, password, district, place, contact, email, RationShopName, classify) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const collection = await getCollection(OPERATORS_COLLECTION);
                 collection.insertOne({
                     regId: regId,
                     password: password,
+                    district: district,
+                    place: place,
+                    contact: contact,
+                    email: email,
+                    RationShopName: RationShopName,
                     classify: classify,
                 }).then(response => {
                     if (response.acknowledged === true) {

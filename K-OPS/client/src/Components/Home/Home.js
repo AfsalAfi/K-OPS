@@ -4,6 +4,8 @@ import Container from "./Container";
 import Navbar from "../NavBar";
 import KSEBdetails from "./KSEBdetails";
 import Hospital from "./Hospital";
+import RationShop from "./RationShop";
+import Footer from "./Footer";
 
 function Home() {
   return (
@@ -12,6 +14,8 @@ function Home() {
       <Container />
       <KSEBdetails />
       <Hospital />
+      <RationShop />
+      {/* <Footer /> */}
     </div>
   );
 }
