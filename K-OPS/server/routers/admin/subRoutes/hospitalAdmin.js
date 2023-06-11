@@ -90,8 +90,8 @@ Hospital.post('/list-medical-facilities', (req, res) => {
 
 Hospital.post('/update-medical-facilities', (req, res) => {
     const regId = req.body.regId;
-    const facilities = req.body.regId;
-    const equipments = req.body.regId;
+    const facilities = req.body.facilities;
+    const equipments = req.body.equipments;
     update_Medical_Facilities(regId, facilities, equipments).then(response => {
         res.status(200).send(response);
     }).catch(err => {

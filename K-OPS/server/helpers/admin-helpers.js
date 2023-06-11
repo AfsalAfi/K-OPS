@@ -172,7 +172,7 @@ module.exports = {
                             emailAddress: 1,
                         }
                     }
-                ]).toarray().then(response => {
+                ]).toArray().then(response => {
                     if (response.length > 0) {
                         resolve({ status: "ok", enquiryList: response })
                     } else {
@@ -249,7 +249,7 @@ module.exports = {
                 const collection = await getCollection(RATION_SHOP_FAILURES_ENQUIRIES);
                 collection.aggregate([
                     {
-                        $match: { regId: regId, enquiry: true }
+                        $match: {regId:regId, enquiry: true }
                     }, {
                         $project: {
                             name: 1,
@@ -259,7 +259,7 @@ module.exports = {
                             emailAddress: 1,
                         }
                     }
-                ]).toarray().then(response => {
+                ]).toArray().then(response => {
                     if (response.length > 0) {
                         resolve({ status: "ok", enquiryList: response })
                     } else {
@@ -284,7 +284,7 @@ module.exports = {
                     if (response.length > 0) {
                         resolve({ status: "ok", stocks: response })
                     } else {
-                        reject({ message: "Fetching stocks failed" })
+                        reject({ message: "Nothing Found" })
                     }
                 })
             } catch (err) {
@@ -537,7 +537,7 @@ module.exports = {
                             emailAddress: 1
                         }
                     }
-                ]).toarray().then(response => {
+                ]).toArray().then(response => {
                     if (response.length > 0) {
                         resolve({ status: "ok", failureList: response })
                     } else {
@@ -566,7 +566,7 @@ module.exports = {
                             emailAddress: 1,
                         }
                     }
-                ]).toarray().then(response => {
+                ]).toArray().then(response => {
                     if (response.length > 0) {
                         resolve({ status: "ok", enquiryList: response })
                     } else {
@@ -582,25 +582,26 @@ module.exports = {
     reply_for_enquiry_and_report: (email, message, subject) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const transporter = nodemailer.createTransport({
-                    service: "hotmail",
-                    auth: {
-                        user: "ramettanQAZ@outlook.com",
-                        pass: "Qazxsw123",
-                    },
-                });
+                let res = "hi"
+                // const transporter = nodemailer.createTransport({
+                //     service: "hotmail",
+                //     auth: {
+                //         user: "ramettanQAZ@outlook.com",
+                //         pass: "Qazxsw123",
+                //     },
+                // });
 
-                let res = await transporter.sendMail({
-                    from: "ramettanQAZ@outlook.com",
-                    to: `afsaldesktop@gmail.com,${email}`,
-                    subject: `${subject}`,
-                    html: `<html>
-                          <body>
-                            <p><b>${message}</p>
-                          </body>
-                        </html>`,
-                });
-                console.log(res);
+                // let res = await transporter.sendMail({
+                //     from: "ramettanQAZ@outlook.com",
+                //     to: `afsaldesktop@gmail.com,${email}`,
+                //     subject: `${subject}`,
+                //     html: `<html>
+                //           <body>
+                //             <p><b>${message}</p>
+                //           </body>
+                //         </html>`,
+                // });
+                // console.log(res);
                 if (res) {
                     resolve({ status: "ok" })
                 } else {

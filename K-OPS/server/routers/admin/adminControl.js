@@ -23,7 +23,7 @@ router.post("/self-auth", async (req, res) => {
         });
 });
 
-Kseb.post("/operators-auth", (req, res) => {
+router.post("/operators-auth", (req, res) => {
     const regId = req.body.regId;
     const password = req.body.password;
     verifyPasswordOperator(regId, password).then((response) => {

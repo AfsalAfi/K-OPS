@@ -234,7 +234,7 @@ response from server :  status = "ok"
 
 4) operator Authentification:
 ----------------------------------------------------------------
-route : localhost:3001/admin/Kseb/operators-auth
+route : localhost:3001/admin/operators-auth
 required Data : regId
                 password
                 
@@ -272,7 +272,7 @@ response from server : object with following fields
 
 
 
-5) Ration shop Push notifications  :
+1) Ration shop Push notifications  :
 ----------------------------------------------------------------
 route : localhost:3001/admin/ration-shop/push-notifications
 required Data : regId
@@ -280,6 +280,307 @@ required Data : regId
                 
 
 response from server : status :"ok"
+
+
+2) to list Ration shop Enquireies :
+----------------------------------------------------------------
+route : localhost:3001/admin/ration-shop/list-enquiry
+required Data : regId
+response from server : status :"ok"
+                       An array named "enquiryList" contains following fields :
+                        "_id"
+                        "name"
+                        "ContactNumber"
+                        "type"
+                        "description"
+                        "emailAddress"
+
+
+3) To List available Stocks :
+----------------------------------------------------------------
+ route : localhost:3001/admin/ration-shop/list-available-stocks
+required Data : regId
+response from server : status :"ok"
+                       An array named "stocks" contains following fields :
+
+
+                       on Progressing ...............()
+
+
+
+
+4) To Update available Stocks :  on Progressing .......
+----------------------------------------------------------------
+route : localhost:3001/admin/ration-shop/update-available-stocks
+required Data : regId
+                white
+                blue
+                red
+                yellow
+response from server : status :"ok"
+
+
+4) To Reply an  enquiry  :
+----------------------------------------------------------------
+route : localhost:3001/admin/ration-shop/reply-for-enquiry
+required Data : message
+                email (of user)
+                subject
+response from server : status :"ok"                   
+
+
+
+
+
+
+
+
+/**                       KSEB ADMIN ROUTES                   **/
+
+
+
+
+1) KSEB Push notifications  :
+----------------------------------------------------------------
+route : localhost:3001/admin/Kseb/push-notifications
+required Data : regId
+                message
+                
+
+response from server : status :"ok"
+
+
+
+2)list  KSEB  notifications  :
+----------------------------------------------------------------
+route : localhost:3001/admin/Kseb/list-notifications
+required Data : regId
+response from server : status :"ok"
+                       An array named "notifications" contains objects with fields
+                        "message"
+                        "date"
+                        "time"
+
+
+
+3)list  KSEB  failures  :
+----------------------------------------------------------------
+route : localhost:3001/admin/Kseb/list-failures
+required Data : regId
+response from server : status :"ok"
+                       An array named "failureList" contains objects with fields
+                         "_id"
+                        "place"
+                        "landMark"
+                        "nearByPostNumber"
+                        "Complaint"
+                        "timeOfHappen"
+                        "name"
+                        "ContactNumber"
+                        "emailAddress"
+
+
+4)list  KSEB  Enquiries  :
+----------------------------------------------------------------
+route : localhost:3001/admin/Kseb/list-enquiry
+required Data : regId
+response from server : status :"ok"
+                       An array named "enquiryList" contains objects with fields
+                        "_id"
+                        "name"
+                        "ContactNumber"
+                        "type"
+                        "description"
+                        "emailAddress"
+
+
+
+5)Reply for  KSEB  Enquiries  :
+----------------------------------------------------------------
+route : localhost:3001/admin/Kseb/reply-for-enquiry-and-report
+required Data : email
+                message
+                subject
+
+response from server : status :"ok"
+
+
+
+
+
+
+/**                          HOSPITAL ADMIN ROUTES                             **/
+
+
+
+
+
+1)list  Hospital  Enquiries  :
+----------------------------------------------------------------
+route : localhost:3001/admin/hospital/list-enquiry
+required Data : regId
+
+response from server : status :"ok"
+                       An array named "enquiryList" contains objects with fields
+                        "_id"
+                        "name"
+                        "ContactNumber"
+                        "type"
+                        "description"
+                        "emailAddress"
+
+
+2) to view   Hospital  OPticket status  :
+----------------------------------------------------------------
+route : localhost:3001/admin/hospital/op-ticket-status
+required Data : hospital  (regId of Hospital) 
+
+response from server : status :"ok"
+                       An array named "availableDoctors" contains objects with fields
+                        "_id"
+                        "name"
+                        "specialization"
+                        "availableTimeFrom"
+                        "availableTimeTo"
+                        "hospital"
+                        "opTickets"
+                        "doctor_id"
+
+
+
+
+
+
+
+3) to increment Opticket status  :
+----------------------------------------------------------------
+route : localhost:3001/admin/hospital/op-ticket-incrementing
+required Data : doctor_id
+
+response from server : status :"ok"
+                       "response" (no of op tickets) 
+
+
+4) to decrement Opticket status  :
+----------------------------------------------------------------
+route : localhost:3001/admin/hospital/op-ticket-decrementing
+required Data : doctor_id
+
+response from server : status :"ok"
+                       "response" (no of op tickets) 
+
+
+
+5) to Reply for enquiry of Hospital    :
+---------------------------------------------------------------
+
+
+route : localhost:3001/admin/hospital/reply-for-enquiry-and-report
+required Data : email
+                message
+                subject
+
+response from server : status :"ok"
+
+
+
+
+6) to add a Doctor :
+-----------------------------------------------------------------
+route : localhost:3001/admin/hospital/add-newDoctor
+required Data : name
+                specialization
+                availableTimeFrom
+                availableTimeTo
+                hospital
+                doctor_id
+
+response from server : status :"ok"         
+
+
+
+7) to list Medical facility :
+-----------------------------------------------------------------
+route : localhost:3001/admin/hospital/list-medical-facilities
+required Data : regId
+               
+
+response from server : status :"ok"  
+                        
+                        An Object  contains two objects  named "facilities" and "facilities" with fields
+                        "facilities": {
+                            "genralWards"
+                            "rooms"
+                            "laboratory"
+                            "woundDressing"
+                            "ambulence"
+                        },
+                        "equipments": {
+                            "ventilators"
+                            "x-ray"
+                            "mri"
+                            "ct-scan"
+                        }
+
+
+
+
+8) to update  Medical facility :
+-----------------------------------------------------------------
+route : localhost:3001/admin/hospital/update-medical-facilities
+required Data : regId
+                facilities
+                equipments
+
+                (equipments and facilities are in json object like
+                 "facilities": {
+                            "genralWards"
+                            "rooms"
+                            "laboratory"
+                            "woundDressing"
+                            "ambulence"
+                        },
+                        "equipments": {
+                            "ventilators"
+                            "x-ray"
+                            "mri"
+                            "ct-scan"
+                        })
+
+
+
+response from server : status :"ok"  
+                       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

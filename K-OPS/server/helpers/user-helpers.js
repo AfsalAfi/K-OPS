@@ -180,8 +180,10 @@ module.exports = {
   list_Medical_Facilities: (hospital) => {
     return new Promise(async (resolve, reject) => {
       try {
+        
         const collection = await getCollection(OPERATORS_COLLECTION);
-        collection.find({ regId: hospital, classify: "Hospital" }).toArray().then(response => {
+        collection.find({regId: hospital ,classify: "Hospital" }).toArray().then(response => {
+          
           resolve({ facilities: response[0].facilities[0], equipments: response[0].equipments[0] })
         })
       }
