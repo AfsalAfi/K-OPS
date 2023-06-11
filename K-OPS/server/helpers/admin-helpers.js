@@ -23,13 +23,15 @@ const jwt = require("jsonwebtoken");
 module.exports = {
 
     //ADMIN
-    self_auth: (regId, password) => {
+    self_auth: (regId,password) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const collection = await getCollection(ADMIN);
-                collection.findOne({ regId: regId }).then(response => {
-                    if (response) {
+                
+                collection.findOne({adminId:regId}).then(response => {
+                    if (response) {console.log("response");
                         if (response.password === password) {
+                            console.log("response");
                             let token = jwt.sign({ regId: regId }, JWT_STRING_FOR_ADMIN);
                             resolve({ status: "ok", token: token });
                         } else {

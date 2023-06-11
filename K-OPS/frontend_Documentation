@@ -1,0 +1,293 @@
+
+
+/**  USER ROUTES  **/
+
+1) to get KSEB Divisions :
+----------------------------------------------------------------
+route  : localhost:3001/list-kseb-divisions
+required Data : district
+response from server :  status = "ok"  
+                        An Array named "result" contains objects with fields 
+                        "regId"
+                        "district"
+                        "division"
+                        "place"
+                        "contact"
+                        "email"
+                        "officer"
+                        "classify"
+
+
+
+2) to send  KSEB enquiries  :
+-----------------------------------------------------------
+route  : localhost:3001/kseb-enquries
+required Data : regId(kseb)
+                name(sender)
+                ContactNumber(sender)
+                type
+                description
+                email(sender)
+response from server :  status = "ok"  
+
+
+3) to send  KSEB report failiures  :
+-----------------------------------------------------------
+route  : localhost:3001/kseb-report-failures
+required Data : regId,
+                place, 
+                landMark,
+                nearByPostNumber,
+                Complaint,
+                timeOfHappen,
+                name,
+                ContactNumber,
+                email
+response from server :  status = "ok"  
+
+
+4) to show  KSEB  notifications  :
+-----------------------------------------------------------
+route  : localhost:3001/show-kseb-notifications
+required Data : regId,
+               
+response from server :  status = "ok"  
+                        An Array named "result" contains objects with fields  
+                        "message"
+                        "date":
+                        "time":
+                        "varifiedBy"
+
+
+5) to list Hospitals  :
+-----------------------------------------------------------
+route: localhost:3001/list-hospitals
+required Data : district
+response from server :  status = "ok"  
+                        An Array named "result" contains objects with fields 
+                        "regId"
+                        "name"
+                        "contact"
+                        "email"
+                        "place"
+                        "district"
+                        "category"
+                        "classify"   
+
+                        "facilities": [ (it is also an array)
+                            {
+                                "genralWards"
+                                "rooms"
+                                "laboratory"
+                                "woundDressing"
+                                "ambulence"
+                            }
+                        ],
+                        "equipments": [ (it is also an array)
+                            {
+                                "ventilators"
+                                "x-ray"
+                                "mri"
+                                "ct-scan"
+                            }
+                        ],
+
+
+
+
+6) to send Hospital Enquiries 
+----------------------------------------------------------------
+route:  localhost:3001/hospital-enquries
+required Data : regId
+                email,
+                name,
+                ContactNumber,
+                type,
+                description,
+
+response from server :  status = "ok"  
+
+
+
+
+7)to show thw Available doctors at current Time :
+----------------------------------------------------------------
+route : localhost:3001/available-doctors
+required Data : hospital(regId of hospital)
+response from server :  status = "ok"  
+                        An Array named "availableDoctors" contains objects with fields
+                        "_id"
+                        "name"
+                        "specialization"
+                        "availableTimeFrom"
+                        "availableTimeTo"
+                        "hospital"
+                        "opTickets"
+                        "doctor_id"
+
+
+8)to show Medical Facilities :
+----------------------------------------------------------------
+route : localhost:3001/medical-facilities
+required Data : regId
+response from server :  status = "ok"  
+                        An Object  contains two objects  named "facilities" and "facilities" with fields
+                        "facilities": {
+                            "genralWards"
+                            "rooms"
+                            "laboratory"
+                            "woundDressing"
+                            "ambulence"
+                        },
+                        "equipments": {
+                            "ventilators"
+                            "x-ray"
+                            "mri"
+                            "ct-scan"
+                        }
+
+            
+9)to show the Rationshop notifications:
+----------------------------------------------------------------
+route : localhost:3001/show-RationShop-notifications
+required Data : regId
+response from server :  status = "ok"  
+                        An Array named "notifications" contains objects with fields
+                        "_id"
+                        "regId"
+                        "message"
+                        "date"
+                        "time"
+                       
+
+
+
+10)to send the Rationshop enquiries:
+----------------------------------------------------------------
+route : localhost:3001/RationShop-enquries
+required Data :  regId
+                email,
+                name,
+                ContactNumber,
+                type,
+                description,
+response from server :  status = "ok"  
+
+
+
+# 11) to list available stock in Rationshop :
+# ----------------------------------------------------------------
+# route: localhost:3001/list-available-stocks
+# required Data :  regId
+# response from server :  status = "ok" 
+#                         An array
+
+                        
+  
+
+
+
+
+/**                 ADMIN ROUTES REQUESTS  **/
+
+
+
+
+1)to create RationShop :
+----------------------------------------------------------------
+route : localhost:3001/admin/create-ration-shop
+required Data : regId
+                password
+response from server :  status = "ok"  
+
+
+2)to create Hospital :
+----------------------------------------------------------------
+route : localhost:3001/admin/create-hospital
+required Data : regId
+                password
+                category
+                email
+                district
+                place
+                contact
+                name
+
+response from server :  status = "ok"
+
+
+
+3)to create KSEB :
+----------------------------------------------------------------
+route : localhost:3001/admin/create-kseb-division
+required Data : regId
+                password
+                division
+                email
+                district
+                place
+                contact
+                officer
+
+response from server :  status = "ok"
+
+
+4) operator Authentification:
+----------------------------------------------------------------
+route : localhost:3001/admin/Kseb/operators-auth
+required Data : regId
+                password
+                
+
+response from server : object with following fields 
+
+                        status = "ok",
+                        officer 
+                        token
+
+
+
+5) Admin self Authentification :
+----------------------------------------------------------------
+route : localhost:3001/admin/self-auth
+required Data : regId
+                password
+                
+
+response from server : object with following fields 
+
+                        status = "ok", 
+                        token
+
+
+
+
+
+
+
+
+
+/**                       RationShop ROUTES                         **/
+
+
+
+
+5) Ration shop Push notifications  :
+----------------------------------------------------------------
+route : localhost:3001/admin/ration-shop/push-notifications
+required Data : regId
+                message
+                
+
+response from server : status :"ok"
+
+
+
+
+
+
+
+
+
+
+

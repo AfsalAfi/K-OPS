@@ -106,7 +106,7 @@ router.post("/available-doctors", (req, res) => {
 router.post('/medical-facilities', (req, res) => {
     const hospital = req.body.regId;
     list_Medical_Facilities(hospital).then(response => {
-        res.status(200).send(response);
+        res.status(200).send({response,status:"ok"});
 
     }).catch(err => {
         res.status(500).send(err.message)
@@ -119,7 +119,7 @@ router.post('/medical-facilities', (req, res) => {
 router.post('/show-RationShop-notifications', (req, res) => {
     const regId = req.body.regId;
     showRationNotifications(regId).then(notifications => {
-        res.status(200).send(notifications)
+        res.status(200).send({notifications,status:"ok"})
     }).catch(err => {
         res.status(500).send(err.message)
     })
