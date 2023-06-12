@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/Login.css";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
+
+// headers: {
+//   Autherization: `Bearer ${localStorage.getItem("token")}`,
+// },
 
 function Login() {
   const navigate = useNavigate();
@@ -16,14 +22,74 @@ function Login() {
 
   const goToUserPage = (e) => {
     e.preventDefault();
+
+    const email = e.target.elements[0].value;
+    const password = e.target.elements[1].value;
+
+    console.log(email);
+    console.log(password);
     // navigate("/KSEB");
-    navigate("/ration");
+    // navigate("/ration");
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/operators-auth`,
+        {
+          regId: email,
+          password: password,
+        },
+        {}
+      )
+      .then(function (response) {
+        console.log(response);
+        if (response.data.status === "ok") {
+          localStorage.setItem("token", response.data.token);
+        }
+        if (response.data.operator === "Kseb") {
+          navigate("/KSEB");
+        } else if (response.data.operator === "Hospital") {
+          navigate("/hospital");
+        } else if (response.data.operator === "RationShop") {
+          navigate("/ration");
+        } else {
+          alert("Enter Correct Id and Password");
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   };
 
   const goToAdminPage = (e) => {
+    const email = e.target.elements[0].value;
+    const password = e.target.elements[1].value;
     e.preventDefault();
     // navigate("/KSEB");
-    navigate("/admin");
+    // navigate("/admin");
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/self-auth`,
+        {
+          regId: email,
+          password: password,
+        },
+        {}
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          navigate("/admin");
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   };
 
   return (
@@ -44,7 +110,7 @@ function Login() {
             <h2>Administrator</h2>
             <div className="input-group">
               <input type="text" required />
-              <label htmlFor="">Email</label>
+              <label htmlFor="">Register Id</label>
             </div>
             <div className="input-group">
               <input type="password" required />
@@ -68,7 +134,7 @@ function Login() {
             <h2>Login</h2>
             <div className="input-group">
               <input type="text" required />
-              <label htmlFor="">Email</label>
+              <label htmlFor="">Register Id</label>
             </div>
             <div className="input-group">
               <input type="password" required />

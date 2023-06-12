@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
-// import { serverURL } from "../serverConfig";
+import { serverURL } from "../../serverConfig";
 
 function Notification_Hopital() {
   const navigate = useNavigate();
@@ -57,6 +57,23 @@ function Notification_Hopital() {
       setNotification(updatedNotifications);
       setNewNotification("");
     }
+
+    console.log("Notification content:", newNotification);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/ration-shop/push-notifications`,
+        { message: newNotification },
+        {}
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   };
 
   return (

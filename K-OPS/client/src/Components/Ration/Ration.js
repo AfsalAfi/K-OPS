@@ -1,7 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../Styles/Ration.css";
+import { ChakraProvider, Box, SimpleGrid } from "@chakra-ui/react";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
 
 function Ration() {
+  const [notification, setNotification] = useState([]);
+  const [newNotification, setNewNotification] = useState("");
+
+  useEffect(() => {
+    axios
+      .post(
+        `http://${serverURL}:3001/show-RationShop-notifications`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data.notifications);
+        if (response.data.status === "ok") {
+          setNotification(response.data.notifications);
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
+
+  const addNotification = () => {
+    if (newNotification.trim() !== "") {
+      const updatedNotifications = [
+        { message: newNotification },
+        ...notification,
+      ];
+      setNotification(updatedNotifications);
+      setNewNotification("");
+    }
+    console.log("Notification content:", newNotification);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/ration-shop/push-notifications`,
+        { message: newNotification },
+        {}
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  };
   const [values, setValues] = useState({
     pachari: "",
     chakkari: "",
@@ -19,21 +77,23 @@ function Ration() {
     console.log(values);
   };
   return (
-    <>
+    <div>
       <h1
         style={{
           color: "var(--textColor)",
           display: "flex",
-          height: "25vh",
+          height: "15vh",
           alignItems: "center",
           justifyContent: "center",
+          fontSize: "40px",
+          fontWeight: "bold",
         }}
       >
         Ration Cards
       </h1>
       <div
         style={{
-          minHeight: "60vh",
+          minHeight: "70vh",
           width: "100%",
           display: "flex",
           justifyContent: "center",
@@ -294,7 +354,94 @@ function Ration() {
           </div>
         </div>
       </div>
-    </>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          minHeight: "40vh",
+          background: "var(--mainColorLight)",
+          borderTopLeftRadius: "60% 20%",
+          borderTopRightRadius: "60% 20%",
+        }}
+      >
+        <div className="h1_KSEB_report">
+          <h1
+            style={{
+              color: "var(--mainColor)",
+              fontSize: "40px",
+              fontWeight: "500",
+              marginBottom: "30px",
+              marginTop: "50px",
+            }}
+          >
+            Notifications
+          </h1>
+
+          {/* <img src={notificationSvg} alt="Notification" /> */}
+        </div>
+        <div className="form_report" style={{ marginBottom: "60px" }}>
+          <ChakraProvider>
+            <SimpleGrid columns={1} spacing={5}>
+              <Box
+                bg="var(--mainColorLight)"
+                height="60px"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Add a new notification"
+                  value={newNotification}
+                  onChange={(e) => setNewNotification(e.target.value)}
+                  style={{
+                    backgroundColor: "var(--mainColor)",
+                    border: "none",
+                    color: "var(--textColor)",
+                    width: "100%",
+                    padding: "20px",
+                  }}
+                />
+                <button
+                  onClick={addNotification}
+                  style={{
+                    backgroundColor: "var(--mainColor)",
+                    border: "none",
+                    color: "var(--textColor)",
+                    padding: "20px",
+                  }}
+                >
+                  Add
+                </button>
+              </Box>
+              {notification.map((item, index) => (
+                <Box
+                  key={index}
+                  bg={
+                    index % 2 === 0
+                      ? "var(--mainColor)"
+                      : "var(--secondaryColor)"
+                  }
+                  color="var(--mainColorLight)"
+                  height="60px"
+                  style={{
+                    display: "flex",
+                    padding: "0px 20px",
+                    alignItems: "center",
+                  }}
+                >
+                  <p>{item.message}</p>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </ChakraProvider>
+        </div>
+      </div>
+    </div>
   );
 }
 

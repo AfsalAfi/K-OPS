@@ -57,12 +57,16 @@ const DoctorTable = ({ patientData, setPatientData }) => {
           <Thead>
             <Tr>
               <Th fontSize="xl">Doctors Name</Th>
+              <Th fontSize="xl">From</Th>
+              <Th fontSize="xl">To</Th>
               <Th fontSize="xl">OP Count</Th>
             </Tr>
           </Thead>
           <Tbody>
             {patientData.map((doctor) => (
               <Tr key={doctor.id}>
+                <Td>{doctor.name}</Td>
+                <Td>{doctor.name}</Td>
                 <Td>{doctor.name}</Td>
                 <Td>
                   <HStack maxW="320px">
