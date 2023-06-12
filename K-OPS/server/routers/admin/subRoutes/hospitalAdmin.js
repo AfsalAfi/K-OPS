@@ -1,14 +1,14 @@
 const express = require('express');
-
-const { list_Enquiry_Hospital, reply_for_enquiry_and_report, create_Doctor,verifyPasswordHospital,increment_OPSTATUS ,decrement_OPSTATUS, } = require('../../../helpers/admin-helpers');
-const { list_Medical_Facilities, update_Medical_Facilities,list_Available_Doctors } = require('../../../helpers/user-helpers');
+const { list_Enquiry_Hospital, reply_for_enquiry_and_report, create_Doctor, verifyPasswordHospital, increment_OPSTATUS, decrement_OPSTATUS, } = require('../../../helpers/admin-helpers');
+const { list_Medical_Facilities, update_Medical_Facilities, list_Available_Doctors } = require('../../../helpers/user-helpers');
+const { protect } = require('../../../middlewares/authMiddlewareOperator');
 
 const Hospital = express.Router();
 
 
 
-Hospital.post('/list-enquiry', (req, res) => {
-    const regId = req.body.regId;
+Hospital.post('/list-enquiry', protect, (req, res) => {
+    const regId = req.user;
     list_Enquiry_Hospital(regId).then((response) => {
         res.send(response);
     }).catch((err) => {
@@ -17,43 +17,43 @@ Hospital.post('/list-enquiry', (req, res) => {
 })
 
 
-Hospital.post('/op-ticket-status',(req,res)=>{
-    const hospital = req.body.hospital;
-    list_Available_Doctors(hospital).then(response=>{
+Hospital.post('/op-ticket-status', protect, (req, res) => {
+    const hospital = req.user;
+    list_Available_Doctors(hospital).then(response => {
         res.status(200).send(response);
         console.log(response);
-    }).catch(err=>{
+    }).catch(err => {
         res.status(404).send(err);
     })
 
 })
 
 
-Hospital.post('/op-ticket-incrementing',(req,res)=>{
+Hospital.post('/op-ticket-incrementing', protect, (req, res) => {
     const doctor_id = req.body.doctor_id;
-    increment_OPSTATUS(doctor_id).then(response=>{
-        return res.status(200).send({response, status:"ok" })
+    increment_OPSTATUS(doctor_id).then(response => {
+        return res.status(200).send({ response, status: "ok" })
 
-    }).catch(err=>{
+    }).catch(err => {
         return res.status(500).send(err.message)
     })
 
 
 })
 
-Hospital.post('/op-ticket-decrementing',(req,res)=>{
+Hospital.post('/op-ticket-decrementing', protect, (req, res) => {
     const doctor_id = req.body.doctor_id;
-    decrement_OPSTATUS(doctor_id).then(response=>{
-        return res.status(200).send({response, status:"ok"})
+    decrement_OPSTATUS(doctor_id).then(response => {
+        return res.status(200).send({ response, status: "ok" })
 
-    }).catch(err=>{
+    }).catch(err => {
         return res.status(500).send(err.message)
     })
 
 
 })
 
-Hospital.post('/reply-for-enquiry-and-report', (req, res) => {
+Hospital.post('/reply-for-enquiry-and-report', protect, (req, res) => {
     const email = req.body.email;
     const message = req.body.message;
     const subject = req.body.subject;
@@ -64,12 +64,12 @@ Hospital.post('/reply-for-enquiry-and-report', (req, res) => {
     })
 })
 
-Hospital.post('/add-newDoctor', (req, res) => {
+Hospital.post('/add-newDoctor', protect, (req, res) => {
     const name = req.body.name;
     const specialization = req.body.specialization;
     const availableTimeFrom = req.body.availableTimeFrom;
     const availableTimeTo = req.body.availableTimeTo;
-    const hospital = req.body.hospital;
+    const hospital = req.user;
     const doctor_id = req.body.doctor_id;
     create_Doctor(name, specialization, availableTimeFrom, availableTimeTo, hospital, doctor_id)
         .then((response) => {
@@ -79,8 +79,8 @@ Hospital.post('/add-newDoctor', (req, res) => {
         })
 })
 
-Hospital.post('/list-medical-facilities', (req, res) => {
-    const hospital = req.body.regId;
+Hospital.post('/list-medical-facilities', protect, (req, res) => {
+    const hospital = req.user;
     list_Medical_Facilities(hospital).then(response => {
         res.status(200).send(response);
     }).catch(err => {
@@ -88,8 +88,8 @@ Hospital.post('/list-medical-facilities', (req, res) => {
     })
 })
 
-Hospital.post('/update-medical-facilities', (req, res) => {
-    const regId = req.body.regId;
+Hospital.post('/update-medical-facilities', protect, (req, res) => {
+    const regId = req.user;
     const facilities = req.body.facilities;
     const equipments = req.body.equipments;
     update_Medical_Facilities(regId, facilities, equipments).then(response => {

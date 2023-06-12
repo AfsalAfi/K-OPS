@@ -1,12 +1,12 @@
 const express = require('express');
-
 const { RationShopNotification, list_Enquiry_RationShop, update_available_stocks, list_available_stocks, reply_for_enquiry_and_report } = require('../../../helpers/admin-helpers');
+const { protect } = require('../../../middlewares/authMiddlewareOperator');
 
 const RationShop = express.Router();
 
 
-RationShop.post('/push-notifications', (req, res) => {
-    const regId = req.body.regId;
+RationShop.post('/push-notifications', protect, (req, res) => {
+    const regId = req.user;
     const message = req.body.message;
     let dt = new Date()
     const date = dt.getDate() + "/" + dt.getMonth() + "/" + dt.getFullYear();
@@ -19,8 +19,8 @@ RationShop.post('/push-notifications', (req, res) => {
     })
 })
 
-RationShop.post('/list-enquiry', (req, res) => {
-    const regId = req.body.regId;
+RationShop.post('/list-enquiry', protect, (req, res) => {
+    const regId = req.user;
     list_Enquiry_RationShop(regId).then((response) => {
         res.send(response);
     }).catch((err) => {
@@ -28,8 +28,8 @@ RationShop.post('/list-enquiry', (req, res) => {
     })
 })
 
-RationShop.post('/list-available-stocks', (req, res) => {
-    const regId = req.body.regId;
+RationShop.post('/list-available-stocks', protect, (req, res) => {
+    const regId = req.user;
     list_available_stocks(regId).then((response) => {
         res.send(response);
     }).catch((err) => {
@@ -37,8 +37,8 @@ RationShop.post('/list-available-stocks', (req, res) => {
     })
 })
 
-RationShop.post('/update-available-stocks', (req, res) => {
-    const regId = req.body.regId;
+RationShop.post('/update-available-stocks', protect, (req, res) => {
+    const regId = req.user;
     const white = req.body.white;
     const blue = req.body.blue;
     const red = req.body.red;
@@ -50,7 +50,7 @@ RationShop.post('/update-available-stocks', (req, res) => {
     })
 })
 
-RationShop.post('/reply-for-enquiry', (req, res) => {
+RationShop.post('/reply-for-enquiry', protect, (req, res) => {
     const email = req.body.email;
     const message = req.body.message;
     const subject = req.body.subject;
