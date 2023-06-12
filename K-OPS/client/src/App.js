@@ -14,6 +14,9 @@ import Login from "./Components/Login/Login";
 import KSEB_User from "./Components/KSEB/KSEB_User";
 import Ration from "./Components/Ration/Ration";
 import Admin from "./Components/Admin/Admin";
+import Hospital from "./Components/Hospital/Hospital";
+import Ration_status from "./UserComponents/Ration_status";
+import Ration_notification from "./UserComponents/Ration_notification";
 
 function App() {
   return (
@@ -45,6 +48,14 @@ function App() {
 
           {/* Ration */}
           <Route path="/ration" element={<Ration />} />
+          <Route path="/ration/status" element={<Ration_status />} />
+          <Route
+            path="/ration/notification"
+            element={<Ration_notification />}
+          />
+
+          {/* Hospital */}
+          <Route path="/hospital" element={<Hospital />} />
 
           {/* Admin */}
           <Route path="/admin" element={<Admin />} />

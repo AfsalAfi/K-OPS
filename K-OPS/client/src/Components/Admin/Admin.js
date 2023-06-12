@@ -18,6 +18,8 @@ import {
 } from "react-icons/ai";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Icon } from "@chakra-ui/icons";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
 
 function Admin() {
   function handleClick(e) {
@@ -39,6 +41,30 @@ function Admin() {
     console.log("Email:", email);
     console.log("Officer:", officer);
     console.log("Pass:", password);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/create-ration-shop`,
+        {
+          regId: registerId,
+          district: district,
+          division: division,
+          place: place,
+          contact: contactNumber,
+          email: email,
+          officer: officer,
+          password: password,
+        },
+        {}
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   }
 
   function handleSubmit(event) {
@@ -52,14 +78,29 @@ function Admin() {
     const hospitalName = document.getElementById("hospitalName").value;
     const password = document.getElementById("password").value;
 
-    console.log("Register ID:", registerId);
-    console.log("Category:", category);
-    console.log("District:", district);
-    console.log("Place:", place);
-    console.log("Email:", email);
-    console.log("Contact:", contact);
-    console.log("Hospital Name:", hospitalName);
-    console.log("Password:", password);
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/create-ration-shop`,
+        {
+          regId: registerId,
+          category: category,
+          district: district,
+          place: place,
+          email: email,
+          contact: contact,
+          name: hospitalName,
+          password: password,
+        },
+        {}
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   }
 
   function handleSubmitRation(event) {
@@ -72,13 +113,28 @@ function Admin() {
     const email = document.getElementById("email").value;
     const rationShop = document.getElementById("rationShop").value;
 
-    console.log("Register ID:", registerId);
-    console.log("Password:", password);
-    console.log("District:", district);
-    console.log("Place:", place);
-    console.log("Contact:", contact);
-    console.log("Email:", email);
-    console.log("Ration Shop:", rationShop);
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/create-ration-shop`,
+        {
+          regId: registerId,
+          password: password,
+          district: district,
+          place: place,
+          contact: contact,
+          email: email,
+          RationShopName: rationShop,
+        },
+        {}
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   }
   return (
     <div

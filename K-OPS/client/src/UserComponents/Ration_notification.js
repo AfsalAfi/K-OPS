@@ -7,7 +7,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { serverURL } from "../serverConfig";
 
-function KSEB_notification() {
+function Ration_notification() {
   const navigate = useNavigate();
   const [notification, setNotification] = useState([]);
 
@@ -22,13 +22,14 @@ function KSEB_notification() {
 
   useEffect(() => {
     axios
-      .post(`http://${serverURL}:3001/show-kseb-notifications`, {
+      .post(`http://${serverURL}:3001/show-RationShop-notifications`, {
         regId: regId.regId,
       })
       .then(function (response) {
+        console.log(response.data.status);
         if (response.data.status === "ok") {
-          console.log(response.data);
-          setNotification(response.data.result);
+          console.log(response.data.notifications);
+          setNotification(response.data.notifications);
         } else {
           navigate("/");
         }
@@ -81,7 +82,7 @@ function KSEB_notification() {
         <div className="form_report">
           <ChakraProvider>
             <SimpleGrid columns={1} spacing={5}>
-              {notification.map((item, index) => (
+              {dummyData.map((item, index) => (
                 <Box
                   key={index}
                   bg={index % 2 === 0 ? "#172a3a" : "#7a9e9f"}
@@ -92,7 +93,7 @@ function KSEB_notification() {
                     alignItems: "center",
                   }}
                 >
-                  <p style={{ color: "var(--textColor)" }}>{item.message}</p>
+                  <p style={{ color: "var(--textColor)" }}>{item.content}</p>
                 </Box>
               ))}
             </SimpleGrid>
@@ -103,4 +104,4 @@ function KSEB_notification() {
   );
 }
 
-export default KSEB_notification;
+export default Ration_notification;

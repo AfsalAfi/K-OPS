@@ -26,7 +26,6 @@ function Hospital_medical_facility() {
   const equipments = location.state.equipments;
   const facilities = location.state.facilities;
 
-
   // useEffect(() => {
   //   axios
   //     .post(
@@ -49,7 +48,6 @@ function Hospital_medical_facility() {
   //       // always executed
   //     });
   // }, []);
-
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -133,7 +131,7 @@ function Hospital_medical_facility() {
           </ChakraProvider>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

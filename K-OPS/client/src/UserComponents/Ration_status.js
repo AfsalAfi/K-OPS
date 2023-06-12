@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import "../../Styles/Ration.css";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 
-function Ration() {
+function Ration_status() {
   const [values, setValues] = useState({
     pachari: "",
     chakkari: "",
     atta: "",
     kerosene: "",
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
@@ -19,18 +19,24 @@ function Ration() {
     console.log(values);
   };
   return (
-    <>
-      <h1
-        style={{
-          color: "var(--textColor)",
-          display: "flex",
-          height: "25vh",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+    <div>
+      <div
+        className="h1_KSEB_report"
+        style={{ display: "flex", alignItems: "center", width: "100%" }}
       >
-        Ration Cards
-      </h1>
+        <h1
+          style={{
+            color: "var(--textColor)",
+            display: "flex",
+            height: "25vh",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          Ration Cards
+        </h1>
+      </div>
+
       <div
         style={{
           minHeight: "60vh",
@@ -48,10 +54,11 @@ function Ration() {
               <p className="title">YELLOW CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back yellow">
-              <form onSubmit={handleSubmit} className="form-container">
+              <form className="form-container">
                 <label>
                   Pachari:
                   <input
+                    readOnly
                     type="text"
                     name="pachari"
                     value={values.pachari}
@@ -64,6 +71,7 @@ function Ration() {
                 <label>
                   Chakkari:
                   <input
+                    readOnly
                     type="text"
                     name="chakkari"
                     value={values.chakkari}
@@ -76,6 +84,7 @@ function Ration() {
                 <label>
                   Atta:
                   <input
+                    readOnly
                     type="text"
                     name="atta"
                     value={values.atta}
@@ -88,6 +97,7 @@ function Ration() {
                 <label>
                   Kerosene:
                   <input
+                    readOnly
                     type="text"
                     name="kerosene"
                     value={values.kerosene}
@@ -97,9 +107,6 @@ function Ration() {
                   />
                 </label>
                 <br />
-                <button type="submit" className="submit-button gray">
-                  Submit
-                </button>
               </form>
             </div>
           </div>
@@ -110,10 +117,11 @@ function Ration() {
               <p className="title">RED CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back red">
-              <form onSubmit={handleSubmit} className="form-container">
+              <form className="form-container">
                 <label>
                   Pachari:
                   <input
+                    readOnly
                     type="text"
                     name="pachari"
                     value={values.pachari}
@@ -126,6 +134,7 @@ function Ration() {
                 <label>
                   Chakkari:
                   <input
+                    readOnly
                     type="text"
                     name="chakkari"
                     value={values.chakkari}
@@ -138,6 +147,7 @@ function Ration() {
                 <label>
                   Atta:
                   <input
+                    readOnly
                     type="text"
                     name="atta"
                     value={values.atta}
@@ -150,6 +160,7 @@ function Ration() {
                 <label>
                   Kerosene:
                   <input
+                    readOnly
                     type="text"
                     name="kerosene"
                     value={values.kerosene}
@@ -159,9 +170,6 @@ function Ration() {
                   />
                 </label>
                 <br />
-                <button type="submit" className="submit-button">
-                  Submit
-                </button>
               </form>
             </div>
           </div>
@@ -172,10 +180,11 @@ function Ration() {
               <p className="title">BLUE CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back blue">
-              <form onSubmit={handleSubmit} className="form-container">
+              <form className="form-container">
                 <label>
                   Pachari:
                   <input
+                    readOnly
                     type="text"
                     name="pachari"
                     value={values.pachari}
@@ -188,6 +197,7 @@ function Ration() {
                 <label>
                   Chakkari:
                   <input
+                    readOnly
                     type="text"
                     name="chakkari"
                     value={values.chakkari}
@@ -200,6 +210,7 @@ function Ration() {
                 <label>
                   Atta:
                   <input
+                    readOnly
                     type="text"
                     name="atta"
                     value={values.atta}
@@ -212,6 +223,7 @@ function Ration() {
                 <label>
                   Kerosene:
                   <input
+                    readOnly
                     type="text"
                     name="kerosene"
                     value={values.kerosene}
@@ -221,9 +233,6 @@ function Ration() {
                   />
                 </label>
                 <br />
-                <button type="submit" className="submit-button">
-                  Submit
-                </button>
               </form>
             </div>
           </div>
@@ -234,13 +243,11 @@ function Ration() {
               <p className="title">WHITE CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back white">
-              <form
-                onSubmit={handleSubmit}
-                className="form-container white_content"
-              >
+              <form className="form-container white_content">
                 <label>
                   Pachari:
                   <input
+                    readOnly
                     type="text"
                     name="pachari"
                     value={values.pachari}
@@ -253,6 +260,7 @@ function Ration() {
                 <label>
                   Chakkari:
                   <input
+                    readOnly
                     type="text"
                     name="chakkari"
                     value={values.chakkari}
@@ -265,6 +273,7 @@ function Ration() {
                 <label>
                   Atta:
                   <input
+                    readOnly
                     type="text"
                     name="atta"
                     value={values.atta}
@@ -277,6 +286,7 @@ function Ration() {
                 <label>
                   Kerosene:
                   <input
+                    readOnly
                     type="text"
                     name="kerosene"
                     value={values.kerosene}
@@ -286,16 +296,13 @@ function Ration() {
                   />
                 </label>
                 <br />
-                <button type="submit" className="submit-button dark_gray">
-                  Submit
-                </button>
               </form>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-export default Ration;
+export default Ration_status;

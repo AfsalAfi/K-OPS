@@ -39,20 +39,14 @@ function RationShop() {
   const [divisions, setDivisions] = useState([]);
   const navigate = useNavigate();
 
-  const goToReport = () => {
-    navigate("/KSEB/report", {
-      state: { email: selectedDivisionCollection.email },
-    });
-  };
-
-  const goToEnquiry = () => {
-    navigate("/KSEB/enquiry", {
+  const goToStatus = () => {
+    navigate("/ration/status", {
       state: { email: selectedDivisionCollection.email },
     });
   };
 
   const goToNotification = () => {
-    navigate("/KSEB/notification", {
+    navigate("/ration/notification", {
       state: { regId: selectedDivisionCollection.regId },
     });
   };
@@ -72,13 +66,14 @@ function RationShop() {
     setIsDivision(!!selectedDivision);
     axios
       .post(
-        `http://${serverURL}:3001/list-kseb-divisions`,
+        `http://${serverURL}:3001/list-ration-shops`,
         {
           district: event,
         },
         {}
       )
       .then(function (response) {
+        console.log(response.data);
         if (response.data.status === "ok") {
           console.log("response");
           console.log(response.data.result);
@@ -120,56 +115,72 @@ function RationShop() {
   // }, [selectedDistrict, selectedDivision]);
 
   return (
-    <div className="container_KSEB">
-      <div className="image_section_KSEB">
-        <img src="../ration.svg" alt="KSEB Logo" />
-      </div>
-      <div className="contents_KSEB">
-        <h1>Ration Shop</h1>
-        <p>
-          Ensuring food security for all: India's ration shop system provides
-          subsidized essential commodities to economically disadvantaged
-          sections, promoting equitable access to affordable food.
-        </p>
-        {/* District selection */}
-        <ChakraProvider>
-          <Select
-            placeholder="Select District"
-            value={selectedDistrict}
-            onChange={(e) => setDistrict(e.target.value)}
-            mb={4}
-            color="white"
-            my="20px"
-          >
-            {districts.map((district) => (
-              <option key={district.id} value={district.name}>
-                {district.name}
-              </option>
-            ))}
-          </Select>
-
-          {/* Division selection */}
-          {selectedDistrict && (
+    <>
+      <div className="container_KSEB">
+        <div className="image_section_KSEB">
+          <img src="../ration.svg" alt="KSEB Logo" />
+        </div>
+        <div className="contents_KSEB">
+          <h1>Ration Shop</h1>
+          <p>
+            Ensuring food security for all: India's ration shop system provides
+            subsidized essential commodities to economically disadvantaged
+            sections, promoting equitable access to affordable food.
+          </p>
+          {/* District selection */}
+          <ChakraProvider>
             <Select
-              placeholder="Select Division"
-              value={selectedDivision}
-              onChange={(e) => setDivisionForKseb(e)}
+              placeholder="Select District"
+              value={selectedDistrict}
+              onChange={(e) => setDistrict(e.target.value)}
               mb={4}
               color="white"
+              my="20px"
             >
-              {divisions.map((division) => (
-                <option key={division.id} value={JSON.stringify(division)}>
-                  {division.division}
+              {districts.map((district) => (
+                <option key={district.id} value={district.name}>
+                  {district.name}
                 </option>
               ))}
             </Select>
-          )}
-        </ChakraProvider>
 
-        {/* Options */}
-        {isDivision && <div className="buttons_KESB"></div>}
+            {/* Division selection */}
+            {selectedDistrict && (
+              <Select
+                placeholder="Select Division"
+                value={selectedDivision}
+                onChange={(e) => setDivisionForKseb(e)}
+                mb={4}
+                color="white"
+              >
+                {divisions.map((division) => (
+                  <option key={division.id} value={JSON.stringify(division)}>
+                    {division.division}
+                  </option>
+                ))}
+              </Select>
+            )}
+          </ChakraProvider>
+
+          {/* Options */}
+          {!isDivision && (
+            <div className="buttons_KESB">
+              <div className="buttons_KESB">
+                <h2 onClick={goToStatus}>
+                  <span>-</span>Ration Status
+                </h2>
+                <h2 onClick={goToNotification}>
+                  <span>-</span>Notifications
+                </h2>
+
+                <p>Opening Time : 9:00 AM</p>
+                <p>Closing Time : 6:00 PM</p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
