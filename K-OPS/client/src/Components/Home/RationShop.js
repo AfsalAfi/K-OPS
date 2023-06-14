@@ -120,7 +120,7 @@ function RationShop() {
 
   return (
     <>
-      <div className="container_KSEB">
+      <div className="container_KSEB" id="ration-shop-page">
         <div className="image_section_KSEB">
           <img src="../ration.svg" alt="KSEB Logo" />
         </div>
@@ -142,7 +142,7 @@ function RationShop() {
               my="20px"
             >
               {districts.map((district) => (
-                <option key={district.id} value={district.name}>
+                <option key={district.id} value={district.name} style={{ color: "var(--mainColor)" }}>
                   {district.name}
                 </option>
               ))}
@@ -158,7 +158,7 @@ function RationShop() {
                 color="white"
               >
                 {divisions.map((division) => (
-                  <option key={division.id} value={JSON.stringify(division)}>
+                  <option key={division.id} value={JSON.stringify(division)} style={{ color: "var(--mainColor)" }}>
                     {division.place}
                   </option>
                 ))}

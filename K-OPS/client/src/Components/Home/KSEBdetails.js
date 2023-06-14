@@ -127,7 +127,7 @@ function KSEBdetails() {
   // }, [selectedDistrict, selectedDivision]);
 
   return (
-    <div className="container_KSEB">
+    <div className="container_KSEB" id="kseb-page">
       <div className="image_section_KSEB">
         <img src="../KSEB.svg" alt="KSEB Logo" />
       </div>

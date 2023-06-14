@@ -135,7 +135,7 @@ function Hospital() {
   // }, [selectedDistrict, selectedDivision]);
 
   return (
-    <div className="container_hospital">
+    <div className="container_hospital" id="hospital-page">
       <div className="contents_hospital">
         <h1>Hospital</h1>
         <p>

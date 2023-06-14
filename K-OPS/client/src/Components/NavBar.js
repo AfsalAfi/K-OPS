@@ -5,6 +5,15 @@ import "../Styles/NavBar.css";
 function Navbar() {
   const navRef = useRef();
 
+  const scrollToElement = (event) => {
+    event.preventDefault();
+    const targetId = event.target.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    targetElement.scrollIntoView({
+      behavior: 'smooth'
+    });
+  };
+
   const showNavbar = () => {
     navRef.current.classList.toggle("responsive_nav");
   };
@@ -14,9 +23,15 @@ function Navbar() {
       <h3>K-OPS</h3>
       <nav ref={navRef}>
         <a href="/#">Home</a>
-        <a href="/#">KSEB</a>
-        <a href="/#">Hospital</a>
-        <a href="/#">Ration Shop</a>
+        <a href="#kseb-page" onClick={scrollToElement}>
+          KSEB
+        </a>
+        <a href="#hospital-page" onClick={scrollToElement}>
+          Hospital
+        </a>
+        <a href="#ration-shop-page" onClick={scrollToElement}>
+          Ration Shop
+        </a>
         <a href="/#">About Us</a>
         <button className="nav-btn nav-close-btn" onClick={showNavbar}>
           <FaTimes />
