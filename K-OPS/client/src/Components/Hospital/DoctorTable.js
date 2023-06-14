@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChakraProvider,
   Table,
@@ -12,15 +12,45 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
 import { AddIcon } from "@chakra-ui/icons";
 
 const DoctorTable = ({ patientData, setPatientData }) => {
+  console.log(patientData);
   const incrementCount = (id) => {
     const updatedData = patientData.map((doctor) => {
-      if (doctor.id === id) {
+      if (doctor.doctor_id === id) {
+        // return {
+        //   ...doctor,
+        //   opTickets: doctor.opTickets + 1,
+        // };
+        axios
+          .post(
+            `http://${serverURL}:3001/admin/hospital/op-ticket-incrementing`,
+            { doctor_id: doctor.doctor_id },
+            {
+              headers: {
+                Autherization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then(function (response) {
+            console.log(response);
+            if (response.data.status === "ok") {
+              window.location.reload();
+            }
+          })
+
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {
+            console.log("ethi");
+          });
         return {
           ...doctor,
-          count: doctor.count + 1,
+          opTickets: doctor.opTickets + 1,
         };
       }
       return doctor;
@@ -66,19 +96,19 @@ const DoctorTable = ({ patientData, setPatientData }) => {
             {patientData.map((doctor) => (
               <Tr key={doctor.id}>
                 <Td>{doctor.name}</Td>
-                <Td>{doctor.name}</Td>
-                <Td>{doctor.name}</Td>
+                <Td>{doctor.availableTimeFrom}</Td>
+                <Td>{doctor.availableTimeTo}</Td>
                 <Td>
                   <HStack maxW="320px">
                     <Button
                       variant="outline"
                       colorScheme="teal"
                       size="sm"
-                      onClick={() => incrementCount(doctor.id)}
+                      onClick={() => incrementCount(doctor.doctor_id)}
                     >
                       +
                     </Button>
-                    <Input size="sm" value={doctor.count} readOnly />
+                    <Input size="sm" value={doctor.opTickets} readOnly />
                     <Button
                       variant="outline"
                       colorScheme="teal"

@@ -14,14 +14,42 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { MinusIcon } from "@chakra-ui/icons";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
 
 const PatientTable = ({ doctorData, setDoctorData, setPatientData }) => {
   const decrementCount = (id) => {
     const updatedData = doctorData.map((patient) => {
-      if (patient.id === id) {
+      console.log(patient);
+      if (patient.doctor_id === id) {
+        axios
+          .post(
+            `http://${serverURL}:3001/admin/hospital/op-ticket-decrementing`,
+            {
+              doctor_id: patient.doctor_id,
+            },
+            {
+              headers: {
+                Autherization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then(function (response) {
+            console.log(response);
+            if (response.data.status === "ok") {
+              window.location.reload();
+            }
+          })
+
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {
+            console.log("ethi");
+          });
         return {
           ...patient,
-          count: patient.count > 0 ? patient.count - 1 : 0,
+          opTickets: patient.opTickets - 1,
         };
       }
       return patient;
@@ -50,6 +78,8 @@ const PatientTable = ({ doctorData, setDoctorData, setPatientData }) => {
           <Thead>
             <Tr>
               <Th fontSize="xl">Doctors Name</Th>
+              <Th fontSize="xl">From</Th>
+              <Th fontSize="xl">To</Th>
               <Th fontSize="xl">OP Count</Th>
             </Tr>
           </Thead>
@@ -57,6 +87,9 @@ const PatientTable = ({ doctorData, setDoctorData, setPatientData }) => {
             {doctorData.map((doctor) => (
               <Tr key={doctor.id}>
                 <Td>{doctor.name}</Td>
+                <Td>{doctor.availableTimeFrom}</Td>
+                <Td>{doctor.availableTimeTo}</Td>
+
                 <Td>
                   <HStack maxW="320px">
                     <Button
@@ -67,12 +100,12 @@ const PatientTable = ({ doctorData, setDoctorData, setPatientData }) => {
                     >
                       +
                     </Button>
-                    <Input size="sm" value={doctor.count} readOnly />
+                    <Input size="sm" value={doctor.opTickets} readOnly />
                     <Button
                       variant="outline"
                       colorScheme="teal"
                       size="sm"
-                      onClick={() => decrementCount(doctor.id)}
+                      onClick={() => decrementCount(doctor.doctor_id)}
                     >
                       -
                     </Button>

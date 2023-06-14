@@ -24,15 +24,23 @@ function Hospital_medical_facility() {
 
   const location = useLocation();
   const equipments = location.state.equipments;
+  const regId = location.state.regId;
   const facilities = location.state.facilities;
 
+  console.log(equipments);
   // useEffect(() => {
   //   axios
   //     .post(
   //       `http://${serverURL}:3001/medical-facilities`,
   //       {
-  //         regId: regId
-  //       })
+  //         regId: regId,
+  //       },
+  //       {
+  //         headers: {
+  //           Autherization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     )
   //     .then(function (response) {
   //       if (response.data.status === "ok") {
   //         console.log(response.data);
@@ -52,18 +60,17 @@ function Hospital_medical_facility() {
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   // Handle form submission logic here
-  //   // const name = event.target.name.value;
-  //   // const contactNumber = event.target.contactNumber.value;
-  //   // const email = event.target.email.value;
-  //   // const briefDescription = event.target.briefDescription.value;
-  //   // const enquiryType = event.target.enquiryType.value;
+  //   const name = event.target.name.value;
+  //   const contactNumber = event.target.contactNumber.value;
+  //   const email = event.target.email.value;
+  //   const briefDescription = event.target.briefDescription.value;
+  //   const enquiryType = event.target.enquiryType.value;
 
-  //   // console.log("Name:", name);
-  //   // console.log("Contact Number:", contactNumber);
-  //   // console.log("Email:", email);
-  //   // console.log("Brief Description:", briefDescription);
-  //   // console.log("Enquiry Type:", enquiryType);
-
+  //   console.log("Name:", name);
+  //   console.log("Contact Number:", contactNumber);
+  //   console.log("Email:", email);
+  //   console.log("Brief Description:", briefDescription);
+  //   console.log("Enquiry Type:", enquiryType);
   // };
   return (
     <div className="container_KESB_report">

@@ -34,45 +34,62 @@ function KSEBdetails() {
   const [isDivision, setIsDivision] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedDivisionCollection, setSelectedDivisionCollection] = useState("");
+  const [selectedDivisionCollection, setSelectedDivisionCollection] =
+    useState("");
   const [divisions, setDivisions] = useState([]);
   const navigate = useNavigate();
 
   const goToReport = () => {
-    navigate("/KSEB/report", { state: { email: selectedDivisionCollection.email } });
+    navigate("/KSEB/report", {
+      state: { regId: selectedDivisionCollection.regId },
+    });
   };
 
   const goToEnquiry = () => {
-    navigate("/KSEB/enquiry", { state: { email: selectedDivisionCollection.email } });
+    navigate("/KSEB/enquiry", {
+      state: {
+        email: selectedDivisionCollection.email,
+        regId: selectedDivisionCollection.regId,
+      },
+    });
   };
 
   const goToNotification = () => {
-    navigate("/KSEB/notification", { state: { regId: selectedDivisionCollection.regId } });
+    navigate("/KSEB/notification", {
+      state: { regId: selectedDivisionCollection.regId },
+    });
   };
 
   const setDivisionForKseb = (event) => {
     const selectedDivision = JSON.parse(event.target.value);
     console.log(selectedDivision);
     console.log(event);
-    setSelectedDivision(selectedDivision)
-    setSelectedDivisionCollection(selectedDivision)
-    setIsDivision(true)
-  }
+    setSelectedDivision(selectedDivision);
+    setSelectedDivisionCollection(selectedDivision);
+    setIsDivision(true);
+  };
 
   const setDistrict = (event) => {
     console.log(event);
-    setSelectedDistrict(event)
+    setSelectedDistrict(event);
     setIsDivision(!!selectedDivision);
-    axios.post(`http://${serverURL}:3001/list-kseb-divisions`,
-      {
-        district: event,
-      }, {}
-    )
+    axios
+      .post(
+        `http://${serverURL}:3001/list-kseb-divisions`,
+        {
+          district: event,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then(function (response) {
         if (response.data.status === "ok") {
           console.log("response");
           console.log(response.data.result);
-          setDivisions(response.data.result)
+          setDivisions(response.data.result);
         }
       })
 
@@ -82,7 +99,7 @@ function KSEBdetails() {
       .finally(function () {
         console.log("ethi");
       });
-  }
+  };
 
   // useEffect(() => {
   //   setIsDivision(!!selectedDivision);
@@ -169,7 +186,9 @@ function KSEBdetails() {
               <span>-</span>Notifications
             </h2>
 
-            <p style={{ marginTop: "15px" }}>Name: {selectedDivisionCollection.officer}</p>
+            <p style={{ marginTop: "15px" }}>
+              Name: {selectedDivisionCollection.officer}
+            </p>
             <p>Contact Number : {selectedDivisionCollection.contact}</p>
             <p>Email : {selectedDivisionCollection.email}</p>
           </div>

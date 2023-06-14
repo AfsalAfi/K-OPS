@@ -9,9 +9,10 @@ function Ration() {
   const [newNotification, setNewNotification] = useState("");
 
   useEffect(() => {
+    // console.log(localStorage.getItem("token"));
     axios
       .post(
-        `http://${serverURL}:3001/show-RationShop-notifications`,
+        `http://${serverURL}:3001/admin/ration-shop/show-RationShop-notifications`,
         {},
         {
           headers: {
@@ -49,7 +50,11 @@ function Ration() {
       .post(
         `http://${serverURL}:3001/admin/ration-shop/push-notifications`,
         { message: newNotification },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {})
 
@@ -63,7 +68,7 @@ function Ration() {
   const [values, setValues] = useState({
     pachari: "",
     chakkari: "",
-    atta: "",
+    Aatta: "",
     kerosene: "",
   });
 
@@ -72,9 +77,33 @@ function Ration() {
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, cardColor) => {
     e.preventDefault();
+    console.log(cardColor);
     console.log(values);
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/ration-shop/update-available-stocks`,
+        {
+          cardColor: cardColor,
+          stocks: values,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   };
   return (
     <div>
@@ -103,12 +132,16 @@ function Ration() {
         }}
       >
         <div className="flip-card">
+          {/* Yellow Card */}
           <div className="flip-card-inner">
             <div className="flip-card-front yellow">
               <p className="title">YELLOW CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back yellow">
-              <form onSubmit={handleSubmit} className="form-container">
+              <form
+                onSubmit={(e) => handleSubmit(e, "yellow")}
+                className="form-container"
+              >
                 <label>
                   Pachari:
                   <input
@@ -134,14 +167,14 @@ function Ration() {
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     type="text"
-                    name="atta"
-                    value={values.atta}
+                    name="Aatta"
+                    value={values.Aatta}
                     onChange={handleChange}
                     className="white-placeholder"
-                    placeholder="Enter Atta in kg"
+                    placeholder="Enter Aatta in kg"
                   />
                 </label>
                 <br />
@@ -165,12 +198,16 @@ function Ration() {
           </div>
         </div>
         <div className="flip-card">
+          {/* Red Card */}
           <div className="flip-card-inner">
             <div className="flip-card-front red">
               <p className="title">RED CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back red">
-              <form onSubmit={handleSubmit} className="form-container">
+              <form
+                onSubmit={(e) => handleSubmit(e, "red")}
+                className="form-container"
+              >
                 <label>
                   Pachari:
                   <input
@@ -196,14 +233,14 @@ function Ration() {
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     type="text"
-                    name="atta"
-                    value={values.atta}
+                    name="Aatta"
+                    value={values.Aatta}
                     onChange={handleChange}
                     className="white-placeholder"
-                    placeholder="Enter Atta in kg"
+                    placeholder="Enter Aatta in kg"
                   />
                 </label>
                 <br />
@@ -227,12 +264,16 @@ function Ration() {
           </div>
         </div>
         <div className="flip-card">
+          {/* Blue Card */}
           <div className="flip-card-inner">
             <div className="flip-card-front blue">
               <p className="title">BLUE CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back blue">
-              <form onSubmit={handleSubmit} className="form-container">
+              <form
+                onSubmit={(e) => handleSubmit(e, "blue")}
+                className="form-container"
+              >
                 <label>
                   Pachari:
                   <input
@@ -258,14 +299,14 @@ function Ration() {
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     type="text"
-                    name="atta"
-                    value={values.atta}
+                    name="Aatta"
+                    value={values.Aatta}
                     onChange={handleChange}
                     className="white-placeholder"
-                    placeholder="Enter Atta in kg"
+                    placeholder="Enter Aatta in kg"
                   />
                 </label>
                 <br />
@@ -289,13 +330,14 @@ function Ration() {
           </div>
         </div>
         <div className="flip-card">
+          {/* White Card */}
           <div className="flip-card-inner">
             <div className="flip-card-front white">
               <p className="title">WHITE CARD</p> <p>Hover For Details</p>
             </div>
             <div className="flip-card-back white">
               <form
-                onSubmit={handleSubmit}
+                onSubmit={(e) => handleSubmit(e, "white")}
                 className="form-container white_content"
               >
                 <label>
@@ -323,14 +365,14 @@ function Ration() {
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     type="text"
-                    name="atta"
-                    value={values.atta}
+                    name="Aatta"
+                    value={values.Aatta}
                     onChange={handleChange}
                     className="black-placeholder"
-                    placeholder="Enter Atta in kg"
+                    placeholder="Enter Aatta in kg"
                   />
                 </label>
                 <br />

@@ -55,7 +55,11 @@ function Admin() {
           officer: officer,
           password: password,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {})
 
@@ -98,7 +102,11 @@ function Admin() {
           email: email,
           RationShopName: rationShop,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {})
 
@@ -142,7 +150,11 @@ function Admin() {
           name: hospitalName,
           password: password,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {})
 

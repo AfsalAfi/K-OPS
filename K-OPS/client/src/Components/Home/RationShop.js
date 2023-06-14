@@ -41,7 +41,7 @@ function RationShop() {
 
   const goToStatus = () => {
     navigate("/ration/status", {
-      state: { email: selectedDivisionCollection.email },
+      state: { regId: selectedDivisionCollection.regId },
     });
   };
 
@@ -70,7 +70,11 @@ function RationShop() {
         {
           district: event,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {
         console.log(response.data);
@@ -155,7 +159,7 @@ function RationShop() {
               >
                 {divisions.map((division) => (
                   <option key={division.id} value={JSON.stringify(division)}>
-                    {division.division}
+                    {division.place}
                   </option>
                 ))}
               </Select>
@@ -163,7 +167,7 @@ function RationShop() {
           </ChakraProvider>
 
           {/* Options */}
-          {!isDivision && (
+          {isDivision && (
             <div className="buttons_KESB">
               <div className="buttons_KESB">
                 <h2 onClick={goToStatus}>

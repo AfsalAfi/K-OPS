@@ -1,23 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
+import axios from "axios";
+import { serverURL } from "../serverConfig";
 
 function Ration_status() {
-  const [values, setValues] = useState({
-    pachari: "",
-    chakkari: "",
-    atta: "",
-    kerosene: "",
-  });
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues((prevValues) => ({ ...prevValues, [name]: value }));
-  };
+  const location = useLocation();
+  console.log(location);
+  const regId = location.state.regId;
+  console.log(regId);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(values);
-  };
+  const [stocksYellow, setStocksYellow] = useState([]);
+  const [stocksRed, setStocksRed] = useState([]);
+
+  const [stocksBlue, setStocksBlue] = useState([]);
+
+  const [stocksWhite, setStocksWhite] = useState([]);
+
+  // const [stocks, setStocksYellow] = useState([]);
+
+  console.log("ethi");
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    console.log("podasd");
+    axios
+      .post(
+        `http://${serverURL}:3001/list-available-stocks`,
+        {
+          regId: regId,
+        },
+        {}
+      )
+      .then(function (response) {
+        console.log("hi");
+        console.log(response.data.stocks[0].yellow.pachari);
+        setStocksYellow(response.data.stocks[0].yellow);
+        setStocksRed(response.data.stocks[0].red);
+
+        setStocksBlue(response.data.stocks[0].blue);
+
+        setStocksWhite(response.data.stocks[0].white);
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
+  console.log("ethpppppi");
+
   return (
     <div>
       <div
@@ -61,10 +96,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    placeholder={`${stocksYellow.pachari}`}
                     className="white-placeholder"
-                    placeholder="Enter Pachari in kg"
                   />
                 </label>
                 <br />
@@ -74,23 +107,19 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    placeholder={`${stocksYellow.chakkari}`}
                     className="white-placeholder"
-                    placeholder="Enter Chakkari in kg"
                   />
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     readOnly
                     type="text"
-                    name="atta"
-                    value={values.atta}
-                    onChange={handleChange}
+                    name="aatta"
+                    placeholder={`${stocksYellow.Aatta}`}
                     className="white-placeholder"
-                    placeholder="Enter Atta in kg"
                   />
                 </label>
                 <br />
@@ -100,10 +129,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    placeholder={`${stocksYellow.kerosene}`}
                     className="white-placeholder"
-                    placeholder="Enter Kerosene in liters"
                   />
                 </label>
                 <br />
@@ -124,10 +151,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    placeholder={`${stocksRed.pachari}`}
                     className="white-placeholder"
-                    placeholder="Enter Pachari in kg"
                   />
                 </label>
                 <br />
@@ -137,23 +162,19 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    placeholder={`${stocksRed.chakkari}`}
                     className="white-placeholder"
-                    placeholder="Enter Chakkari in kg"
                   />
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     readOnly
                     type="text"
-                    name="atta"
-                    value={values.atta}
-                    onChange={handleChange}
+                    name="aatta"
+                    placeholder={`${stocksRed.Aatta}`}
                     className="white-placeholder"
-                    placeholder="Enter Atta in kg"
                   />
                 </label>
                 <br />
@@ -163,10 +184,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    placeholder={`${stocksRed.kerosene}`}
                     className="white-placeholder"
-                    placeholder="Enter Kerosene in liters"
                   />
                 </label>
                 <br />
@@ -187,10 +206,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    placeholder={`${stocksBlue.pachari}`}
                     className="white-placeholder"
-                    placeholder="Enter Pachari in kg"
                   />
                 </label>
                 <br />
@@ -200,23 +217,19 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    placeholder={`${stocksBlue.chakkari}`}
                     className="white-placeholder"
-                    placeholder="Enter Chakkari in kg"
                   />
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     readOnly
                     type="text"
-                    name="atta"
-                    value={values.atta}
-                    onChange={handleChange}
+                    name="aatta"
+                    placeholder={`${stocksBlue.Aatta}`}
                     className="white-placeholder"
-                    placeholder="Enter Atta in kg"
                   />
                 </label>
                 <br />
@@ -226,10 +239,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    placeholder={`${stocksBlue.kerosene}`}
                     className="white-placeholder"
-                    placeholder="Enter Kerosene in liters"
                   />
                 </label>
                 <br />
@@ -250,10 +261,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    placeholder={`${stocksWhite.pachari}`}
                     className="black-placeholder"
-                    placeholder="Enter Pachari in kg"
                   />
                 </label>
                 <br />
@@ -263,23 +272,19 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    placeholder={`${stocksWhite.chakkari}`}
                     className="black-placeholder"
-                    placeholder="Enter Chakkari in kg"
                   />
                 </label>
                 <br />
                 <label>
-                  Atta:
+                  Aatta:
                   <input
                     readOnly
                     type="text"
-                    name="atta"
-                    value={values.atta}
-                    onChange={handleChange}
+                    name="aatta"
+                    placeholder={`${stocksWhite.Aatta}`}
                     className="black-placeholder"
-                    placeholder="Enter Atta in kg"
                   />
                 </label>
                 <br />
@@ -289,10 +294,8 @@ function Ration_status() {
                     readOnly
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    placeholder={`${stocksWhite.kerosene}`}
                     className="black-placeholder"
-                    placeholder="Enter Kerosene in liters"
                   />
                 </label>
                 <br />

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../Styles/KSEB_User.css";
 import { TiChevronLeftOutline, TiChevronRightOutline } from "react-icons/ti";
 import { IoIosArrowBack } from "react-icons/io";
 import { ChakraProvider, Box, SimpleGrid } from "@chakra-ui/react";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
 // import notificationSvg from "../notification.svg";
 
-const CARDS = 5;
-const MAX_VISIBILITY = 3;
+const MAX_VISIBILITY = 1;
 
 const Card = ({ title, content }) => (
   <div className="card">
@@ -14,82 +15,356 @@ const Card = ({ title, content }) => (
     <p>{content}</p>
   </div>
 );
+function useCards() {
+  const [cards, setCards] = useState();
+  return { cards, setCards };
+}
 
 const Carousel = ({ children }) => {
   const [active, setActive] = useState(0);
   const count = React.Children.count(children);
+  const { cards, setCards } = useCards();
+  const { cardsFailure, setCardsFailure } = useCards();
+
+  const [listEnquiry, setListEnquiry] = useState([{}]);
+  const [listFailures, setListFailures] = useState([{}]);
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/list-enquiry`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          console.log(response.data.enquiryList.length);
+          // CARDS = ;
+          setCards(response.data.enquiryList.length);
+          setListEnquiry(response.data.enquiryList);
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        minHeight: "75vh",
-        justifyContent: "center",
-        // flexDirection: "column",
-        alignItems: "center",
-        gap: "15rem",
-      }}
-    >
+    <div>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          width: "100%",
+          minHeight: "75vh",
+          justifyContent: "center",
+          // flexDirection: "column",
           alignItems: "center",
-          //   width: "30%",
+          gap: "15rem",
+          background: "var(--mainColorLight)",
+          borderBottomLeftRadius: "60% 10%",
+          borderBottomRightRadius: "60% 10%",
         }}
       >
-        <h1
+        <div
           style={{
-            color: "var(--textColor)",
-            marginBottom: "50px",
-            fontSize: "40px",
-            fontWeight: "500",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            //   width: "30%",
           }}
         >
-          Enquiries
-        </h1>
-        <img src="../solve.svg" alt="KSEB Logo" />
-      </div>
-      <div className="carousel">
-        {active > 0 && (
-          <button className="nav left" onClick={() => setActive((i) => i - 1)}>
-            <TiChevronLeftOutline />
-          </button>
-        )}
-        {React.Children.map(children, (child, i) => (
-          <div
-            className="card-container"
+          <h1
             style={{
-              "--active": i === active ? 1 : 0,
-              "--offset": (active - i) / 3,
-              "--direction": Math.sign(active - i),
-              "--abs-offset": Math.abs(active - i) / 3,
-              "pointer-events": active === i ? "auto" : "none",
-              opacity: Math.abs(active - i) >= MAX_VISIBILITY ? "0" : "1",
-              display: Math.abs(active - i) > MAX_VISIBILITY ? "none" : "block",
+              color: "var(--mainColor)",
+              marginBottom: "50px",
+              fontSize: "40px",
+              fontWeight: "500",
             }}
           >
-            {child}
+            Enquiries
+          </h1>
+          <img src="../solve.svg" alt="KSEB Logo" />
+        </div>
+        <div className="carousel">
+          {active > 0 && (
+            <button
+              className="nav left"
+              style={{ color: "var(--mainColor)" }}
+              onClick={() => setActive((i) => i - 1)}
+            >
+              <TiChevronLeftOutline />
+            </button>
+          )}
+          <div
+            className="card"
+            style={{
+              background: "var(--mainColor)",
+              color: "var(--textColor)",
+            }}
+          >
+            {listEnquiry.map((enquiry, i) => (
+              <div>
+                <div
+                  className="card-container"
+                  style={{
+                    "--active": i === active ? 1 : 0,
+                    "--offset": (active - i) / 3,
+                    "--direction": Math.sign(active - i),
+                    "--abs-offset": Math.abs(active - i) / 3,
+                    "pointer-events": active === i ? "auto" : "none",
+                    opacity: Math.abs(active - i) >= MAX_VISIBILITY ? "0" : "1",
+                    display:
+                      Math.abs(active - i) > MAX_VISIBILITY ? "none" : "block",
+                    // Add any other custom styles here
+                  }}
+                  key={enquiry._id}
+                >
+                  <div style={{ padding: "2rem" }}>
+                    <div>Contact Number: {enquiry.ContactNumber}</div>
+                    <div>Description: {enquiry.description}</div>
+                    <div>Email Address: {enquiry.emailAddress}</div>
+                    <div>Name: {enquiry.name}</div>
+                    <div>Type: {enquiry.type}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-        {active < count - 1 && (
-          <button className="nav right" onClick={() => setActive((i) => i + 1)}>
-            <TiChevronRightOutline />
-          </button>
-        )}
+          {active < count - 1 && (
+            <button
+              className="nav right"
+              style={{ color: "var(--mainColor)" }}
+              onClick={() => setActive((i) => i + 1)}
+            >
+              <TiChevronRightOutline />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Carousel2 = ({ children }) => {
+  const [active, setActive] = useState(0);
+  const count = React.Children.count(children);
+  const { cards, setCards } = useCards();
+  const { cardsFailure, setCardsFailure } = useCards();
+
+  const [listFailures, setListFailures] = useState([]);
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/list-failures`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          console.log(response.data.failureList);
+          // CARDS = ;
+          setListFailures(response.data.failureList);
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
+
+  return (
+    <div>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          minHeight: "75vh",
+          justifyContent: "center",
+          // flexDirection: "column",
+          alignItems: "center",
+          gap: "15rem",
+        }}
+      >
+        <div className="carousel">
+          {active > 0 && (
+            <button
+              className="nav left"
+              onClick={() => setActive((i) => i - 1)}
+            >
+              <TiChevronLeftOutline />
+            </button>
+          )}
+          <div className="card">
+            {listFailures.map((failures, i) => (
+              <div>
+                <div
+                  className="card-container"
+                  style={{
+                    "--active": i === active ? 1 : 0,
+                    "--offset": (active - i) / 3,
+                    "--direction": Math.sign(active - i),
+                    "--abs-offset": Math.abs(active - i) / 3,
+                    "pointer-events": active === i ? "auto" : "none",
+                    opacity: Math.abs(active - i) >= MAX_VISIBILITY ? "0" : "1",
+                    display:
+                      Math.abs(active - i) > MAX_VISIBILITY ? "none" : "block",
+                    // Add any other custom styles here
+                  }}
+                  key={failures._id}
+                >
+                  {failures.Complaints}
+                  <div style={{ padding: "2rem" }}>
+                    <div>ContactNumber: {failures.ContactNumber}</div>
+                    <div>Complaint: {failures.Complaint}</div>
+                    <div>EmailAddress: {failures.emailAddress}</div>
+                    <div>Name: {failures.name}</div>
+                    <div>Place: {failures.place}</div>
+                    <div>Post: {failures.nearByPostNumber}</div>
+                    <div>TimeOfHappen: {failures.timeOfHappen}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {active < count - 1 && (
+            <button
+              className="nav right"
+              onClick={() => setActive((i) => i + 1)}
+            >
+              <TiChevronRightOutline />
+            </button>
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            //   width: "30%",
+          }}
+        >
+          <h1
+            style={{
+              color: "var(--textColor)",
+              marginBottom: "50px",
+              fontSize: "40px",
+              fontWeight: "500",
+            }}
+          >
+            Failures
+          </h1>
+          <img src="../solve.svg" alt="KSEB Logo" />
+        </div>
       </div>
     </div>
   );
 };
 
 function KSEB_User() {
-  const [notification, setNotification] = useState([
-    { message: "Dummy notification 1" },
-    { message: "Dummy notification 2" },
-    { message: "Dummy notification 3" },
-  ]);
+  const [notification, setNotification] = useState([{}]);
   const [newNotification, setNewNotification] = useState("");
+
+  const { cards, setCards } = useCards();
+  const [failureLength, setFailureLength] = useState();
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/list-enquiry`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          console.log(response.data.enquiryList.length);
+          // CARDS = ;
+          setCards(response.data.enquiryList.length);
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/list-failures`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          console.log(response.data.failureList.length);
+          // CARDS = ;
+          setFailureLength(response.data.failureList.length);
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/list-notifications`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.status === "ok") {
+          setNotification(response.data.notifications);
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
 
   const addNotification = () => {
     if (newNotification.trim() !== "") {
@@ -100,35 +375,61 @@ function KSEB_User() {
       setNotification(updatedNotifications);
       setNewNotification("");
     }
+
+    console.log("Notification content:", newNotification);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/push-notifications`,
+        { message: newNotification },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   };
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        padding: "50px 0px 0px 0px",
       }}
     >
       <h1
         style={{
-          color: "var(--textColor)",
+          color: "var(--mainColor)",
           fontSize: "40px",
           fontWeight: "bold",
+          padding: "50px 0px 0px 0px",
+
+          background: "var(--mainColorLight)",
         }}
       >
-        Kerala State Electricity Board Limited{" "}
+        Kerala State Electricity Board Limited
         <span style={{ color: "var(--secondaryColor)" }}>(KSEB)</span>
       </h1>
 
       <Carousel>
-        {[...new Array(CARDS)].map((_, i) => (
-          <Card
-            key={i}
-            title={"Card " + (i + 1)}
-            content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-          />
+        {[...new Array(cards)].map((_, i) => (
+          <Card />
         ))}
       </Carousel>
+
+      <Carousel2>
+        {[...new Array(failureLength)].map((_, i) => (
+          <Card />
+        ))}
+      </Carousel2>
+
       <div
         style={{
           display: "flex",

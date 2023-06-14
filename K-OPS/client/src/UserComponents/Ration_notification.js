@@ -22,9 +22,17 @@ function Ration_notification() {
 
   useEffect(() => {
     axios
-      .post(`http://${serverURL}:3001/show-RationShop-notifications`, {
-        regId: regId.regId,
-      })
+      .post(
+        `http://${serverURL}:3001/show-RationShop-notifications`,
+        {
+          regId: regId.regId,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then(function (response) {
         console.log(response.data.status);
         if (response.data.status === "ok") {
@@ -42,20 +50,6 @@ function Ration_notification() {
         // always executed
       });
   }, []);
-
-  const dummyData = [
-    { id: 1, content: "Notification 1" },
-    { id: 2, content: "Notification 2" },
-    { id: 4, content: "Notification 4" },
-    { id: 5, content: "Notification 5" },
-    { id: 6, content: "Notification 6" },
-    { id: 7, content: "Notification 7" },
-    { id: 8, content: "Notification 8" },
-    { id: 9, content: "Notification 9" },
-    { id: 10, content: "Notification 10" },
-
-    // Add more objects as needed
-  ];
 
   return (
     <div className="container_KESB_report">
@@ -82,7 +76,7 @@ function Ration_notification() {
         <div className="form_report">
           <ChakraProvider>
             <SimpleGrid columns={1} spacing={5}>
-              {dummyData.map((item, index) => (
+              {notification.map((item, index) => (
                 <Box
                   key={index}
                   bg={index % 2 === 0 ? "#172a3a" : "#7a9e9f"}
@@ -93,7 +87,7 @@ function Ration_notification() {
                     alignItems: "center",
                   }}
                 >
-                  <p style={{ color: "var(--textColor)" }}>{item.content}</p>
+                  <p style={{ color: "var(--textColor)" }}>{item.message}</p>
                 </Box>
               ))}
             </SimpleGrid>

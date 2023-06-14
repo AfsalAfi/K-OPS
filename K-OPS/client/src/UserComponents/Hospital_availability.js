@@ -47,15 +47,20 @@ function Hospital_availability() {
       .post(
         `http://${serverURL}:3001/available-doctors`,
         {
-          hospital: hospital
+          hospital: hospital,
         },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then((response) => {
         console.log("response nokke");
         console.log(response);
         if (response.data.status === "ok") {
           console.log(response.data.availableDoctors);
-          setDoctorsList(response.data.availableDoctors)
+          setDoctorsList(response.data.availableDoctors);
         } else {
           alert(`${response.data.message}`);
         }
