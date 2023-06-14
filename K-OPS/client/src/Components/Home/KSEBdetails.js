@@ -149,7 +149,7 @@ function KSEBdetails() {
             my="20px"
           >
             {districts.map((district) => (
-              <option key={district.id} value={district.name}>
+              <option key={district.id} value={district.name} style={{ color: "var(--mainColor)" }}>
                 {district.name}
               </option>
             ))}
@@ -165,7 +165,7 @@ function KSEBdetails() {
               color="var(--tertiaryColor)"
             >
               {divisions.map((division) => (
-                <option key={division.id} value={JSON.stringify(division)}>
+                <option key={division.id} value={JSON.stringify(division)} style={{ color: "var(--mainColor)" }}>
                   {division.division}
                 </option>
               ))}
