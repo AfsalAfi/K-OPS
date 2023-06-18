@@ -81,6 +81,7 @@ module.exports = {
                     contact: contact,
                     email: email,
                     RationShopName: RationShopName,
+                    queTraffic : 0,
                     classify: classify,
                 }).then(response => {
                     if (response.acknowledged === true) {
@@ -321,6 +322,61 @@ module.exports = {
             }
         })
     },
+
+
+    increment_QueueSTATUS : (regId) =>{
+
+        return new Promise(async(resolve,reject)=>{
+            try{
+                const increment_value = 1;
+                const collection  = await getCollection(OPERATORS_COLLECTION);
+      
+                // collection.find({doctor_id : doctor_id}).toArray()
+                collection.updateOne(
+                    {regId : regId},
+                    {
+                        $inc : {queTraffic : 1 },
+                    }
+                    ).then(response=>{
+                        return collection.findOne({regId :regId});
+                    }).then(updatedDoc => {
+                        resolve(updatedDoc.queTraffic);
+                      }).catch(err=>{
+                        reject({message:"error while incrementing queue status"})
+                    })
+
+            }catch(err){
+                reject({message:"error while incrementing queue status"})
+            }
+        })
+
+    },
+
+
+    decrement_QueueSTATUS :(regId)=>{
+
+        return new Promise(async(resolve,reject)=>{
+            try{
+                const collection  = await getCollection(OPERATORS_COLLECTION);
+                collection.updateOne(
+                    {regId : regId},
+                    {
+                        $inc : {queTraffic : -1 },
+                    }
+                    ).then(response=>{
+                        return collection.findOne({regId :regId});
+                    }).then(updatedDoc => {
+                        resolve(updatedDoc.queTraffic);
+                      }).catch(err=>{
+                        reject({message:"error while decrementing queue status"})
+                    })
+
+            }catch(err){
+                reject({message:"error while decrementing queue status"})
+            }
+        })
+    },
+    
 
 
 

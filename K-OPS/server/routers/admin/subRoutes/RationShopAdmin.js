@@ -1,6 +1,12 @@
 const express = require('express');
 
-const { RationShopNotification, list_Enquiry_RationShop, update_available_stocks, list_available_stocks, reply_for_enquiry_and_report } = require('../../../helpers/admin-helpers');
+const { RationShopNotification,
+    list_Enquiry_RationShop,
+    update_available_stocks,
+    list_available_stocks,
+    reply_for_enquiry_and_report,
+    decrement_QueueSTATUS,
+    increment_QueueSTATUS } = require('../../../helpers/admin-helpers');
 
 const RationShop = express.Router();
 
@@ -59,6 +65,31 @@ RationShop.post('/reply-for-enquiry', (req, res) => {
     }).catch((err) => {
         res.send(err);
     })
+})
+
+
+RationShop.post('/queue-incrementing',(req,res)=>{
+    const regId = req.body.regId;
+    increment_QueueSTATUS(regId).then(response=>{
+        return res.status(200).send({response, status:"ok" })
+
+    }).catch(err=>{
+        return res.status(500).send(err.message)
+    })
+
+
+})
+
+RationShop.post('/queue-decrementing',(req,res)=>{
+    const regId = req.body.regId;
+    decrement_QueueSTATUS(regId).then(response=>{
+        return res.status(200).send({response, status:"ok"})
+
+    }).catch(err=>{
+        return res.status(500).send(err.message)
+    })
+
+
 })
 
 
