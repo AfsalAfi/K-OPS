@@ -15,7 +15,6 @@ function Home() {
       <KSEBdetails />
       <Hospital />
       <RationShop />
-      {/* <Footer /> */}
     </div>
   );
 }

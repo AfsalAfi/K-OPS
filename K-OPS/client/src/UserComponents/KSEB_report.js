@@ -18,7 +18,7 @@ import { serverURL } from "../serverConfig";
 
 function KSEB_report() {
   const navigate = useNavigate();
-  let divisionMail
+  let divisionMail;
   const [formValues, setFormValues] = useState({
     place: "",
     landmark: "",
@@ -26,11 +26,12 @@ function KSEB_report() {
     complaints: "",
     incidentTime: "",
     contactNumber: "",
+    email: "",
+    name: "",
   });
 
   const location = useLocation();
-  const email = location.state;
-  divisionMail = email;
+  const regId = location.state.regId;
   const backToHome = () => {
     navigate("/");
   };
@@ -46,25 +47,31 @@ function KSEB_report() {
     axios
       .post(
         `http://${serverURL}:3001/kseb-report-failures`,
+
         {
           place: formValues.place,
           landMark: formValues.landmark,
           nearByPostNumber: formValues.postNumber,
           Complaint: formValues.complaints,
+          email: formValues.email,
           timeOfHappen: time,
           date: date,
           // add cheyynm name
-          name: "add cheyyy",
+          name: formValues.name,
           ContactNumber: formValues.contactNumber,
-          divisionMail: divisionMail.email
+          regId: regId,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {
         if (response.data.status === "ok") {
           navigate("/");
         } else {
-          alert(`${response.data.message}`)
+          alert(`${response.data.message}`);
         }
       })
 
@@ -130,6 +137,18 @@ function KSEB_report() {
                       />
                     </FormControl>
                   </GridItem>
+                  <GridItem colSpan={2}>
+                    <FormControl isRequired borderColor="#7a9e9f">
+                      <FormLabel>Name</FormLabel>
+                      <Input
+                        type="text"
+                        name="name"
+                        placeholder="Enter name"
+                        value={formValues.name}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
+                  </GridItem>
                   <GridItem>
                     <FormControl isRequired borderColor="#7a9e9f">
                       <FormLabel>Landmark</FormLabel>
@@ -184,6 +203,18 @@ function KSEB_report() {
                         name="contactNumber"
                         placeholder="Enter contact number"
                         value={formValues.contactNumber}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
+                  </GridItem>
+                  <GridItem>
+                    <FormControl isRequired borderColor="#7a9e9f">
+                      <FormLabel>Email</FormLabel>
+                      <Input
+                        type="text"
+                        name="email"
+                        placeholder="Enter email address"
+                        value={formValues.email}
                         onChange={handleChange}
                       />
                     </FormControl>

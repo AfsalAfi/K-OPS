@@ -24,10 +24,9 @@ function Hospital_enquiry() {
     navigate("/");
   };
 
-  let divisionMail;
   const location = useLocation();
-  const email = location.state;
-  divisionMail = email;
+  const regId = location.state.regId;
+  console.log(regId);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,6 +35,7 @@ function Hospital_enquiry() {
     const contactNumber = document.getElementById("contactNumber").value;
     const briefDescription = document.getElementById("briefDescription").value;
     const enquiryType = document.getElementById("enquiryType").value;
+    const email = document.getElementById("email").value;
 
     console.log("Name:", name);
     console.log("Contact Number:", contactNumber);
@@ -48,12 +48,17 @@ function Hospital_enquiry() {
         `http://${serverURL}:3001/hospital-enquries`,
         {
           name: name,
+          email: email,
           description: briefDescription,
           type: enquiryType,
           ContactNumber: contactNumber,
-          divisionMail: divisionMail.email,
+          regId: regId,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {
         if (response.data.status === "ok") {
@@ -112,6 +117,17 @@ function Hospital_enquiry() {
                         id="name"
                         type="text"
                         placeholder="Enter your name"
+                        style={{ color: "#7a9e9f" }}
+                      />
+                    </FormControl>
+                  </GridItem>
+                  <GridItem colSpan={2}>
+                    <FormControl isRequired borderColor="#7a9e9f">
+                      <FormLabel>Email Address</FormLabel>
+                      <Input
+                        id="email"
+                        type="text"
+                        placeholder="Enter your email address"
                         style={{ color: "#7a9e9f" }}
                       />
                     </FormControl>

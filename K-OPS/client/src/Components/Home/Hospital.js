@@ -41,7 +41,7 @@ function Hospital() {
 
   const goToHospitalEnquiry = () => {
     navigate("/hospital/enquiry", {
-      state: { email: selectedHostelCollection.email },
+      state: { regId: selectedHostelCollection.regId },
     });
   };
 
@@ -53,13 +53,17 @@ function Hospital() {
 
   const goToMedical = () => {
     navigate("/hospital/medical-facility", {
-      state: { equipments: selectedHostelCollection.equipments, facilities: selectedHostelCollection.facilities },
+      state: {
+        regId: selectedHostelCollection.regId,
+        equipments: selectedHostelCollection.equipments,
+        facilities: selectedHostelCollection.facilities,
+      },
     });
   };
 
   const goToOP = () => {
     navigate("/hospital/OP-ticket", {
-      // state: { regId: selectedDivisionCollection.regId },
+      state: { regId: selectedHostelCollection.regId },
     });
   };
 
@@ -82,7 +86,11 @@ function Hospital() {
         {
           district: event,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {
         console.log(response);
@@ -127,7 +135,7 @@ function Hospital() {
   // }, [selectedDistrict, selectedDivision]);
 
   return (
-    <div className="container_hospital">
+    <div className="container_hospital" id="hospital-page">
       <div className="contents_hospital">
         <h1>Hospital</h1>
         <p>

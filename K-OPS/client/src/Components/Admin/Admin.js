@@ -18,6 +18,8 @@ import {
 } from "react-icons/ai";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Icon } from "@chakra-ui/icons";
+import axios from "axios";
+import { serverURL } from "../../serverConfig";
 
 function Admin() {
   function handleClick(e) {
@@ -39,6 +41,81 @@ function Admin() {
     console.log("Email:", email);
     console.log("Officer:", officer);
     console.log("Pass:", password);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/create-kseb-division`,
+        {
+          regId: registerId,
+          district: district,
+          division: division,
+          place: place,
+          contact: contactNumber,
+          email: email,
+          officer: officer,
+          password: password,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }
+
+  function handleSubmitRation(event) {
+    event.preventDefault();
+    const form = event.target;
+    const registerId = form.elements.registerId.value;
+    const password = form.elements.password.value;
+    const district = form.elements.district.value;
+    const place = form.elements.place.value;
+    const contact = form.elements.contact.value;
+    const email = form.elements.email.value;
+    const rationShop = form.elements.rationShop.value;
+
+    console.log(registerId);
+    console.log(password);
+    console.log(district);
+    console.log(place);
+    console.log(contact);
+    console.log(email);
+    console.log(rationShop);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/create-ration-shop`,
+        {
+          regId: registerId,
+          password: password,
+          district: district,
+          place: place,
+          contact: contact,
+          email: email,
+          RationShopName: rationShop,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   }
 
   function handleSubmit(event) {
@@ -51,7 +128,6 @@ function Admin() {
     const contact = document.getElementById("contact").value;
     const hospitalName = document.getElementById("hospitalName").value;
     const password = document.getElementById("password").value;
-
     console.log("Register ID:", registerId);
     console.log("Category:", category);
     console.log("District:", district);
@@ -60,25 +136,34 @@ function Admin() {
     console.log("Contact:", contact);
     console.log("Hospital Name:", hospitalName);
     console.log("Password:", password);
-  }
 
-  function handleSubmitRation(event) {
-    event.preventDefault();
-    const registerId = document.getElementById("registerId").value;
-    const password = document.getElementById("password").value;
-    const district = document.getElementById("district").value;
-    const place = document.getElementById("place").value;
-    const contact = document.getElementById("contact").value;
-    const email = document.getElementById("email").value;
-    const rationShop = document.getElementById("rationShop").value;
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/create-hospital`,
+        {
+          regId: registerId,
+          category: category,
+          district: district,
+          place: place,
+          email: email,
+          contact: contact,
+          name: hospitalName,
+          password: password,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {})
 
-    console.log("Register ID:", registerId);
-    console.log("Password:", password);
-    console.log("District:", district);
-    console.log("Place:", place);
-    console.log("Contact:", contact);
-    console.log("Email:", email);
-    console.log("Ration Shop:", rationShop);
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
   }
   return (
     <div

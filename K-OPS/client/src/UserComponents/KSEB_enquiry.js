@@ -24,9 +24,10 @@ function KSEB_enquiry() {
     navigate("/");
   };
 
-  let divisionMail
+  let divisionMail;
   const location = useLocation();
   const email = location.state;
+  const regId = location.state.regId;
   divisionMail = email;
 
   const handleSubmit = (event) => {
@@ -36,6 +37,7 @@ function KSEB_enquiry() {
     const contactNumber = document.getElementById("contactNumber").value;
     const briefDescription = document.getElementById("briefDescription").value;
     const enquiryType = document.getElementById("enquiryType").value;
+    const email = document.getElementById("email").value;
 
     console.log("Name:", name);
     console.log("Contact Number:", contactNumber);
@@ -50,15 +52,21 @@ function KSEB_enquiry() {
           description: briefDescription,
           type: enquiryType,
           ContactNumber: contactNumber,
-          divisionMail: divisionMail.email
+          // divisionMail: divisionMail.email,
+          email: email,
+          regId: regId,
         },
-        {}
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       )
       .then(function (response) {
         if (response.data.status === "ok") {
           navigate("/");
         } else {
-          alert(`${response.data.message}`)
+          alert(`${response.data.message}`);
         }
       })
 
@@ -111,6 +119,17 @@ function KSEB_enquiry() {
                         id="name"
                         type="text"
                         placeholder="Enter your name"
+                        style={{ color: "#7a9e9f" }}
+                      />
+                    </FormControl>
+                  </GridItem>
+                  <GridItem>
+                    <FormControl isRequired borderColor="#7a9e9f">
+                      <FormLabel>Email Address</FormLabel>
+                      <Input
+                        id="email"
+                        type="tel"
+                        placeholder="Enter email address"
                         style={{ color: "#7a9e9f" }}
                       />
                     </FormControl>

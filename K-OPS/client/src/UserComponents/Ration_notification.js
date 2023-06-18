@@ -7,7 +7,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { serverURL } from "../serverConfig";
 
-function KSEB_notification() {
+function Ration_notification() {
   const navigate = useNavigate();
   const [notification, setNotification] = useState([]);
 
@@ -22,13 +22,22 @@ function KSEB_notification() {
 
   useEffect(() => {
     axios
-      .post(`http://${serverURL}:3001/show-kseb-notifications`, {
-        regId: regId.regId,
-      })
+      .post(
+        `http://${serverURL}:3001/show-RationShop-notifications`,
+        {
+          regId: regId.regId,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then(function (response) {
+        console.log(response.data.status);
         if (response.data.status === "ok") {
-          console.log(response.data);
-          setNotification(response.data.result);
+          console.log(response.data.notifications);
+          setNotification(response.data.notifications);
         } else {
           navigate("/");
         }
@@ -41,20 +50,6 @@ function KSEB_notification() {
         // always executed
       });
   }, []);
-
-  const dummyData = [
-    { id: 1, content: "Notification 1" },
-    { id: 2, content: "Notification 2" },
-    { id: 4, content: "Notification 4" },
-    { id: 5, content: "Notification 5" },
-    { id: 6, content: "Notification 6" },
-    { id: 7, content: "Notification 7" },
-    { id: 8, content: "Notification 8" },
-    { id: 9, content: "Notification 9" },
-    { id: 10, content: "Notification 10" },
-
-    // Add more objects as needed
-  ];
 
   return (
     <div className="container_KESB_report">
@@ -103,4 +98,4 @@ function KSEB_notification() {
   );
 }
 
-export default KSEB_notification;
+export default Ration_notification;
