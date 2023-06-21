@@ -459,7 +459,35 @@ module.exports = {
   },
 
   //RATION SHOP
+  show_rationDetails :(regId)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const collection = await getCollection(OPERATORS_COLLECTION)
+        collection
+        .aggregate([
+          {
+            $match:{  regId : regId }
+          },
+          {
+            $project :{
+              regId :1,
+              queTraffic : 1,
+              district :1,
+              place :1,
+              contact:1,
+              email:1,
+              RationShopName :1
+            }
+          }
+        ]).toArray().then(response=>{
+          resolve(response)
+        })
 
+      }catch(err){
+        reject({message:"error while fetching details"})
+      }
+    })
+  },
   showRationNotifications: (regId) => {
     return new Promise(async (resolve, reject) => {
       try {

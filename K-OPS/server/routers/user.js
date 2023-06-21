@@ -11,6 +11,7 @@ const {
   showRationNotifications,
   RationShop_enquries,
   get_Ration_Shops,
+  show_rationDetails,
 } = require("../helpers/user-helpers");
 const { list_available_stocks } = require("../helpers/admin-helpers");
 const router = express.Router();
@@ -176,6 +177,15 @@ router.post("/RationShop-enquries", (req, res) => {
       res.send(err);
     });
 });
+
+router.post('/show-rationShopDetails',(req,res)=>{
+  const regId = req.body.regId;
+  show_rationDetails(regId).then(response=>{
+    return res.status(200).send({response, status:"ok"})
+  }).catch(err=>{
+    return res.status(500).send(err.message)
+  })
+})
 
 router.post("/list-available-stocks", (req, res) => {
   const regId = req.body.regId;

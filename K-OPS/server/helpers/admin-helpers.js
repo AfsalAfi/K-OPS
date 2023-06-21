@@ -258,6 +258,31 @@ module.exports = {
 
   //RATION-SHOP
 
+  show_QueSTATUS :(regId)=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const collection = await getCollection(OPERATORS_COLLECTION)
+        collection
+        .aggregate([
+          {
+            $match:{  regId : regId }
+          },
+          {
+            $project :{
+              regId :1,
+              queTraffic : 1
+            }
+          }
+        ]).toArray().then(response=>{
+          resolve(response)
+        })
+
+      }catch(err){
+        reject({message:"error while fetching details"})
+      }
+    })
+  },
+
   RationShopNotification: (message, date, time, regId) => {
     return new Promise(async (resolve, reject) => {
       try {

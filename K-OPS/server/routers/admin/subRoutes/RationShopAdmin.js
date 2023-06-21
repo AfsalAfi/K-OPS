@@ -8,7 +8,8 @@ const { RationShopNotification,
     list_available_stocks,
     reply_for_enquiry_and_report,
     decrement_QueueSTATUS,
-    increment_QueueSTATUS } = require('../../../helpers/admin-helpers');
+    increment_QueueSTATUS,
+    show_QueSTATUS } = require('../../../helpers/admin-helpers');
 
 const { protect } = require("../../../middlewares/authMiddlewareOperator");
 
@@ -103,6 +104,16 @@ RationShop.post('/queue-decrementing',(req,res)=>{
     })
 
 
+})
+
+
+RationShop.post('/show-QueueStatus',(req,res)=>{
+  const regId = req.body.regId;
+  show_QueSTATUS(regId).then(response=>{
+    return res.status(200).send({response, status:"ok"})
+  }).catch(err=>{
+    return res.status(500).send(err.message)
+  })
 })
 
 
