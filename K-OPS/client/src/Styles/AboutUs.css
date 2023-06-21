@@ -1,52 +1,64 @@
-.container_hospital {
+.container_about_us {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 85vh;
+  min-height: 90vh;
   max-height: 100vh;
   background-color: var(--mainColor);
-  /* border-radius: 100% 0% 100% 0% / 13% 90% 10% 87%; */
+  border-radius: 100% 0% 100% 0% / 13% 90% 10% 87%;
   gap: 6rem;
 }
 
-.contents_hospital {
+.contents_about_us {
   display: flex;
   flex-direction: column;
   text-align: left;
   gap: 0.5rem;
   width: 35%;
 }
-.image_section_hospital {
+.image_section_about_us {
   display: flex;
   justify-content: center;
   width: 30%;
 }
 
-.contents_hospital h1 {
+.contents_about_us h1 {
   font-size: 45px;
   color: var(--mainColorLight);
 }
-.contents_hospital p {
+.contents_about_us p {
+  font-size: 18px;
+
   color: var(--mainColorLight);
 }
 
-.buttons_hospital {
+.buttons_about_us {
   /* margin-top: 30px; */
 }
 
-.contents_hospital h2 {
+.contents_about_us h2 {
   font-size: 25px;
   cursor: pointer;
   color: var(--mainColorLight);
 }
 
-.contents_hospital h2:hover {
+.contents_about_us h2:hover {
   color: var(--secondaryColor);
 }
-.contents_hospital h2 span {
+.contents_about_us h2 span {
   margin-right: 10px;
 }
 img {
   width: 350px;
+}
+
+.button_aboutus {
+  text-decoration: none;
+  padding: 10px 25px;
+  border: 2px solid var(--headColor);
+  font-weight: bold;
+  background: var(--mainColorLight);
+  color: var(--headColor);
+  border-radius: 25px;
 }

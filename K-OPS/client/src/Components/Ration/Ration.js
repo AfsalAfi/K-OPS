@@ -1,8 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "../../Styles/Ration.css";
-import { ChakraProvider, Box, SimpleGrid } from "@chakra-ui/react";
 import axios from "axios";
 import { serverURL } from "../../serverConfig";
+import {
+  ChakraProvider,
+  Box,
+  SimpleGrid,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  IconButton,
+  HStack,
+  Button,
+  Input,
+} from "@chakra-ui/react";
 
 function Ration() {
   const [notification, setNotification] = useState([]);
@@ -34,6 +48,79 @@ function Ration() {
         console.log("ethi");
       });
   }, []);
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/list-ration-shops`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
+
+  const [count, setCount] = useState(0);
+
+  const incrementCount = () => {
+    setCount(count + 1);
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/ration-shop/queue-incrementing`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {})
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  };
+
+  const decrementCount = () => {
+    if (count >= 1) {
+      setCount(count - 1);
+
+      axios
+        .post(
+          `http://${serverURL}:3001/admin/ration-shop/queue-decrementing`,
+          {},
+          {
+            headers: {
+              Autherization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then(function (response) {})
+
+        .catch(function (error) {
+          console.log(error);
+        })
+        .finally(function () {
+          console.log("ethi");
+        });
+    }
+  };
 
   const addNotification = () => {
     if (newNotification.trim() !== "") {
@@ -105,6 +192,12 @@ function Ration() {
         console.log("ethi");
       });
   };
+  const queue = [
+    {
+      name: "Queue",
+    },
+  ];
+
   return (
     <div>
       <h1
@@ -120,6 +213,60 @@ function Ration() {
       >
         Ration Cards
       </h1>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <ChakraProvider>
+          <Table
+            variant="simple"
+            colorScheme="blackAlpha"
+            style={{ width: "50%", color: "white" }}
+          >
+            <Thead>
+              {/* <Tr>
+                <Th fontSize="xl" color="white">
+                  Ration Queue
+                </Th>
+
+                <Th fontSize="xl" color="white">
+                  Count
+                </Th>
+              </Tr> */}
+            </Thead>
+            <Tbody>
+              <Tr key={queue[0].name}>
+                <Td>{queue[0].name}</Td>
+                <Td>
+                  <HStack maxW="320px">
+                    <Button
+                      variant="outline"
+                      colorScheme="white"
+                      size="sm"
+                      onClick={incrementCount}
+                    >
+                      +
+                    </Button>
+                    <Input size="sm" value={count} readOnly />
+                    <Button
+                      variant="outline"
+                      colorScheme="white"
+                      size="sm"
+                      onClick={decrementCount}
+                    >
+                      -
+                    </Button>
+                  </HStack>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </ChakraProvider>
+      </div>
       <div
         style={{
           minHeight: "70vh",

@@ -3,9 +3,10 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 85vh;
+  min-height: 90vh;
   max-height: 100vh;
-  background: var(--mainColor);
+  background: var(--mainColorLight);
+  border-radius: 100% 0% 100% 0% / 13% 90% 10% 87%;
 }
 
 .contents_KSEB {
@@ -21,10 +22,10 @@
 
 .contents_KSEB h1 {
   font-size: 45px;
-  color: var(--textColor);
+  color: var(--mainColor);
 }
 .contents_KSEB p {
-  color: var(--textColor);
+  color: var(--mainColor);
 }
 
 .buttons_KESB {
@@ -34,7 +35,7 @@
 .contents_KSEB h2 {
   font-size: 25px;
   cursor: pointer;
-  color: var(--mainColorLight);
+  color: var(--mainColor);
 }
 
 .contents_KSEB h2:hover {

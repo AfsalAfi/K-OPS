@@ -150,9 +150,9 @@ function Hospital() {
             value={selectedDistrict}
             onChange={(e) => setDistrict(e.target.value)}
             mb={4}
-            color="var(--mainColor)"
+            color="var(--mainColorLight)"
             my="20px"
-            borderColor="var(--mainColor)"
+            borderColor="var(--mainColorLight)"
           >
             {districts.map((district) => (
               <option key={district.id} value={district.name}>
@@ -168,8 +168,8 @@ function Hospital() {
               value={selectedHostel}
               onChange={(e) => setSelectedHospital(e)}
               mb={4}
-              color="var(--mainColor)"
-              borderColor="var(--mainColor)"
+              color="var(--mainColorLight)"
+              borderColor="var(--mainColorLight)"
             >
               {hopitalsList.map((hospital, index) => (
                 <option key={index} value={JSON.stringify(hospital)}>
