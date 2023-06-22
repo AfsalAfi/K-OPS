@@ -178,14 +178,14 @@ router.post("/RationShop-enquries", (req, res) => {
     });
 });
 
-router.post('/show-rationShopDetails',(req,res)=>{
-  const regId = req.body.regId;
-  show_rationDetails(regId).then(response=>{
-    return res.status(200).send({response, status:"ok"})
-  }).catch(err=>{
-    return res.status(500).send(err.message)
-  })
-})
+// router.post('/show-rationShopDetails',(req,res)=>{
+//   const regId = req.body.regId;
+//   show_rationDetails(regId).then(response=>{
+//     return res.status(200).send({response, status:"ok"})
+//   }).catch(err=>{
+//     return res.status(500).send(err.message)
+//   })
+// })
 
 router.post("/list-available-stocks", (req, res) => {
   const regId = req.body.regId;

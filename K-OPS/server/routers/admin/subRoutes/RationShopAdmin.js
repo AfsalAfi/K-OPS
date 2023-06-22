@@ -82,23 +82,19 @@ RationShop.post("/update-available-stocks", protect, (req, res) => {
 
 
 
-RationShop.post('/queue-incrementing',(req,res)=>{
-    const regId = req.body.regId;
+RationShop.post('/queue-incrementing',protect,(req,res)=>{
+    const regId = req.user;
     increment_QueueSTATUS(regId).then(response=>{
-        return res.status(200).send({response, status:"ok" })
-
+        return res.status(200).send({queue:response, status:"ok" })
     }).catch(err=>{
         return res.status(500).send(err.message)
     })
-
-
 })
 
-RationShop.post('/queue-decrementing',(req,res)=>{
-    const regId = req.body.regId;
+RationShop.post('/queue-decrementing',protect,(req,res)=>{
+    const regId = req.user;
     decrement_QueueSTATUS(regId).then(response=>{
-        return res.status(200).send({response, status:"ok"})
-
+        return res.status(200).send({queue:response, status:"ok"})
     }).catch(err=>{
         return res.status(500).send(err.message)
     })
@@ -107,10 +103,10 @@ RationShop.post('/queue-decrementing',(req,res)=>{
 })
 
 
-RationShop.post('/show-QueueStatus',(req,res)=>{
-  const regId = req.body.regId;
+RationShop.post('/show-QueueStatus',protect,(req,res)=>{
+  const regId = req.user;
   show_QueSTATUS(regId).then(response=>{
-    return res.status(200).send({response, status:"ok"})
+    return res.status(200).send({queue:response[0].queTraffic, status:"ok"})
   }).catch(err=>{
     return res.status(500).send(err.message)
   })

@@ -21,7 +21,35 @@ import {
 function Ration() {
   const [notification, setNotification] = useState([]);
   const [newNotification, setNewNotification] = useState("");
+  const [queue, setQueue] = useState("");
 
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"));
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/ration-shop/show-QueueStatus`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data.notifications);
+        if (response.data.status === "ok") {
+          console.log(response.data.queue);
+          setQueue(response.data.queue)
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+  }, []);
   useEffect(() => {
     // console.log(localStorage.getItem("token"));
     axios
@@ -76,7 +104,7 @@ function Ration() {
   const [count, setCount] = useState(0);
 
   const incrementCount = () => {
-    setCount(count + 1);
+    // setCount(count + 1);
     axios
       .post(
         `http://${serverURL}:3001/admin/ration-shop/queue-incrementing`,
@@ -87,7 +115,11 @@ function Ration() {
           },
         }
       )
-      .then(function (response) {})
+      .then(function (response) {
+        if(response.data.status==="ok"){
+          setQueue(response.data.queue)
+        }
+      })
 
       .catch(function (error) {
         console.log(error);
@@ -98,8 +130,7 @@ function Ration() {
   };
 
   const decrementCount = () => {
-    if (count >= 1) {
-      setCount(count - 1);
+  
 
       axios
         .post(
@@ -111,7 +142,11 @@ function Ration() {
             },
           }
         )
-        .then(function (response) {})
+        .then(function (response) {
+          if(response.data.status==="ok"){
+            setQueue(response.data.queue)
+          }
+        })
 
         .catch(function (error) {
           console.log(error);
@@ -119,7 +154,7 @@ function Ration() {
         .finally(function () {
           console.log("ethi");
         });
-    }
+    
   };
 
   const addNotification = () => {
@@ -192,11 +227,11 @@ function Ration() {
         console.log("ethi");
       });
   };
-  const queue = [
-    {
-      name: "Queue",
-    },
-  ];
+  // const queue = [
+  //   {
+  //     name: "Queue",
+  //   },
+  // ];
 
   return (
     <div>
@@ -239,8 +274,10 @@ function Ration() {
               </Tr> */}
             </Thead>
             <Tbody>
-              <Tr key={queue[0].name}>
-                <Td>{queue[0].name}</Td>
+              <Tr key={queue}>
+              <Td fontSize="xl" color="white">
+                  Ration Queue
+                </Td>
                 <Td>
                   <HStack maxW="320px">
                     <Button
@@ -251,7 +288,7 @@ function Ration() {
                     >
                       +
                     </Button>
-                    <Input size="sm" value={count} readOnly />
+                    <Input size="sm" value={queue} readOnly />
                     <Button
                       variant="outline"
                       colorScheme="white"

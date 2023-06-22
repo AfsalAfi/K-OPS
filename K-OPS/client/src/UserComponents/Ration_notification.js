@@ -12,7 +12,7 @@ function Ration_notification() {
   const [notification, setNotification] = useState([]);
 
   const backToHome = () => {
-    navigate("/");
+    window.history.back();
   };
 
   const location = useLocation();

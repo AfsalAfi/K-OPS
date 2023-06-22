@@ -23,13 +23,6 @@ const districts = [
   { id: 14, name: "Wayanad" },
 ];
 
-// const divisions = [
-//   { id: 1, name: "Division 1" },
-//   { id: 2, name: "Division 2" },
-//   { id: 3, name: "Division 3" },
-//   // Add more divisions here
-// ];
-
 function KSEBdetails() {
   const [isDivision, setIsDivision] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");

@@ -82,6 +82,7 @@ function RationShop() {
           console.log("response");
           console.log(response.data.result);
           setDivisions(response.data.result);
+
         }
       })
 
@@ -187,7 +188,7 @@ function RationShop() {
                 <h2 onClick={goToNotification}>
                   <span>-</span>Notifications
                 </h2>
-                <p>Queue : {}</p>
+                <p>Queue : {selectedDivision.queTraffic}</p>
                 <p>Opening Time : 9:00 AM</p>
                 <p>Closing Time : 6:00 PM</p>
               </div>
