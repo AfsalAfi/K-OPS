@@ -118,6 +118,7 @@ function KSEB_enquiry() {
                       <Input
                         id="name"
                         type="text"
+                        required
                         placeholder="Enter your name"
                         style={{ color: "#7a9e9f" }}
                       />
@@ -128,9 +129,10 @@ function KSEB_enquiry() {
                       <FormLabel>Email Address</FormLabel>
                       <Input
                         id="email"
-                        type="tel"
+                        type="email"
                         placeholder="Enter email address"
                         style={{ color: "#7a9e9f" }}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -140,6 +142,8 @@ function KSEB_enquiry() {
                       <Input
                         id="contactNumber"
                         type="tel"
+                        pattern="[0-9]{10}"
+                        required
                         placeholder="Enter contact number"
                         style={{ color: "#7a9e9f" }}
                       />
@@ -151,6 +155,7 @@ function KSEB_enquiry() {
                       <Textarea
                         id="briefDescription"
                         placeholder="Enter your enquiry details"
+                        required
                         style={{ color: "#7a9e9f", height: "200px" }}
                       />
                     </FormControl>

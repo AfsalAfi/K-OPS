@@ -32,7 +32,9 @@ function Navbar() {
         <a href="#ration-shop-page" onClick={scrollToElement}>
           Ration Shop
         </a>
-        <a href="/#">About Us</a>
+        <a href="#about_us-page" onClick={scrollToElement}>
+          About Us
+        </a>
         <button className="nav-btn nav-close-btn" onClick={showNavbar}>
           <FaTimes />
         </button>

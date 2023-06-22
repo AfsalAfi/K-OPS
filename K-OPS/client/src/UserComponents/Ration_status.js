@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import axios from "axios";
+import { IoIosArrowBack } from "react-icons/io";
 import { serverURL } from "../serverConfig";
+import { color } from "framer-motion";
 
 function Ration_status() {
+  const navigate = useNavigate();
+
   const location = useLocation();
   console.log(location);
   const regId = location.state.regId;
@@ -19,6 +23,10 @@ function Ration_status() {
   const [stocksWhite, setStocksWhite] = useState([]);
 
   // const [stocks, setStocksYellow] = useState([]);
+
+  const backToHome = () => {
+    navigate("/");
+  };
 
   console.log("ethi");
 
@@ -55,6 +63,25 @@ function Ration_status() {
 
   return (
     <div>
+
+      <h2
+        style={{
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+          margin: "25px 25px 25px 25px",
+          color: "white"
+        }}
+        onClick={backToHome}
+      >
+        <span style={{
+          display: "flex",
+          alignItems: "center",
+        }}>
+          <IoIosArrowBack />
+        </span>
+        back
+      </h2>
       <div
         className="h1_KSEB_report"
         style={{ display: "flex", alignItems: "center", width: "100%" }}
@@ -63,7 +90,7 @@ function Ration_status() {
           style={{
             color: "var(--textColor)",
             display: "flex",
-            height: "25vh",
+            // height: "10vh",
             alignItems: "center",
             justifyContent: "center",
           }}

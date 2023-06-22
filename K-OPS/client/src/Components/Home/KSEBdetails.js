@@ -26,11 +26,24 @@ const districts = [
 function KSEBdetails() {
   const [isDivision, setIsDivision] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDivision, setSelectedDivision] = useState("Select Division");
   const [selectedDivisionCollection, setSelectedDivisionCollection] =
     useState("");
   const [divisions, setDivisions] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(localStorage.getItem("district"))
+    console.log(localStorage.getItem("subDivision"))
+    if (localStorage.getItem("operator") === "KSEB") {
+      if (localStorage.getItem("district") != null) {
+        setDistrict(localStorage.getItem("district"))
+      }
+      if (localStorage.getItem("KSEB") != (null || "null")) {
+        selectDivisionForKseb(localStorage.getItem("KSEB"))
+      }
+    }
+  }, []);
 
   const goToReport = () => {
     navigate("/KSEB/report", {
@@ -54,10 +67,10 @@ function KSEBdetails() {
   };
 
   const setDivisionForKseb = (event) => {
-    const selectedDivision = JSON.parse(event.target.value);
+    const selectedDivision = JSON.parse(event);
     console.log(selectedDivision);
     console.log(event);
-    setSelectedDivision(selectedDivision);
+    setSelectedDivision(selectedDivision.division);
     setSelectedDivisionCollection(selectedDivision);
     setIsDivision(true);
   };
@@ -65,7 +78,7 @@ function KSEBdetails() {
   const setDistrict = (event) => {
     console.log(event);
     setSelectedDistrict(event);
-    setIsDivision(!!selectedDivision);
+    setIsDivision(false);
     axios
       .post(
         `http://${serverURL}:3001/list-kseb-divisions`,
@@ -94,30 +107,41 @@ function KSEBdetails() {
       });
   };
 
-  // useEffect(() => {
-  //   setIsDivision(!!selectedDivision);
-  //   console.log("Selected District:", selectedDistrict);
-  //   console.log("Selected Division:", selectedDivision);
-  //   axios
-  //     .post(
-  //       `http://${serverURL}:3001/list-kseb-divisions`,
-  //       {
-  //         district: selectedDistrict,
-  //       },
-  //     )
-  //     .then(function (response) {
-  //       if (response.status === "ok") {
-  //         console.log(response);
-  //       }
-  //     })
+  function assignDistrict(e) {
+    localStorage.setItem("RationShop", "null");
+    localStorage.setItem("KSEB", "null");
+    localStorage.setItem("Hospital", "null");
+    localStorage.setItem("operator", "KSEB");
+    setIsDivision(false);
+    setSelectedDivision("Select Division")
+    setSelectedDistrict(e);
+    axios
+      .post(
+        `http://${serverURL}:3001/list-kseb-divisions`,
+        {
+          district: e,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          console.log("response");
+          console.log(response.data.result);
+          setDivisions(response.data.result);
+        }
+      })
+    localStorage.setItem("district", e);
+  }
 
-  //     .catch(function (error) {
-  //       // handle error
-  //     })
-  //     .finally(function () {
-  //       // always executed
-  //     });
-  // }, [selectedDistrict, selectedDivision]);
+  function selectDivisionForKseb(e) {
+    setDivisionForKseb(e)
+    localStorage.setItem("KSEB", e);
+  }
+
 
   return (
     <div className="container_KSEB" id="kseb-page">
@@ -127,7 +151,7 @@ function KSEBdetails() {
       <div className="contents_KSEB">
         <h1>Kerala State Electricity Board Limited (KSEB)</h1>
         <p>
-          Explore our services, report failures, make inquiries or complaints,
+          Explore our services, report failures, make enquiries or complaints,
           and stay updated with our notifications. Together, let's power a
           brighter future for Kerala.
         </p>
@@ -136,7 +160,7 @@ function KSEBdetails() {
           <Select
             placeholder="Select District"
             value={selectedDistrict}
-            onChange={(e) => setDistrict(e.target.value)}
+            onChange={(e) => assignDistrict(e.target.value)}
             mb={4}
             color="var(--mainColor)"
             borderColor="var(--mainColor)"
@@ -156,9 +180,9 @@ function KSEBdetails() {
           {/* Division selection */}
           {selectedDistrict && (
             <Select
-              placeholder="Select Division"
+              placeholder={selectedDivision}
               value={selectedDivision}
-              onChange={(e) => setDivisionForKseb(e)}
+              onChange={(e) => selectDivisionForKseb(e.target.value)}
               mb={4}
               color="var(--mainColor)"
               borderColor="var(--mainColor)"

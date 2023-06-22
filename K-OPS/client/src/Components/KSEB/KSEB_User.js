@@ -1,20 +1,59 @@
 import React, { useState, useEffect } from "react";
 import "../../Styles/KSEB_User.css";
+import { useNavigate } from "react-router-dom";
+
 import { TiChevronLeftOutline, TiChevronRightOutline } from "react-icons/ti";
-import { IoIosArrowBack } from "react-icons/io";
 import { ChakraProvider, Box, SimpleGrid } from "@chakra-ui/react";
 import axios from "axios";
 import { serverURL } from "../../serverConfig";
-// import notificationSvg from "../notification.svg";
 
 const MAX_VISIBILITY = 1;
 
-const Card = ({ title, content }) => (
-  <div className="card">
-    <h2>{title}</h2>
-    <p>{content}</p>
-  </div>
-);
+function Card() {
+  const [reply, setReply] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(reply);
+    setReply('');
+  };
+
+  const handleChange = (event) => {
+    setReply(event.target.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Reply here.."
+        value={reply}
+        onChange={handleChange}
+      />
+      <br />
+      <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black' }} />
+    </form>
+  );
+}
+
+// const Card = ({ title, content }) => (
+//   <div className="card">
+//     <h2>{title}</h2>
+//     <p>{content}</p>
+//     <form onSubmit={handleSubmit}>
+//       <input
+//         type="text"
+//         placeholder="Reply here.."
+//         value={reply}
+//         onChange={handleChange}
+//       />
+//       <br />
+//       <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black' }} />
+//     </form>
+//   </div>
+// );
+
+
 function useCards() {
   const [cards, setCards] = useState();
   return { cards, setCards };
@@ -58,6 +97,50 @@ const Carousel = ({ children }) => {
       });
   }, []);
 
+  const [reply, setReply] = useState('');
+
+  const handleSubmit = (event, id, email) => {
+    event.preventDefault();
+    console.log(id);
+    console.log(email);
+    console.log(reply);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/reply-for-enquiry-and-report`,
+        {
+          id: id,
+          message: reply,
+          email: email,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.status === "ok") {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  };
+
+
+
+  const handleChange = (event) => {
+    setReply(event.target.value);
+  };
+
+
+
+
   return (
     <div>
       <div
@@ -94,6 +177,7 @@ const Carousel = ({ children }) => {
           </h1>
           <img src="../solve.svg" alt="KSEB Logo" />
         </div>
+
         <div className="carousel">
           {active > 0 && (
             <button
@@ -131,10 +215,26 @@ const Carousel = ({ children }) => {
                   <div style={{ padding: "2rem" }}>
                     <div>Contact Number: {enquiry.ContactNumber}</div>
                     <div>Description: {enquiry.description}</div>
-                    <div>Email Address: {enquiry.emailAddress}</div>
+                    <div>Email: {enquiry.emailAddress}</div>
                     <div>Name: {enquiry.name}</div>
                     <div>Type: {enquiry.type}</div>
                   </div>
+                  <form onSubmit={(e) => handleSubmit(e, enquiry._id, enquiry.emailAddress)} style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    cursor: "pointer",
+                    padding: "0px 10px",
+                    color: "grey"
+                  }}>
+                    <input
+                      type="text"
+                      placeholder="Reply here.."
+                      value={reply}
+                      onChange={handleChange}
+                      style={{ borderRadius: '6px', height: '40px', marginBottom: '10px' }}
+                    />
+                    <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black', borderRadius: '6px', height: '40px', }} />
+                  </form>
                 </div>
               </div>
             ))}
@@ -161,6 +261,47 @@ const Carousel2 = ({ children }) => {
   const { cardsFailure, setCardsFailure } = useCards();
 
   const [listFailures, setListFailures] = useState([]);
+
+  const [reply, setReply] = useState('');
+
+  const handleSubmit = (event, id, email) => {
+    event.preventDefault();
+    console.log(id);
+    console.log(email);
+    console.log(reply);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/kseb/reply-for-enquiry-and-report`,
+        {
+          id: id,
+          message: reply,
+          email: email,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.status === "ok") {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  };
+
+
+
+  const handleChange = (event) => {
+    setReply(event.target.value);
+  };
 
   useEffect(() => {
     // console.log(localStorage.getItem("token"));
@@ -240,6 +381,28 @@ const Carousel2 = ({ children }) => {
                     <div>Post: {failures.nearByPostNumber}</div>
                     <div>TimeOfHappen: {failures.timeOfHappen}</div>
                   </div>
+                  <form onSubmit={(e) => handleSubmit(e, failures._id, failures.emailAddress)} style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    cursor: "pointer",
+                    padding: "0px 10px",
+                    color: "grey"
+                  }}>
+                    <input
+                      type="text"
+                      className="placeholder-white"
+                      placeholder="Reply here.."
+                      value={reply}
+                      onChange={handleChange}
+                      style={{
+                        borderRadius: '6px',
+                        height: '30px',
+                        marginBottom: '10px',
+                        backgroundColor: 'grey',
+                        color: 'white',
+                      }} />
+                    <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black', borderRadius: '6px', height: '30px', backgroundColor: "grey", color: "white" }} />
+                  </form>
                 </div>
               </div>
             ))}
@@ -388,7 +551,7 @@ function KSEB_User() {
           },
         }
       )
-      .then(function (response) {})
+      .then(function (response) { })
 
       .catch(function (error) {
         console.log(error);
@@ -397,6 +560,11 @@ function KSEB_User() {
         console.log("ethi");
       });
   };
+  const navigate = useNavigate();
+
+  const backToHome = () => {
+    navigate("/login");
+  };
   return (
     <div
       style={{
@@ -404,12 +572,28 @@ function KSEB_User() {
         flexDirection: "column",
       }}
     >
+      <div style={{
+        backgroundColor: "var(--mainColorLight)"
+      }}>
+        <h3
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            cursor: "pointer",
+            padding: "25px 50px 0px 0px",
+            color: "grey"
+          }}
+          onClick={backToHome}
+        >
+          Logout
+        </h3>
+      </div>
       <h1
         style={{
           color: "var(--mainColor)",
           fontSize: "40px",
           fontWeight: "bold",
-          padding: "50px 0px 0px 0px",
+          padding: "20px 0px 0px 0px",
 
           background: "var(--mainColorLight)",
         }}

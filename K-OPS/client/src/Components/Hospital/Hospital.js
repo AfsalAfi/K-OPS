@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DoctorTable from "./DoctorTable";
 import PatientTable from "./PatientTable";
 import AddDoctor from "./AddDoctor";
@@ -8,6 +9,11 @@ import HospitalEnquiry from "./HospitalEnquiry";
 
 const Hospital = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
+
+  const backToHome = () => {
+    navigate("/login");
+  };
 
   useEffect(() => {
     axios
@@ -81,15 +87,28 @@ const Hospital = () => {
         paddingBottom: "3rem",
       }}
     >
+      <h3
+        style={{
+          display: "flex",
+          flexDirection: "row-reverse",
+          cursor: "pointer",
+          padding: "25px 50px 0px 0px",
+          color: "grey"
+        }}
+        onClick={backToHome}
+      >
+        Logout
+      </h3>
       <div
         className="h1_KSEB_report"
         style={{
           display: "flex",
           alignItems: "center",
           width: "100%",
-          marginTop: "3rem",
+          // marginTop: "1rem",
         }}
       >
+
         <h1>Hospital</h1>
       </div>
       <AddDoctor />

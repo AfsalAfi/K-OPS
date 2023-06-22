@@ -23,21 +23,28 @@ const districts = [
   { id: 14, name: "Wayanad" },
 ];
 
-// const divisions = [
-//   { id: 1, name: "Division 1" },
-//   { id: 2, name: "Division 2" },
-//   { id: 3, name: "Division 3" },
-//   // Add more divisions here
-// ];
 
 function RationShop() {
   const [isDivision, setIsDivision] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDivision, setSelectedDivision] = useState("Select Ration Shop");
   const [selectedDivisionCollection, setSelectedDivisionCollection] =
     useState("");
   const [divisions, setDivisions] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(localStorage.getItem("district"))
+    console.log(localStorage.getItem("subDivision"))
+    if (localStorage.getItem("operator") === "RationShop") {
+      if (localStorage.getItem("district") != null) {
+        setDistrict(localStorage.getItem("district"))
+      }
+      if (localStorage.getItem("RationShop") != (null || "null")) {
+        selectDivisionForRationShop(localStorage.getItem("RationShop"))
+      }
+    }
+  }, []);
 
   const goToStatus = () => {
     navigate("/ration/status", {
@@ -51,8 +58,8 @@ function RationShop() {
     });
   };
 
-  const setDivisionForKseb = (event) => {
-    const selectedDivision = JSON.parse(event.target.value);
+  const setDivisionForRationShop = (event) => {
+    const selectedDivision = JSON.parse(event);
     console.log(selectedDivision);
     console.log(event);
     setSelectedDivision(selectedDivision);
@@ -63,7 +70,7 @@ function RationShop() {
   const setDistrict = (event) => {
     console.log(event);
     setSelectedDistrict(event);
-    setIsDivision(!!selectedDivision);
+    setIsDivision(false);
     axios
       .post(
         `http://${serverURL}:3001/list-ration-shops`,
@@ -94,30 +101,42 @@ function RationShop() {
       });
   };
 
-  // useEffect(() => {
-  //   setIsDivision(!!selectedDivision);
-  //   console.log("Selected District:", selectedDistrict);
-  //   console.log("Selected Division:", selectedDivision);
-  //   axios
-  //     .post(
-  //       `http://${serverURL}:3001/list-kseb-divisions`,
-  //       {
-  //         district: selectedDistrict,
-  //       },
-  //     )
-  //     .then(function (response) {
-  //       if (response.status === "ok") {
-  //         console.log(response);
-  //       }
-  //     })
+  function assignDistrict(e) {
+    localStorage.setItem("Hospital", "null");
+    localStorage.setItem("KSEB", "null");
+    localStorage.setItem("RationShop", "null");
+    localStorage.setItem("operator", "RationShop");
+    setSelectedDistrict(e);
+    setSelectedDivision("Select Ration Shop")
+    setIsDivision(false);
+    axios
+      .post(
+        `http://${serverURL}:3001/list-ration-shops`,
+        {
+          district: e,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.status === "ok") {
+          console.log("response");
+          console.log(response.data.result);
+          setDivisions(response.data.result);
 
-  //     .catch(function (error) {
-  //       // handle error
-  //     })
-  //     .finally(function () {
-  //       // always executed
-  //     });
-  // }, [selectedDistrict, selectedDivision]);
+        }
+      })
+    localStorage.setItem("district", e);
+  }
+
+  function selectDivisionForRationShop(e) {
+    setDivisionForRationShop(e)
+    localStorage.setItem("RationShop", e);
+  }
 
   return (
     <>
@@ -137,7 +156,7 @@ function RationShop() {
             <Select
               placeholder="Select District"
               value={selectedDistrict}
-              onChange={(e) => setDistrict(e.target.value)}
+              onChange={(e) => assignDistrict(e.target.value)}
               mb={4}
               color="var(--mainColor)"
               borderColor="var(--mainColor)"
@@ -157,9 +176,9 @@ function RationShop() {
             {/* Division selection */}
             {selectedDistrict && (
               <Select
-                placeholder="Select Division"
-                value={selectedDivision}
-                onChange={(e) => setDivisionForKseb(e)}
+                placeholder={selectedDivision.RationShopName ? selectedDivision.RationShopName : "Select Ration Shop"}
+                value={selectedDivision.RationShopName}
+                onChange={(e) => selectDivisionForRationShop(e.target.value)}
                 mb={4}
                 color="var(--mainColor)"
                 borderColor="var(--mainColor)"
@@ -171,7 +190,7 @@ function RationShop() {
                     color="var(--mainColor)"
                     borderColor="var(--mainColor)"
                   >
-                    {division.place}
+                    {division.RationShopName}
                   </option>
                 ))}
               </Select>

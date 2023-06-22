@@ -134,6 +134,7 @@ function KSEB_report() {
                         placeholder="Enter place"
                         value={formValues.place}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -146,6 +147,7 @@ function KSEB_report() {
                         placeholder="Enter name"
                         value={formValues.name}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -158,6 +160,7 @@ function KSEB_report() {
                         placeholder="Enter landmark"
                         value={formValues.landmark}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -170,6 +173,7 @@ function KSEB_report() {
                         placeholder="Enter post number"
                         value={formValues.postNumber}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -181,6 +185,7 @@ function KSEB_report() {
                         placeholder="Enter complaints or issue"
                         value={formValues.complaints}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -192,6 +197,7 @@ function KSEB_report() {
                         name="incidentTime"
                         value={formValues.incidentTime}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -200,10 +206,12 @@ function KSEB_report() {
                       <FormLabel>Contact Number</FormLabel>
                       <Input
                         type="tel"
+                        pattern="[0-9]{10}"
                         name="contactNumber"
                         placeholder="Enter contact number"
                         value={formValues.contactNumber}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>
@@ -211,11 +219,12 @@ function KSEB_report() {
                     <FormControl isRequired borderColor="#7a9e9f">
                       <FormLabel>Email</FormLabel>
                       <Input
-                        type="text"
+                        type="email"
                         name="email"
                         placeholder="Enter email address"
                         value={formValues.email}
                         onChange={handleChange}
+                        required
                       />
                     </FormControl>
                   </GridItem>

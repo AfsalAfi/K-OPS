@@ -18,7 +18,7 @@ function AboutUs() {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider >
       <Box className="container_about_us" id="about_us-page">
         <Center style={{ gap: "6rem" }}>
           <Box className="image_section_about_us" mr={6}>

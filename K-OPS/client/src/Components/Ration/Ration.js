@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../Styles/Ration.css";
 import axios from "axios";
 import { serverURL } from "../../serverConfig";
@@ -19,12 +20,17 @@ import {
 } from "@chakra-ui/react";
 
 function Ration() {
+  const navigate = useNavigate();
+
   const [notification, setNotification] = useState([]);
   const [newNotification, setNewNotification] = useState("");
   const [queue, setQueue] = useState("");
 
+  const backToHome = () => {
+    navigate("/login");
+  };
+
   useEffect(() => {
-    // console.log(localStorage.getItem("token"));
     axios
       .post(
         `http://${serverURL}:3001/admin/ration-shop/show-QueueStatus`,
@@ -51,7 +57,7 @@ function Ration() {
       });
   }, []);
   useEffect(() => {
-    // console.log(localStorage.getItem("token"));
+
     axios
       .post(
         `http://${serverURL}:3001/admin/ration-shop/show-RationShop-notifications`,
@@ -78,7 +84,6 @@ function Ration() {
   }, []);
 
   useEffect(() => {
-    // console.log(localStorage.getItem("token"));
     axios
       .post(
         `http://${serverURL}:3001/list-ration-shops`,
@@ -116,7 +121,7 @@ function Ration() {
         }
       )
       .then(function (response) {
-        if(response.data.status==="ok"){
+        if (response.data.status === "ok") {
           setQueue(response.data.queue)
         }
       })
@@ -130,31 +135,31 @@ function Ration() {
   };
 
   const decrementCount = () => {
-  
 
-      axios
-        .post(
-          `http://${serverURL}:3001/admin/ration-shop/queue-decrementing`,
-          {},
-          {
-            headers: {
-              Autherization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then(function (response) {
-          if(response.data.status==="ok"){
-            setQueue(response.data.queue)
-          }
-        })
 
-        .catch(function (error) {
-          console.log(error);
-        })
-        .finally(function () {
-          console.log("ethi");
-        });
-    
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/ration-shop/queue-decrementing`,
+        {},
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response.data.status === "ok") {
+          setQueue(response.data.queue)
+        }
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("ethi");
+      });
+
   };
 
   const addNotification = () => {
@@ -178,7 +183,7 @@ function Ration() {
           },
         }
       )
-      .then(function (response) {})
+      .then(function (response) { })
 
       .catch(function (error) {
         console.log(error);
@@ -235,6 +240,19 @@ function Ration() {
 
   return (
     <div>
+
+      <h3
+        style={{
+          display: "flex",
+          flexDirection: "row-reverse",
+          cursor: "pointer",
+          padding: "25px 50px 0px 0px",
+          color: "grey"
+        }}
+        onClick={backToHome}
+      >
+        Logout
+      </h3>
       <h1
         style={{
           color: "var(--textColor)",
@@ -275,7 +293,7 @@ function Ration() {
             </Thead>
             <Tbody>
               <Tr key={queue}>
-              <Td fontSize="xl" color="white">
+                <Td fontSize="xl" color="white">
                   Ration Queue
                 </Td>
                 <Td>

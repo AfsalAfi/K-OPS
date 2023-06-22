@@ -11,9 +11,10 @@ import {
   HStack,
   Input,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AddIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { IoIosArrowBack } from "react-icons/io";
 import { MinusIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { serverURL } from "../serverConfig";
@@ -24,6 +25,8 @@ const Hospital_OP_ticket = () => {
   const location = useLocation();
   const regId = location.state.regId;
   console.log(regId);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     axios
@@ -55,6 +58,10 @@ const Hospital_OP_ticket = () => {
       });
   }, []);
 
+  const backToHome = () => {
+    navigate("/");
+  };
+
   return (
     <ChakraProvider>
       <div
@@ -75,35 +82,54 @@ const Hospital_OP_ticket = () => {
             justifyContent: "space-evenly",
           }}
         >
-          <Table
-            variant="simple"
-            colorScheme="blackAlpha"
-            style={{ width: "50%" }}
-          >
-            <Thead>
-              <Tr>
-                <Th fontSize="xl">Doctors Name</Th>
-                <Th fontSize="xl">From</Th>
-                <Th fontSize="xl">To</Th>
-                <Th fontSize="xl">OP Count</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {data.map((doctor) => (
-                <Tr key={doctor.id}>
-                  <Td>{doctor.name}</Td>
-                  <Td>{doctor.availableTimeFrom}</Td>
-                  <Td>{doctor.availableTimeTo}</Td>
-
-                  <Td>
-                    <HStack maxW="320px">
-                      <Input size="sm" value={doctor.opTickets} readOnly />
-                    </HStack>
-                  </Td>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2rem"
+          }}>
+            <h2
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+              onClick={backToHome}
+            >
+              <span>
+                <IoIosArrowBack />
+              </span>
+              back
+            </h2>
+            <Table
+              variant="simple"
+              colorScheme="blackAlpha"
+              style={{ width: "50%" }}
+            >
+              <Thead>
+                <Tr>
+                  <Th fontSize="xl">Doctors Name</Th>
+                  <Th fontSize="xl">From</Th>
+                  <Th fontSize="xl">To</Th>
+                  <Th fontSize="xl">OP Count</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
+              </Thead>
+              <Tbody>
+                {data.map((doctor) => (
+                  <Tr key={doctor.id}>
+                    <Td>{doctor.name}</Td>
+                    <Td>{doctor.availableTimeFrom}</Td>
+                    <Td>{doctor.availableTimeTo}</Td>
+
+                    <Td>
+                      <HStack maxW="320px">
+                        <Input size="sm" value={doctor.opTickets} readOnly />
+                      </HStack>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </div>
           <div
             className="img_report"
             style={{

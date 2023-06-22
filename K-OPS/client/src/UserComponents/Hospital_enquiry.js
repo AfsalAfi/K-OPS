@@ -117,6 +117,7 @@ function Hospital_enquiry() {
                         id="name"
                         type="text"
                         placeholder="Enter your name"
+                        required
                         style={{ color: "#7a9e9f" }}
                       />
                     </FormControl>
@@ -126,8 +127,9 @@ function Hospital_enquiry() {
                       <FormLabel>Email Address</FormLabel>
                       <Input
                         id="email"
-                        type="text"
+                        type="email"
                         placeholder="Enter your email address"
+                        required
                         style={{ color: "#7a9e9f" }}
                       />
                     </FormControl>
@@ -138,7 +140,9 @@ function Hospital_enquiry() {
                       <Input
                         id="contactNumber"
                         type="tel"
+                        pattern="[0-9]{10}"
                         placeholder="Enter contact number"
+                        required
                         style={{ color: "#7a9e9f" }}
                       />
                     </FormControl>
@@ -160,6 +164,7 @@ function Hospital_enquiry() {
                       <FormLabel>Brief Description (Enquiry Details)</FormLabel>
                       <Textarea
                         id="briefDescription"
+                        required
                         placeholder="Enter your enquiry details"
                         style={{ color: "#7a9e9f", height: "200px" }}
                       />

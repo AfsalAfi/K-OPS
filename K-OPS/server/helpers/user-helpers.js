@@ -437,17 +437,22 @@ module.exports = {
           .toArray()
           .then(async (response) => {
             console.log(response);
-            await isDoctorAvailableInDataBase(response).then(
-              (ActiveDoctors) => {
-                console.log("response");
-                console.log(response);
-                if (ActiveDoctors.length > 0) {
-                  resolve({ status: "ok", availableDoctors: ActiveDoctors });
-                } else {
-                  reject("No doctor is currently available.");
-                }
-              }
-            );
+            if (response.length > 0) {
+              resolve({ status: "ok", availableDoctors: response });
+            } else {
+              reject("No doctor is currently available.");
+            }
+            // await isDoctorAvailableInDataBase(response).then(
+            //   (ActiveDoctors) => {
+            //     console.log("response");
+            //     console.log(response);
+            //     if (ActiveDoctors.length > 0) {
+            //       resolve({ status: "ok", availableDoctors: ActiveDoctors });
+            //     } else {
+            //       reject("No doctor is currently available.");
+            //     }
+            //   }
+            // );
           })
           .catch((err) => {
             reject({ message: "error while finding Doctors" });
@@ -459,32 +464,32 @@ module.exports = {
   },
 
   //RATION SHOP
-  show_rationDetails :(regId)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
+  show_rationDetails: (regId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
         const collection = await getCollection(OPERATORS_COLLECTION)
         collection
-        .aggregate([
-          {
-            $match:{  regId : regId }
-          },
-          {
-            $project :{
-              regId :1,
-              queTraffic : 1,
-              district :1,
-              place :1,
-              contact:1,
-              email:1,
-              RationShopName :1
+          .aggregate([
+            {
+              $match: { regId: regId }
+            },
+            {
+              $project: {
+                regId: 1,
+                queTraffic: 1,
+                district: 1,
+                place: 1,
+                contact: 1,
+                email: 1,
+                RationShopName: 1
+              }
             }
-          }
-        ]).toArray().then(response=>{
-          resolve(response)
-        })
+          ]).toArray().then(response => {
+            resolve(response)
+          })
 
-      }catch(err){
-        reject({message:"error while fetching details"})
+      } catch (err) {
+        reject({ message: "error while fetching details" })
       }
     })
   },

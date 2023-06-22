@@ -6,6 +6,7 @@ const {
   verifyPasswordHospital,
   increment_OPSTATUS,
   decrement_OPSTATUS,
+  reply_for_enquiry_Hospital,
 } = require("../../../helpers/admin-helpers");
 const {
   list_Medical_Facilities,
@@ -77,9 +78,10 @@ Hospital.post("/op-ticket-decrementing", protect, (req, res) => {
 
 Hospital.post("/reply-for-enquiry-and-report", protect, (req, res) => {
   const email = req.body.email;
+  const id = req.body.id;
   const message = req.body.message;
-  const subject = req.body.subject;
-  reply_for_enquiry_and_report(email, message, subject)
+  const subject = "Reply for Enquiry";
+  reply_for_enquiry_Hospital(email, message, subject, id)
     .then((response) => {
       res.send(response);
     })

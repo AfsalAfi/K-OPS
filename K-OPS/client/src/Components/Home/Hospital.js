@@ -23,12 +23,6 @@ const districts = [
   { id: 14, name: "Wayanad" },
 ];
 
-// const divisions = [
-//   { id: 1, name: "Division 1" },
-//   { id: 2, name: "Division 2" },
-//   { id: 3, name: "Division 3" },
-//   // Add more divisions here
-// ];
 
 function Hospital() {
   const [isHospital, setIsHospital] = useState(false);
@@ -38,6 +32,18 @@ function Hospital() {
     useState("Select Hospital");
   const [hopitalsList, setHopitalsList] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("operator") === "Hospital") {
+      if (localStorage.getItem("district") != null) {
+        setDistrict(localStorage.getItem("district"))
+      }
+      if (localStorage.getItem("Hospital") != (null || "null")) {
+        setSelectedHospital(localStorage.getItem("Hospital"))
+      }
+    }
+  }, []);
+
 
   const goToHospitalEnquiry = () => {
     navigate("/hospital/enquiry", {
@@ -68,8 +74,9 @@ function Hospital() {
   };
 
   const setSelectedHospital = (e) => {
-    const selectedHospitalCollection = JSON.parse(e.target.value);
+    const selectedHospitalCollection = JSON.parse(e);
     console.log(selectedHospitalCollection);
+    localStorage.setItem("Hospital", e);
     setSelectedHostel(selectedHospitalCollection.name);
     setSelectedHostelCollection(selectedHospitalCollection);
     setIsHospital(true);
@@ -79,7 +86,7 @@ function Hospital() {
     console.log(event);
     setSelectedDistrict(event);
     setSelectedHostel("Select Hospital");
-    setIsHospital(!!isHospital);
+    setIsHospital(false);
     axios
       .post(
         `http://${serverURL}:3001/list-hospitals`,
@@ -109,37 +116,44 @@ function Hospital() {
       });
   };
 
-  // useEffect(() => {
-  //   setIsDivision(!!selectedDivision);
-  //   console.log("Selected District:", selectedDistrict);
-  //   console.log("Selected Division:", selectedDivision);
-  //   axios
-  //     .post(
-  //       `http://${serverURL}:3001/list-hospital-divisions`,
-  //       {
-  //         district: selectedDistrict,
-  //       },
-  //     )
-  //     .then(function (response) {
-  //       if (response.status === "ok") {
-  //         console.log(response);
-  //       }
-  //     })
-
-  //     .catch(function (error) {
-  //       // handle error
-  //     })
-  //     .finally(function () {
-  //       // always executed
-  //     });
-  // }, [selectedDistrict, selectedDivision]);
+  function assignDistrict(e) {
+    setSelectedHostel("Select Hospital")
+    localStorage.setItem("RationShop", "null");
+    localStorage.setItem("KSEB", "null");
+    localStorage.setItem("Hospital", "null");
+    localStorage.setItem("operator", "Hospital");
+    setSelectedDistrict(e);
+    setSelectedHostel("Select Hospital");
+    setIsHospital(false);
+    axios
+      .post(
+        `http://${serverURL}:3001/list-hospitals`,
+        {
+          district: e,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        if (response.data.status === "ok") {
+          console.log("response");
+          console.log(response.data.result);
+          setHopitalsList(response.data.result);
+        }
+      })
+    localStorage.setItem("district", e);
+  }
 
   return (
     <div className="container_hospital" id="hospital-page">
       <div className="contents_hospital">
         <h1>Hospital</h1>
         <p>
-          Explore our services, report failures, make inquiries or complaints,
+          Explore our services, report failures, make enquiries or complaints,
           and stay updated with our notifications. Together, let's power a
           brighter future for Kerala.
         </p>
@@ -148,14 +162,14 @@ function Hospital() {
           <Select
             placeholder="Select District"
             value={selectedDistrict}
-            onChange={(e) => setDistrict(e.target.value)}
+            onChange={(e) => assignDistrict(e.target.value)}
             mb={4}
             color="var(--mainColorLight)"
             my="20px"
             borderColor="var(--mainColorLight)"
           >
             {districts.map((district) => (
-              <option key={district.id} value={district.name}>
+              <option key={district.id} value={district.name} style={{ color: "var(--mainColor)" }}>
                 {district.name}
               </option>
             ))}
@@ -166,13 +180,13 @@ function Hospital() {
             <Select
               placeholder={selectedHostel}
               value={selectedHostel}
-              onChange={(e) => setSelectedHospital(e)}
+              onChange={(e) => setSelectedHospital(e.target.value)}
               mb={4}
               color="var(--mainColorLight)"
               borderColor="var(--mainColorLight)"
             >
               {hopitalsList.map((hospital, index) => (
-                <option key={index} value={JSON.stringify(hospital)}>
+                <option key={index} value={JSON.stringify(hospital)} style={{ color: "var(--mainColor)" }}>
                   {hospital.name}
                 </option>
               ))}

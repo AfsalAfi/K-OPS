@@ -64,8 +64,9 @@ Kseb.post("/list-enquiry", protect, (req, res) => {
 Kseb.post("/reply-for-enquiry-and-report", protect, (req, res) => {
   const email = req.body.email;
   const message = req.body.message;
-  const subject = req.body.subject;
-  reply_for_enquiry_and_report(email, message, subject)
+  const id = req.body.id;
+  const subject = "Reply for Enquiry or Report";
+  reply_for_enquiry_and_report(email, message, subject, id)
     .then((response) => {
       res.send(response);
     })

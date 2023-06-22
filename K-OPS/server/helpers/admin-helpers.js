@@ -13,7 +13,7 @@ const {
 const nodemailer = require("nodemailer");
 const { JWT_STRING_FOR_ADMIN } = require("../config/constants");
 const jwt = require("jsonwebtoken");
-
+const { ObjectId } = require('mongodb');
 module.exports = {
   //ADMIN
   self_auth: (regId, password) => {
@@ -58,9 +58,10 @@ module.exports = {
               reject({ message: "Wrong password" });
             }
 
-       } })
-    }
- catch (error) {
+          }
+        })
+      }
+      catch (error) {
         reject({ message: "Login failed" });
       }
     });
@@ -89,7 +90,7 @@ module.exports = {
             contact: contact,
             email: email,
             RationShopName: RationShopName,
-            queTraffic : 0,
+            queTraffic: 0,
             classify: classify,
           })
           .then(async (response) => {
@@ -258,27 +259,27 @@ module.exports = {
 
   //RATION-SHOP
 
-  show_QueSTATUS :(regId)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
+  show_QueSTATUS: (regId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
         const collection = await getCollection(OPERATORS_COLLECTION)
         collection
-        .aggregate([
-          {
-            $match:{  regId : regId }
-          },
-          {
-            $project :{
-              regId :1,
-              queTraffic : 1
+          .aggregate([
+            {
+              $match: { regId: regId }
+            },
+            {
+              $project: {
+                regId: 1,
+                queTraffic: 1
+              }
             }
-          }
-        ]).toArray().then(response=>{
-          resolve(response)
-        })
+          ]).toArray().then(response => {
+            resolve(response)
+          })
 
-      }catch(err){
-        reject({message:"error while fetching details"})
+      } catch (err) {
+        reject({ message: "error while fetching details" })
       }
     })
   },
@@ -395,68 +396,68 @@ module.exports = {
               reject({ message: "Try again after some time..." });
 
             }
-          }).catch(err=>{
+          }).catch(err => {
             reject({ message: "Try again after some time..." });
           })
-   } catch (err) {
-    reject({ message: "Try again " });
-  } })
-    },
+      } catch (err) {
+        reject({ message: "Try again " });
+      }
+    })
+  },
 
 
-    increment_QueueSTATUS : (regId) =>{
+  increment_QueueSTATUS: (regId) => {
 
-        return new Promise(async(resolve,reject)=>{
-            try{
-                const increment_value = 1;
-                const collection  = await getCollection(OPERATORS_COLLECTION);
-      
-                // collection.find({doctor_id : doctor_id}).toArray()
-                collection.updateOne(
-                    {regId : regId},
-                    {
-                        $inc : {queTraffic : 1 },
-                    }
-                    ).then(response=>{
-                        return collection.findOne({regId :regId});
-                    }).then(updatedDoc => {
-                        resolve(updatedDoc.queTraffic);
-                      }).catch(err=>{
-                        reject({message:"error while incrementing queue status"})
-                    })
+    return new Promise(async (resolve, reject) => {
+      try {
+        const increment_value = 1;
+        const collection = await getCollection(OPERATORS_COLLECTION);
 
-            }catch(err){
-                reject({message:"error while incrementing queue status"})
-            }
+        // collection.find({doctor_id : doctor_id}).toArray()
+        collection.updateOne(
+          { regId: regId },
+          {
+            $inc: { queTraffic: 1 },
+          }
+        ).then(response => {
+          return collection.findOne({ regId: regId });
+        }).then(updatedDoc => {
+          resolve(updatedDoc.queTraffic);
+        }).catch(err => {
+          reject({ message: "error while incrementing queue status" })
         })
 
-    },
+      } catch (err) {
+        reject({ message: "error while incrementing queue status" })
+      }
+    })
+
+  },
 
 
-    decrement_QueueSTATUS :(regId)=>{
+  decrement_QueueSTATUS: (regId) => {
 
-        return new Promise(async(resolve,reject)=>{
-            try{
-                const collection  = await getCollection(OPERATORS_COLLECTION);
-                collection.updateOne(
-                    {regId : regId},
-                    {
-                        $inc : {queTraffic : -1 },
-                    }
-                    ).then(response=>{
-                        return collection.findOne({regId :regId});
-                    }).then(updatedDoc => {
-                        resolve(updatedDoc.queTraffic);
-                      }).catch(err=>{
-                        reject({message:"error while decrementing queue status"})
-                    })
-
-            }catch(err){
-                reject({message:"error while decrementing queue status"})
-            }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collection = await getCollection(OPERATORS_COLLECTION);
+        collection.updateOne(
+          { regId: regId },
+          {
+            $inc: { queTraffic: -1 },
+          }
+        ).then(response => {
+          return collection.findOne({ regId: regId });
+        }).then(updatedDoc => {
+          resolve(updatedDoc.queTraffic);
+        }).catch(err => {
+          reject({ message: "error while decrementing queue status" })
         })
-    },
-    
+
+      } catch (err) {
+        reject({ message: "error while decrementing queue status" })
+      }
+    })
+  },
 
 
 
@@ -465,11 +466,12 @@ module.exports = {
 
 
 
-    //KSEB
+
+  //KSEB
 
 
 
- 
+
 
   //KSEB
 
@@ -725,37 +727,120 @@ module.exports = {
     });
   },
 
-  reply_for_enquiry_and_report: (email, message, subject) => {
+  reply_for_enquiry_and_report: (email, message, subject, id) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let res = "hi";
+        console.log("email, message, id");
         // const transporter = nodemailer.createTransport({
-        //     service: "hotmail",
-        //     auth: {
-        //         user: "ramettanQAZ@outlook.com",
-        //         pass: "Qazxsw123",
-        //     },
+        //   service: "hotmail",
+        //   auth: {
+        //     user: "ramettanQAZ@outlook.com",
+        //     pass: "Qazxsw123",
+        //   },
         // });
-
         // let res = await transporter.sendMail({
-        //     from: "ramettanQAZ@outlook.com",
-        //     to: `afsaldesktop@gmail.com,${email}`,
-        //     subject: `${subject}`,
-        //     html: `<html>
+        //   from: "ramettanQAZ@outlook.com",
+        //   to: `afsaldesktop@gmail.com,${email}`,
+        //   subject: `${subject}`,
+        //   html: `<html>
         //           <body>
         //             <p><b>${message}</p>
         //           </body>
         //         </html>`,
         // });
         // console.log(res);
-        if (res) {
-          resolve({ status: "ok" });
-        } else {
+        console.log(email, message, id);
+        const collection = await getCollection(KSEB_FAILURES_ENQUIRIES);
+        collection.deleteOne({ _id: new ObjectId(id) }).then((response) => {
+          console.log(response);
+          if (response.deletedCount === 1) {
+            resolve({ status: "ok" });
+          } else {
+            reject({ message: "process failed" });
+          }
+        }).catch((response) => {
           reject({ message: "process failed" });
-        }
+        })
       } catch (err) {
+        console.log(err);
         reject({ message: "process failed" });
       }
     });
   },
+
+
+  reply_for_enquiry_Hospital: (email, message, subject, id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log("email, message, id");
+        // const transporter = nodemailer.createTransport({
+        //   service: "hotmail",
+        //   auth: {
+        //     user: "ramettanQAZ@outlook.com",
+        //     pass: "Qazxsw123",
+        //   },
+        // });
+        // let res = await transporter.sendMail({
+        //   from: "ramettanQAZ@outlook.com",
+        //   to: `afsaldesktop@gmail.com,${email}`,
+        //   subject: `${subject}`,
+        //   html: `<html>
+        //           <body>
+        //             <p><b>${message}</p>
+        //           </body>
+        //         </html>`,
+        // });
+        // console.log(res);
+        console.log(email, message, subject, id);
+        const collection = await getCollection(HOSPITAL_ENQUIRIES);
+        collection.deleteOne({ _id: new ObjectId(id) }).then((response) => {
+          console.log(response);
+          if (response.deletedCount === 1) {
+            resolve({ status: "ok" });
+          } else {
+            reject({ message: "process failed" });
+          }
+        }).catch((response) => {
+          reject({ message: "process failed" });
+        })
+      } catch (err) {
+        console.log(err);
+        reject({ message: "process failed" });
+      }
+    });
+  },
+
+  // reply_for_enquiry_and_report: (email, message, subject) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       let res = "hi";
+  //       // const transporter = nodemailer.createTransport({
+  //       //     service: "hotmail",
+  //       //     auth: {
+  //       //         user: "ramettanQAZ@outlook.com",
+  //       //         pass: "Qazxsw123",
+  //       //     },
+  //       // });
+
+  //       // let res = await transporter.sendMail({
+  //       //     from: "ramettanQAZ@outlook.com",
+  //       //     to: `afsaldesktop@gmail.com,${email}`,
+  //       //     subject: `${subject}`,
+  //       //     html: `<html>
+  //       //           <body>
+  //       //             <p><b>${message}</p>
+  //       //           </body>
+  //       //         </html>`,
+  //       // });
+  //       // console.log(res);
+  //       if (res) {
+  //         resolve({ status: "ok" });
+  //       } else {
+  //         reject({ message: "process failed" });
+  //       }
+  //     } catch (err) {
+  //       reject({ message: "process failed" });
+  //     }
+  //   });
+  // },
 };

@@ -57,6 +57,47 @@ const Carousel = ({ children }) => {
       });
   }, []);
 
+  const [reply, setReply] = useState('');
+
+  const handleSubmit = (event, id, email) => {
+    event.preventDefault();
+    console.log(id);
+    console.log(email);
+    console.log(reply);
+
+    axios
+      .post(
+        `http://${serverURL}:3001/admin/hospital/reply-for-enquiry-and-report`,
+        {
+          id: id,
+          message: reply,
+          email: email,
+        },
+        {
+          headers: {
+            Autherization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        if (response.data.status === "ok") {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  };
+
+
+
+  const handleChange = (event) => {
+    setReply(event.target.value);
+  };
+
   return (
     <div>
       <div
@@ -132,6 +173,26 @@ const Carousel = ({ children }) => {
                     <div>Name: {enquiry.name}</div>
                     <div>Type: {enquiry.type}</div>
                   </div>
+                  <form onSubmit={(e) => handleSubmit(e, enquiry._id, enquiry.emailAddress)} style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    cursor: "pointer",
+                    padding: "0px 10px",
+                    color: "grey"
+                  }}>
+                    <input
+                      type="text"
+                      className="placeholder-white"
+                      placeholder="Reply here.."
+                      value={reply}
+                      onChange={handleChange}
+                      style={{
+                        borderRadius: '6px',
+                        height: '30px',
+                        marginBottom: '10px',
+                      }} />
+                    <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black', borderRadius: '6px', height: '30px' }} />
+                  </form>
                 </div>
               </div>
             ))}
