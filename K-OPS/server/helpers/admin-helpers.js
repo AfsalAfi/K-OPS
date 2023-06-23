@@ -731,24 +731,24 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         console.log("email, message, id");
-        // const transporter = nodemailer.createTransport({
-        //   service: "hotmail",
-        //   auth: {
-        //     user: "ramettanQAZ@outlook.com",
-        //     pass: "Qazxsw123",
-        //   },
-        // });
-        // let res = await transporter.sendMail({
-        //   from: "ramettanQAZ@outlook.com",
-        //   to: `afsaldesktop@gmail.com,${email}`,
-        //   subject: `${subject}`,
-        //   html: `<html>
-        //           <body>
-        //             <p><b>${message}</p>
-        //           </body>
-        //         </html>`,
-        // });
-        // console.log(res);
+        const transporter = nodemailer.createTransport({
+          service: "hotmail",
+          auth: {
+            user: "Shaheercp890@outlook.com",
+            pass: "shaheer@2002",
+          },
+        });
+        let res = await transporter.sendMail({
+          from: "Shaheercp890@outlook.com",
+          to: `${email}`,
+          subject: `${subject}`,
+          html: `<html>
+                  <body>
+                    <p><b>${message}</p>
+                  </body>
+                </html>`,
+        });
+        console.log(res);
         console.log(email, message, id);
         const collection = await getCollection(KSEB_FAILURES_ENQUIRIES);
         collection.deleteOne({ _id: new ObjectId(id) }).then((response) => {
@@ -773,24 +773,24 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         console.log("email, message, id");
-        // const transporter = nodemailer.createTransport({
-        //   service: "hotmail",
-        //   auth: {
-        //     user: "ramettanQAZ@outlook.com",
-        //     pass: "Qazxsw123",
-        //   },
-        // });
-        // let res = await transporter.sendMail({
-        //   from: "ramettanQAZ@outlook.com",
-        //   to: `afsaldesktop@gmail.com,${email}`,
-        //   subject: `${subject}`,
-        //   html: `<html>
-        //           <body>
-        //             <p><b>${message}</p>
-        //           </body>
-        //         </html>`,
-        // });
-        // console.log(res);
+        const transporter = nodemailer.createTransport({
+          service: "hotmail",
+          auth: {
+            user: "Shaheercp890@outlook.com",
+            pass: "shaheer@2002",
+          },
+        });
+        let res = await transporter.sendMail({
+          from: "Shaheercp890@outlook.com",
+          to: `${email}`,
+          subject: `${subject}`,
+          html: `<html>
+                  <body>
+                    <p><b>${message}</p>
+                  </body>
+                </html>`,
+        });
+        console.log(res);
         console.log(email, message, subject, id);
         const collection = await getCollection(HOSPITAL_ENQUIRIES);
         collection.deleteOne({ _id: new ObjectId(id) }).then((response) => {

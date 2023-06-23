@@ -193,6 +193,7 @@ function AddDoctor() {
                   <Td>
                     <input
                       type="text"
+                      placeholder="Dr.Name"
                       value={newDoctorData.name}
                       onChange={(e) => handleChange("name", e.target.value)}
                       style={{ background: "transparent" }}
@@ -201,6 +202,7 @@ function AddDoctor() {
                   <Td>
                     <input
                       type="text"
+                      placeholder="MBBS"
                       value={newDoctorData.specialization}
                       onChange={(e) =>
                         handleChange("specialization", e.target.value)
@@ -211,6 +213,7 @@ function AddDoctor() {
                   <Td>
                     <input
                       type="text"
+                      placeholder="10:00AM"
                       value={newDoctorData.availableTimeFrom}
                       onChange={(e) =>
                         handleChange("availableTimeFrom", e.target.value)
@@ -221,6 +224,7 @@ function AddDoctor() {
                   <Td>
                     <input
                       type="text"
+                      placeholder="04:00PM"
                       value={newDoctorData.availableTimeTo}
                       onChange={(e) =>
                         handleChange("availableTimeTo", e.target.value)
@@ -232,6 +236,7 @@ function AddDoctor() {
                   <Td>
                     <input
                       type="text"
+                      placeholder="DOC123"
                       value={newDoctorData.doctor_id}
                       onChange={(e) =>
                         handleChange("doctor_id", e.target.value)
@@ -248,7 +253,7 @@ function AddDoctor() {
               )}
             </Tbody>
           </Table>
-          {!isAddingDoctor && <Button onClick={addDoctor}>+</Button>}
+          {!isAddingDoctor && <Button onClick={addDoctor}>Add Doctor +</Button>}
         </ChakraProvider>
       </div>
       <div
