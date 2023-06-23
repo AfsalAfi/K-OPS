@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import "../../Styles/KSEB_User.css";
 import { TiChevronLeftOutline, TiChevronRightOutline } from "react-icons/ti";
 import { IoIosArrowBack } from "react-icons/io";
-import { ChakraProvider, Box, SimpleGrid } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  ChakraProvider,
+  Box,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { serverURL } from "../../serverConfig";
 
@@ -57,7 +63,7 @@ const Carousel = ({ children }) => {
       });
   }, []);
 
-  const [reply, setReply] = useState('');
+  const [reply, setReply] = useState("");
 
   const handleSubmit = (event, id, email) => {
     event.preventDefault();
@@ -89,10 +95,8 @@ const Carousel = ({ children }) => {
       })
       .catch(function (error) {
         console.log(error);
-      })
+      });
   };
-
-
 
   const handleChange = (event) => {
     setReply(event.target.value);
@@ -173,25 +177,32 @@ const Carousel = ({ children }) => {
                     <div>Name: {enquiry.name}</div>
                     <div>Type: {enquiry.type}</div>
                   </div>
-                  <form onSubmit={(e) => handleSubmit(e, enquiry._id, enquiry.emailAddress)} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    cursor: "pointer",
-                    padding: "0px 10px",
-                    color: "grey"
-                  }}>
-                    <input
-                      type="text"
-                      className="placeholder-white"
-                      placeholder="Reply here.."
-                      value={reply}
-                      onChange={handleChange}
-                      style={{
-                        borderRadius: '6px',
-                        height: '30px',
-                        marginBottom: '10px',
-                      }} />
-                    <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black', borderRadius: '6px', height: '30px' }} />
+                  <form
+                    onSubmit={(e) =>
+                      handleSubmit(e, enquiry._id, enquiry.emailAddress)
+                    }
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      cursor: "pointer",
+                      padding: "0px 10px",
+                      color: "grey",
+                    }}
+                  >
+                    <ChakraProvider>
+                      <Input
+                        type="text"
+                        className="placeholder-white"
+                        placeholder="Reply here.."
+                        value={reply}
+                        onChange={handleChange}
+                        marginBottom="10px"
+                        background="#EDF2F7"
+                      />
+                      <Button type="submit" value="Send">
+                        Send
+                      </Button>
+                    </ChakraProvider>
                   </form>
                 </div>
               </div>

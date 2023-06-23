@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 import "../../Styles/KSEB_User.css";
 import { useNavigate } from "react-router-dom";
-
 import { TiChevronLeftOutline, TiChevronRightOutline } from "react-icons/ti";
-import { ChakraProvider, Box, SimpleGrid } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  ChakraProvider,
+  Box,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { serverURL } from "../../serverConfig";
 
 const MAX_VISIBILITY = 1;
 
 function Card() {
-  const [reply, setReply] = useState('');
+  const [reply, setReply] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(reply);
-    setReply('');
+    setReply("");
   };
 
   const handleChange = (event) => {
@@ -31,7 +36,11 @@ function Card() {
         onChange={handleChange}
       />
       <br />
-      <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black' }} />
+      <input
+        type="submit"
+        value="Send"
+        style={{ backgroundColor: "white", color: "black" }}
+      />
     </form>
   );
 }
@@ -52,7 +61,6 @@ function Card() {
 //     </form>
 //   </div>
 // );
-
 
 function useCards() {
   const [cards, setCards] = useState();
@@ -97,7 +105,7 @@ const Carousel = ({ children }) => {
       });
   }, []);
 
-  const [reply, setReply] = useState('');
+  const [reply, setReply] = useState("");
 
   const handleSubmit = (event, id, email) => {
     event.preventDefault();
@@ -129,17 +137,12 @@ const Carousel = ({ children }) => {
       })
       .catch(function (error) {
         console.log(error);
-      })
+      });
   };
-
-
 
   const handleChange = (event) => {
     setReply(event.target.value);
   };
-
-
-
 
   return (
     <div>
@@ -148,10 +151,10 @@ const Carousel = ({ children }) => {
           display: "flex",
           width: "100%",
           minHeight: "75vh",
-          justifyContent: "center",
+          justifyContent: "space-evenly",
           // flexDirection: "column",
           alignItems: "center",
-          gap: "15rem",
+          // gap: "15rem",
           background: "var(--mainColorLight)",
           borderBottomLeftRadius: "60% 10%",
           borderBottomRightRadius: "60% 10%",
@@ -178,7 +181,7 @@ const Carousel = ({ children }) => {
           <img src="../solve.svg" alt="KSEB Logo" />
         </div>
 
-        <div className="carousel">
+        <div className="carousel carousel_enquiry">
           {active > 0 && (
             <button
               className="nav left"
@@ -219,21 +222,31 @@ const Carousel = ({ children }) => {
                     <div>Name: {enquiry.name}</div>
                     <div>Type: {enquiry.type}</div>
                   </div>
-                  <form onSubmit={(e) => handleSubmit(e, enquiry._id, enquiry.emailAddress)} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    cursor: "pointer",
-                    padding: "0px 10px",
-                    color: "grey"
-                  }}>
-                    <input
-                      type="text"
-                      placeholder="Reply here.."
-                      value={reply}
-                      onChange={handleChange}
-                      style={{ borderRadius: '6px', height: '40px', marginBottom: '10px' }}
-                    />
-                    <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black', borderRadius: '6px', height: '40px', }} />
+                  <form
+                    onSubmit={(e) =>
+                      handleSubmit(e, enquiry._id, enquiry.emailAddress)
+                    }
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      cursor: "pointer",
+                      padding: "0px 10px",
+                      color: "grey",
+                    }}
+                  >
+                    <ChakraProvider>
+                      <Input
+                        type="text"
+                        placeholder="Reply here.."
+                        value={reply}
+                        onChange={handleChange}
+                        marginBottom="10px"
+                        background="#EDF2F7"
+                      />
+                      <Button type="submit" value="Send">
+                        Send
+                      </Button>
+                    </ChakraProvider>
                   </form>
                 </div>
               </div>
@@ -262,7 +275,7 @@ const Carousel2 = ({ children }) => {
 
   const [listFailures, setListFailures] = useState([]);
 
-  const [reply, setReply] = useState('');
+  const [reply, setReply] = useState("");
 
   const handleSubmit = (event, id, email) => {
     event.preventDefault();
@@ -294,10 +307,8 @@ const Carousel2 = ({ children }) => {
       })
       .catch(function (error) {
         console.log(error);
-      })
+      });
   };
-
-
 
   const handleChange = (event) => {
     setReply(event.target.value);
@@ -338,13 +349,13 @@ const Carousel2 = ({ children }) => {
           display: "flex",
           width: "100%",
           minHeight: "75vh",
-          justifyContent: "center",
+          justifyContent: "space-evenly",
           // flexDirection: "column",
           alignItems: "center",
-          gap: "15rem",
+          // gap: "15rem",
         }}
       >
-        <div className="carousel">
+        <div className="carousel carousel_failures">
           {active > 0 && (
             <button
               className="nav left"
@@ -381,27 +392,38 @@ const Carousel2 = ({ children }) => {
                     <div>Post: {failures.nearByPostNumber}</div>
                     <div>TimeOfHappen: {failures.timeOfHappen}</div>
                   </div>
-                  <form onSubmit={(e) => handleSubmit(e, failures._id, failures.emailAddress)} style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    cursor: "pointer",
-                    padding: "0px 10px",
-                    color: "grey"
-                  }}>
-                    <input
-                      type="text"
-                      className="placeholder-white"
-                      placeholder="Reply here.."
-                      value={reply}
-                      onChange={handleChange}
-                      style={{
-                        borderRadius: '6px',
-                        height: '30px',
-                        marginBottom: '10px',
-                        backgroundColor: 'grey',
-                        color: 'white',
-                      }} />
-                    <input type="submit" value="Send" style={{ backgroundColor: 'white', color: 'black', borderRadius: '6px', height: '30px', backgroundColor: "grey", color: "white" }} />
+                  <form
+                    onSubmit={(e) =>
+                      handleSubmit(e, failures._id, failures.emailAddress)
+                    }
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      cursor: "pointer",
+                      padding: "0px 10px",
+                      color: "grey",
+                    }}
+                  >
+                    <ChakraProvider>
+                      <Input
+                        type="text"
+                        className="placeholder-white"
+                        placeholder="Reply here.."
+                        value={reply}
+                        onChange={handleChange}
+                        marginBottom="10px"
+                        background="var(--mainColor)"
+                      />
+
+                      <Button
+                        type="submit"
+                        value="Send"
+                        background="var(--mainColor)"
+                        color="var(--mainColorLight)"
+                      >
+                        Send
+                      </Button>
+                    </ChakraProvider>
                   </form>
                 </div>
               </div>
@@ -551,7 +573,7 @@ function KSEB_User() {
           },
         }
       )
-      .then(function (response) { })
+      .then(function (response) {})
 
       .catch(function (error) {
         console.log(error);
@@ -572,16 +594,18 @@ function KSEB_User() {
         flexDirection: "column",
       }}
     >
-      <div style={{
-        backgroundColor: "var(--mainColorLight)"
-      }}>
+      <div
+        style={{
+          backgroundColor: "var(--mainColorLight)",
+        }}
+      >
         <h3
           style={{
             display: "flex",
             flexDirection: "row-reverse",
             cursor: "pointer",
             padding: "25px 50px 0px 0px",
-            color: "grey"
+            color: "grey",
           }}
           onClick={backToHome}
         >
