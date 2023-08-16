@@ -79,6 +79,7 @@ router.post("/create-hospital", async (req, res) => {
   const name = req.body.name;
   const password = req.body.password;
   const regId = req.body.regId;
+  console.log(classify,category,district,place,email,contact,name,password);
   create_hospital(
     classify,
     category,

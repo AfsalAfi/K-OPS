@@ -69,6 +69,7 @@ RationShop.post("/update-available-stocks", protect, (req, res) => {
   const regId = req.user;
   const cardColor = req.body.cardColor;
   const stocks = req.body.stocks;
+  console.log(cardColor,stocks)
 
   update_available_stocks(regId, cardColor, stocks)
     .then((response) => {

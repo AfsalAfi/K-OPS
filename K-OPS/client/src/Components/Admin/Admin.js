@@ -61,7 +61,9 @@ function Admin() {
           },
         }
       )
-      .then(function (response) {})
+      .then(function (response) {
+        window.location.reload()
+      })
 
       .catch(function (error) {
         console.log(error);
@@ -108,7 +110,9 @@ function Admin() {
           },
         }
       )
-      .then(function (response) {})
+      .then(function (response) {
+        window.location.reload();
+      })
 
       .catch(function (error) {
         console.log(error);
@@ -120,14 +124,15 @@ function Admin() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const registerId = document.getElementById("registerId").value;
-    const category = document.getElementById("category").value;
-    const district = document.getElementById("district").value;
-    const place = document.getElementById("place").value;
-    const email = document.getElementById("email").value;
-    const contact = document.getElementById("contact").value;
-    const hospitalName = document.getElementById("hospitalName").value;
-    const password = document.getElementById("password").value;
+    const form = event.target;
+    const registerId = form.elements.registerId.value;
+    const category = form.elements.category.value;
+    const district = form.elements.district.value;
+    const place = form.elements.place.value;
+    const email = form.elements.email.value;
+    const contact = form.elements.contact.value;
+    const hospitalName = form.elements.hospitalName.value;
+    const password = form.elements.password.value;
     console.log("Register ID:", registerId);
     console.log("Category:", category);
     console.log("District:", district);
@@ -156,7 +161,9 @@ function Admin() {
           },
         }
       )
-      .then(function (response) {})
+      .then(function (response) {
+        window.location.reload();
+      })
 
       .catch(function (error) {
         console.log(error);

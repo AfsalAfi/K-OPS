@@ -390,7 +390,7 @@ module.exports = {
             })
           .then((response) => {
             console.log(response);
-            if (response.value) {
+            if (response.modifiedCount===1) {
               resolve({ status: "ok" });
             } else {
               reject({ message: "Try again after some time..." });
@@ -734,12 +734,12 @@ module.exports = {
         const transporter = nodemailer.createTransport({
           service: "hotmail",
           auth: {
-            user: "Shaheercp890@outlook.com",
-            pass: "shaheer@2002",
+            user: "k-ops@outlook.com",
+            pass: "Kops@2023",
           },
         });
         let res = await transporter.sendMail({
-          from: "Shaheercp890@outlook.com",
+          from: "k-ops@outlook.com",
           to: `${email}`,
           subject: `${subject}`,
           html: `<html>
