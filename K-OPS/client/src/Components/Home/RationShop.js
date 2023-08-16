@@ -28,8 +28,7 @@ function RationShop() {
   const [isDivision, setIsDivision] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("Select Ration Shop");
-  const [selectedDivisionCollection, setSelectedDivisionCollection] =
-    useState("");
+  const [selectedDivisionCollection, setSelectedDivisionCollection] = useState("");
   const [divisions, setDivisions] = useState([]);
   const navigate = useNavigate();
 

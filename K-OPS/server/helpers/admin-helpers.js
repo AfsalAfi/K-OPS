@@ -98,6 +98,30 @@ module.exports = {
               const collection = await getCollection(RATION_SHOP_STOCKS);
               collection.insertOne({
                 regId: regId,
+                yellow: {
+                  Aatta: "0",
+                  pachari: "0",
+                  chakkari: "0",
+                  kerosene: "0"
+                },
+                red: {
+                  Aatta: "0",
+                  pachari: "0",
+                  chakkari: "0",
+                  kerosene: "0"
+                },
+                blue: {
+                  Aatta: "0",
+                  pachari: "0",
+                  chakkari: "0",
+                  kerosene: "0"
+                },
+                white: {
+                  Aatta: "0",
+                  pachari: "0",
+                  chakkari: "0",
+                  kerosene: "0"
+                }
               });
               resolve({ status: "ok" });
             } else {
@@ -390,7 +414,7 @@ module.exports = {
             })
           .then((response) => {
             console.log(response);
-            if (response.modifiedCount===1) {
+            if (response.modifiedCount === 1) {
               resolve({ status: "ok" });
             } else {
               reject({ message: "Try again after some time..." });

@@ -192,28 +192,74 @@ function Ration() {
         console.log("ethi");
       });
   };
-  const [values, setValues] = useState({
+  const [valuesYELLOW, setValuesYELLOW] = useState({
     pachari: "",
     chakkari: "",
     Aatta: "",
     kerosene: "",
   });
 
-  const handleChange = (e) => {
+  const [valuesBLUE, setValuesBLUE] = useState({
+    pachari: "",
+    chakkari: "",
+    Aatta: "",
+    kerosene: "",
+  });
+
+  const [valuesRED, setValuesRED] = useState({
+    pachari: "",
+    chakkari: "",
+    Aatta: "",
+    kerosene: "",
+  });
+
+  const [valuesWHITE, setValuesWHITE] = useState({
+    pachari: "",
+    chakkari: "",
+    Aatta: "",
+    kerosene: "",
+  });
+
+  const handleChangeBLUE = (e) => {
     const { name, value } = e.target;
-    setValues((prevValues) => ({ ...prevValues, [name]: value }));
+    setValuesBLUE((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+  const handleChangeWHITE = (e) => {
+    const { name, value } = e.target;
+    setValuesWHITE((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+  const handleChangeRED = (e) => {
+    const { name, value } = e.target;
+    setValuesRED((prevValues) => ({ ...prevValues, [name]: value }));
+  };
+  const handleChangeYELLOW = (e) => {
+    const { name, value } = e.target;
+    setValuesYELLOW((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
   const handleSubmit = (e, cardColor) => {
     e.preventDefault();
     console.log(cardColor);
-    console.log(values);
+    console.log(valuesYELLOW);
+    console.log(valuesRED);
+    console.log(valuesBLUE);
+    console.log(valuesWHITE);
+    let stockContain
+    if (cardColor === "yellow") {
+      stockContain = valuesYELLOW
+    } else if (cardColor === "red") {
+      stockContain = valuesRED
+    } else if (cardColor === "white") {
+      stockContain = valuesWHITE
+    } else if (cardColor === "blue") {
+      stockContain = valuesBLUE
+    }
     axios
       .post(
         `http://${serverURL}:3001/admin/ration-shop/update-available-stocks`,
         {
           cardColor: cardColor,
-          stocks: values,
+          stocks: stockContain,
         },
         {
           headers: {
@@ -349,8 +395,8 @@ function Ration() {
                   <input
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    value={valuesYELLOW.pachari}
+                    onChange={handleChangeYELLOW}
                     className="white-placeholder"
                     placeholder="Enter Pachari in kg"
                   />
@@ -361,8 +407,8 @@ function Ration() {
                   <input
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    value={valuesYELLOW.chakkari}
+                    onChange={handleChangeYELLOW}
                     className="white-placeholder"
                     placeholder="Enter Chakkari in kg"
                   />
@@ -373,8 +419,8 @@ function Ration() {
                   <input
                     type="text"
                     name="Aatta"
-                    value={values.Aatta}
-                    onChange={handleChange}
+                    value={valuesYELLOW.Aatta}
+                    onChange={handleChangeYELLOW}
                     className="white-placeholder"
                     placeholder="Enter Aatta in kg"
                   />
@@ -385,8 +431,8 @@ function Ration() {
                   <input
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    value={valuesYELLOW.kerosene}
+                    onChange={handleChangeYELLOW}
                     className="white-placeholder"
                     placeholder="Enter Kerosene in liters"
                   />
@@ -415,8 +461,8 @@ function Ration() {
                   <input
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    value={valuesRED.pachari}
+                    onChange={handleChangeRED}
                     className="white-placeholder"
                     placeholder="Enter Pachari in kg"
                   />
@@ -427,8 +473,8 @@ function Ration() {
                   <input
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    value={valuesRED.chakkari}
+                    onChange={handleChangeRED}
                     className="white-placeholder"
                     placeholder="Enter Chakkari in kg"
                   />
@@ -439,8 +485,8 @@ function Ration() {
                   <input
                     type="text"
                     name="Aatta"
-                    value={values.Aatta}
-                    onChange={handleChange}
+                    value={valuesRED.Aatta}
+                    onChange={handleChangeRED}
                     className="white-placeholder"
                     placeholder="Enter Aatta in kg"
                   />
@@ -451,8 +497,8 @@ function Ration() {
                   <input
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    value={valuesRED.kerosene}
+                    onChange={handleChangeRED}
                     className="white-placeholder"
                     placeholder="Enter Kerosene in liters"
                   />
@@ -481,8 +527,8 @@ function Ration() {
                   <input
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    value={valuesBLUE.pachari}
+                    onChange={handleChangeBLUE}
                     className="white-placeholder"
                     placeholder="Enter Pachari in kg"
                   />
@@ -493,8 +539,8 @@ function Ration() {
                   <input
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    value={valuesBLUE.chakkari}
+                    onChange={handleChangeBLUE}
                     className="white-placeholder"
                     placeholder="Enter Chakkari in kg"
                   />
@@ -505,8 +551,8 @@ function Ration() {
                   <input
                     type="text"
                     name="Aatta"
-                    value={values.Aatta}
-                    onChange={handleChange}
+                    value={valuesBLUE.Aatta}
+                    onChange={handleChangeBLUE}
                     className="white-placeholder"
                     placeholder="Enter Aatta in kg"
                   />
@@ -517,8 +563,8 @@ function Ration() {
                   <input
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    value={valuesBLUE.kerosene}
+                    onChange={handleChangeBLUE}
                     className="white-placeholder"
                     placeholder="Enter Kerosene in liters"
                   />
@@ -547,8 +593,8 @@ function Ration() {
                   <input
                     type="text"
                     name="pachari"
-                    value={values.pachari}
-                    onChange={handleChange}
+                    value={valuesWHITE.pachari}
+                    onChange={handleChangeWHITE}
                     className="black-placeholder"
                     placeholder="Enter Pachari in kg"
                   />
@@ -559,8 +605,8 @@ function Ration() {
                   <input
                     type="text"
                     name="chakkari"
-                    value={values.chakkari}
-                    onChange={handleChange}
+                    value={valuesWHITE.chakkari}
+                    onChange={handleChangeWHITE}
                     className="black-placeholder"
                     placeholder="Enter Chakkari in kg"
                   />
@@ -571,8 +617,8 @@ function Ration() {
                   <input
                     type="text"
                     name="Aatta"
-                    value={values.Aatta}
-                    onChange={handleChange}
+                    value={valuesWHITE.Aatta}
+                    onChange={handleChangeWHITE}
                     className="black-placeholder"
                     placeholder="Enter Aatta in kg"
                   />
@@ -583,8 +629,8 @@ function Ration() {
                   <input
                     type="text"
                     name="kerosene"
-                    value={values.kerosene}
-                    onChange={handleChange}
+                    value={valuesWHITE.kerosene}
+                    onChange={handleChangeWHITE}
                     className="black-placeholder"
                     placeholder="Enter Kerosene in liters"
                   />
